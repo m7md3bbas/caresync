@@ -26,17 +26,12 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
   late final TextEditingController passwordController;
 
   late final TextEditingController birthdayController;
-
   late final TextEditingController addressController;
-
   late final TextEditingController hospitalController;
-
   late final TextEditingController clinicController;
-
   late final TextEditingController specializationController;
-
   late final ValueNotifier<String?> gender;
-  late final AutovalidateMode autovalidateMode;
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   bool isObsecure = true;
 
   @override
@@ -54,6 +49,21 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
     _formKey = GlobalKey<FormState>();
     gender = ValueNotifier<String?>(null);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    nationalIDController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    birthdayController.dispose();
+    addressController.dispose();
+    hospitalController.dispose();
+    clinicController.dispose();
+    specializationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -92,45 +102,24 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateName(context, value),
-                          textEditingController: fullNameController,
-                          isObsecure: false,
-                          textInputType: TextInputType.text,
-                          labelText: 'Full Name',
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateEmail(context, value),
-                          textEditingController: emailController,
-                          isObsecure: false,
-                          textInputType: TextInputType.emailAddress,
-                          labelText: 'Email',
-                        ),
-                      ),
-                    ],
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateName(context, value),
+                    textEditingController: fullNameController,
+                    isObsecure: false,
+                    textInputType: TextInputType.text,
+                    labelText: 'Full Name',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateEmail(context, value),
+                    textEditingController: emailController,
+                    isObsecure: false,
+                    textInputType: TextInputType.emailAddress,
+                    labelText: 'Email',
                   ),
                   Row(
                     children: [
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateNationalID(value),
-                          textEditingController: nationalIDController,
-                          isObsecure: false,
-                          textInputType: TextInputType.number,
-                          labelText: 'National ID',
-                        ),
-                      ),
-                      const SizedBox(width: 16),
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
@@ -144,32 +133,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                           labelText: 'Phone Number',
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validatePassword(context, value),
-                          textEditingController: passwordController,
-                          isObsecure: isObsecure,
-                          textInputType: TextInputType.visiblePassword,
-                          labelText: 'Password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              isObsecure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isObsecure = !isObsecure;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
+
                       const SizedBox(width: 16),
                       Expanded(
                         child: CutsomTextFormFiled(
@@ -183,6 +147,33 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       ),
                     ],
                   ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateNationalID(value),
+                    textEditingController: nationalIDController,
+                    isObsecure: false,
+                    textInputType: TextInputType.number,
+                    labelText: 'National ID',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validatePassword(context, value),
+                    textEditingController: passwordController,
+                    isObsecure: isObsecure,
+                    textInputType: TextInputType.visiblePassword,
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObsecure ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObsecure = !isObsecure;
+                        });
+                      },
+                    ),
+                  ),
+
                   Row(
                     children: [
                       Expanded(
@@ -201,7 +192,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
-                              AuthValidation.validateAddress(value),
+                              AuthValidation.validateName(context, value),
                           textEditingController: hospitalController,
                           isObsecure: false,
                           textInputType: TextInputType.text,
@@ -212,7 +203,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
-                              AuthValidation.validateAddress(value),
+                              AuthValidation.validateName(context, value),
                           textEditingController: clinicController,
                           isObsecure: false,
                           textInputType: TextInputType.text,
@@ -226,7 +217,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
-                              AuthValidation.validateAddress(value),
+                              AuthValidation.validateName(context, value),
                           textEditingController: specializationController,
                           isObsecure: false,
                           textInputType: TextInputType.text,

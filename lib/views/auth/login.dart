@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Form(
             key: formKey,
+            autovalidateMode: autovalidateMode,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

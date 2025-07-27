@@ -43,8 +43,8 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
     allergiesController = TextEditingController();
     otherDiseasesController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    gender = ValueNotifier<String?>(null);
     autovalidateMode = AutovalidateMode.disabled;
+    gender = ValueNotifier<String?>(null);
     super.initState();
   }
 
@@ -62,217 +62,190 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              margin: const EdgeInsets.only(top: 24),
-              decoration: BoxDecoration(
-                color: const Color(0xFF161B22),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
-              ),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const Text(
-                      'Patient Registration',
-                      style: TextStyle(
-                        fontSize: 26,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.only(top: 24),
+            decoration: BoxDecoration(
+              color: const Color(0xFF161B22),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
+            ),
+            child: Form(
+              key: _formKey,
+              autovalidateMode: autovalidateMode,
+              child: Column(
+                spacing: 24,
+                children: [
+                  const Text(
+                    'Patient Registration',
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateName(context, value),
+                    textEditingController: fullNameController,
+                    isObsecure: false,
+                    textInputType: TextInputType.text,
+                    labelText: 'Full Name',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateEmail(context, value),
+                    textEditingController: emailController,
+                    isObsecure: false,
+                    textInputType: TextInputType.emailAddress,
+                    labelText: 'Email',
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CutsomTextFormFiled(
+                          validator: (value) =>
+                              AuthValidation.validateAddress(value),
+                          textEditingController: addressController,
+                          isObsecure: false,
+                          textInputType: TextInputType.text,
+                          labelText: 'Address',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validateName(context, value),
-                            textEditingController: fullNameController,
-                            isObsecure: false,
-                            textInputType: TextInputType.text,
-                            labelText: 'Full Name',
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validateEmail(context, value),
-                            textEditingController: emailController,
-                            isObsecure: false,
-                            textInputType: TextInputType.emailAddress,
-                            labelText: 'Email',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validateNationalID(value),
-                            textEditingController: nationalIDController,
-                            isObsecure: false,
-                            textInputType: TextInputType.number,
-                            labelText: 'National ID',
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validateEgyptianPhone(
-                                  context,
-                                  value,
-                                ),
-                            textEditingController: phoneController,
-                            isObsecure: false,
-                            textInputType: TextInputType.phone,
-                            labelText: 'Phone Number',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validatePassword(context, value),
-                            textEditingController: passwordController,
-                            isObsecure: isObsecure,
-                            textInputType: TextInputType.visiblePassword,
-                            labelText: 'Password',
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isObsecure
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CutsomTextFormFiled(
+                          validator: (value) =>
+                              AuthValidation.validateEgyptianPhone(
+                                context,
+                                value,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  isObsecure = !isObsecure;
-                                });
-                              },
-                            ),
-                          ),
+                          textEditingController: phoneController,
+                          isObsecure: false,
+                          textInputType: TextInputType.phone,
+                          labelText: 'Phone Number',
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) =>
-                                AuthValidation.validateAddress(value),
-                            textEditingController: addressController,
-                            isObsecure: false,
-                            textInputType: TextInputType.text,
-                            labelText: 'Address',
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateNationalID(value),
+                    textEditingController: nationalIDController,
+                    isObsecure: false,
+                    textInputType: TextInputType.number,
+                    labelText: 'National ID',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validatePassword(context, value),
+                    textEditingController: passwordController,
+                    isObsecure: isObsecure,
+                    textInputType: TextInputType.visiblePassword,
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObsecure ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObsecure = !isObsecure;
+                        });
+                      },
                     ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DatePickerField(
-                            controller: birthdayController,
-                            hintText: 'mm/dd/yyyy',
-                            validator: (value) => null,
-                            width: 200,
-                          ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DatePickerField(
+                          controller: birthdayController,
+                          hintText: 'mm/dd/yyyy',
+                          validator: (value) => null,
+                          width: 200,
                         ),
-                        const SizedBox(width: 16),
+                      ),
+                      const SizedBox(width: 16),
 
-                        Expanded(child: GenderDropdown(gender: gender)),
-                      ],
+                      Expanded(child: GenderDropdown(gender: gender)),
+                    ],
+                  ),
+                  CheckboxListTile(
+                    title: const Text(
+                      'I have diabetes',
+                      style: TextStyle(color: Colors.white),
                     ),
-                    const SizedBox(height: 16),
-                    CheckboxListTile(
-                      title: const Text(
-                        'I have diabetes',
-                        style: TextStyle(color: Colors.white),
+                    value: hasDiabetes,
+                    onChanged: (value) {
+                      setState(() {
+                        hasDiabetes = value ?? false;
+                      });
+                    },
+                    activeColor: Colors.blue,
+                    checkColor: Colors.white,
+                  ),
+                  CheckboxListTile(
+                    title: const Text(
+                      'I have heart disease',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    value: hasHeartDisease,
+                    onChanged: (value) {
+                      setState(() {
+                        hasHeartDisease = value ?? false;
+                      });
+                    },
+                    activeColor: Colors.blue,
+                    checkColor: Colors.white,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CutsomTextFormFiled(
+                          validator: (value) => null, // Optional field
+                          textEditingController: allergiesController,
+                          isObsecure: false,
+                          textInputType: TextInputType.text,
+                          labelText: 'Allergies (comma separated)',
+                        ),
                       ),
-                      value: hasDiabetes,
-                      onChanged: (value) {
-                        setState(() {
-                          hasDiabetes = value ?? false;
-                        });
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CutsomTextFormFiled(
+                          validator: (value) => null,
+                          textEditingController: otherDiseasesController,
+                          isObsecure: false,
+                          textInputType: TextInputType.text,
+                          labelText: 'Other diseases (comma separated)',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                        } else {
+                          setState(() {
+                            autovalidateMode = AutovalidateMode.always;
+                          });
+                        }
                       },
-                      activeColor: Colors.blue,
-                      checkColor: Colors.white,
-                    ),
-                    CheckboxListTile(
-                      title: const Text(
-                        'I have heart disease',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      value: hasHeartDisease,
-                      onChanged: (value) {
-                        setState(() {
-                          hasHeartDisease = value ?? false;
-                        });
-                      },
-                      activeColor: Colors.blue,
-                      checkColor: Colors.white,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) => null, // Optional field
-                            textEditingController: allergiesController,
-                            isObsecure: false,
-                            textInputType: TextInputType.text,
-                            labelText: 'Allergies (comma separated)',
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CutsomTextFormFiled(
-                            validator: (value) => null,
-                            textEditingController: otherDiseasesController,
-                            isObsecure: false,
-                            textInputType: TextInputType.text,
-                            labelText: 'Other diseases (comma separated)',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                          } else {
-                            setState(() {
-                              autovalidateMode = AutovalidateMode.always;
-                            });
-                          }
-                        },
-                        child: const Text(
-                          'Register',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

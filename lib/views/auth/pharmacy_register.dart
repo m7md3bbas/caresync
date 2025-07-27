@@ -72,6 +72,7 @@ class _PharmacyRegistrationScreenState
                 boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
               ),
               child: Column(
+                spacing: 24,
                 children: [
                   const Text(
                     'Pharmacy Registration',
@@ -82,73 +83,35 @@ class _PharmacyRegistrationScreenState
                     ),
                   ),
                   const SizedBox(height: 24),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateName(context, value),
+                    textEditingController: fullNameController,
+                    isObsecure: false,
+                    textInputType: TextInputType.text,
+                    labelText: 'Full Name',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateEmail(context, value),
+                    textEditingController: emailController,
+                    isObsecure: false,
+                    textInputType: TextInputType.emailAddress,
+                    labelText: 'Email',
+                  ),
                   Row(
                     children: [
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
-                              AuthValidation.validateName(context, value),
-                          textEditingController: fullNameController,
+                              AuthValidation.validateAddress(value),
+                          textEditingController: addressController,
                           isObsecure: false,
                           textInputType: TextInputType.text,
-                          labelText: 'Full Name',
+                          labelText: 'Address',
                         ),
                       ),
                       const SizedBox(width: 16),
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateEmail(context, value),
-                          textEditingController: emailController,
-                          isObsecure: false,
-                          textInputType: TextInputType.emailAddress,
-                          labelText: 'Email',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validatePassword(context, value),
-                          textEditingController: passwordController,
-                          isObsecure: isObsecure,
-                          textInputType: TextInputType.visiblePassword,
-                          labelText: 'Password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              isObsecure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.white38,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isObsecure = !isObsecure;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateNationalID(value),
-                          textEditingController: nationalIDController,
-                          isObsecure: false,
-                          textInputType: TextInputType.number,
-                          labelText: 'National ID',
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
                       Expanded(
                         child: CutsomTextFormFiled(
                           validator: (value) =>
@@ -162,20 +125,35 @@ class _PharmacyRegistrationScreenState
                           labelText: 'Phone Number',
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: CutsomTextFormFiled(
-                          validator: (value) =>
-                              AuthValidation.validateAddress(value),
-                          textEditingController: addressController,
-                          isObsecure: false,
-                          textInputType: TextInputType.text,
-                          labelText: 'Address',
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validateNationalID(value),
+                    textEditingController: nationalIDController,
+                    isObsecure: false,
+                    textInputType: TextInputType.number,
+                    labelText: 'National ID',
+                  ),
+                  CutsomTextFormFiled(
+                    validator: (value) =>
+                        AuthValidation.validatePassword(context, value),
+                    textEditingController: passwordController,
+                    isObsecure: isObsecure,
+                    textInputType: TextInputType.visiblePassword,
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObsecure ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.white38,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObsecure = !isObsecure;
+                        });
+                      },
+                    ),
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -192,7 +170,6 @@ class _PharmacyRegistrationScreenState
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
