@@ -4,7 +4,7 @@ class PharmacistModel {
   final String nationalId;
   final String phoneNumber;
   final String password;
-  final String gender;
+  final String? gender;
   final String birthday;
   final String address;
   final String pharmacyName;

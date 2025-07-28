@@ -82,14 +82,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> logout() async =>
+  Future<void> logout() async {
+    emit(state.copyWith(authStatus: AuthStatus.loading));
+    try {
+      authService.logout();
       emit(state.copyWith(authStatus: AuthStatus.unauthenticated));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          authStatus: AuthStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
 
   Future<void> verifyOtp(VerifyOtpRequest request) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      final response = await authService.verifyOtp(request);
-      emit(state.copyWith(authStatus: AuthStatus.authenticated));
+      await authService.verifyOtp(request);
+      emit(state.copyWith(authStatus: AuthStatus.otpVerified));
     } catch (e) {
       emit(
         state.copyWith(
@@ -103,8 +115,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> requestPasswordReset(PasswordResetRequest request) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      final response = await authService.requestPasswordReset(request);
-      emit(state.copyWith(authStatus: AuthStatus.authenticated));
+      await authService.requestPasswordReset(request);
+      emit(state.copyWith(authStatus: AuthStatus.otpSent));
     } catch (e) {
       emit(
         state.copyWith(
@@ -118,15 +130,15 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> setNewPassword(SetNewPasswordRequest request) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      final response = await authService.setNewPassword(request);
-      emit(state.copyWith(authStatus: AuthStatus.authenticated));
+      await authService.setNewPassword(request);
+      emit(state.copyWith(authStatus: AuthStatus.passwordReset));
+      print('password reset');
     } catch (e) {
-      emit(
-        state.copyWith(
-          authStatus: AuthStatus.error,
-          errorMessage: e.toString(),
-        ),
-      );
+      emit(AuthState(authStatus: AuthStatus.error, errorMessage: e.toString()));
     }
+  }
+
+  void onAuthReset() {
+    emit(state.copyWith(authStatus: AuthStatus.initial));
   }
 }

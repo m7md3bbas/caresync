@@ -7,6 +7,7 @@ class CutsomTextFormFiled extends StatelessWidget {
     required this.isObsecure,
     required this.textInputType,
     required this.labelText,
+    this.hintText,
     super.key,
     this.suffixIcon,
   });
@@ -16,14 +17,17 @@ class CutsomTextFormFiled extends StatelessWidget {
   final TextInputType? textInputType;
   final String? labelText;
   final Widget? suffixIcon;
+  final String? hintText;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textEditingController,
       validator: validator,
+
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
         suffixIcon: suffixIcon,
+        hintText: hintText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
