@@ -48,10 +48,19 @@ class AuthValidation {
     }
   }
 
+  static String? validateOTP(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'OTP is required';
+    } else if (!RegExp(r'^\d{6}$').hasMatch(value)) {
+      return 'OTP must be exactly 6 digits';
+    }
+    return null;
+  }
+
   static String? validatePassword(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return S.of(context).requiredField;
-    } else if (value.length < 8 || value.length > 16) {
+    } else if (value.length < 8 || value.length > 22) {
       return S.of(context).passwordLength;
     } else if (!RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$&*~_^\-+=]).{8,}$',

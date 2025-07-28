@@ -5,6 +5,7 @@ class SharedPrefHelper {
 
   static Future<void> init() async {
     _prefs ??= await SharedPreferences.getInstance();
+    print('prefs initialized');
   }
 
   static Future<void> setString(String key, String value) async {

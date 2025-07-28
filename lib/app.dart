@@ -1,7 +1,9 @@
 import 'package:caresync/config/locale/generated/l10n.dart';
 import 'package:caresync/config/locale/locale_cubit.dart';
 import 'package:caresync/config/locale/locale_state.dart';
+import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/core/routes/app_routes.dart';
+import 'package:caresync/core/service/auth_service.dart';
 import 'package:caresync/core/theme/theme.dart';
 import 'package:caresync/core/theme/theme_cubit.dart';
 import 'package:caresync/core/theme/theme_state.dart';
@@ -18,6 +20,9 @@ class CureSync extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(create: (context) => LocaleCubit()),
+        BlocProvider(
+          create: (context) => AuthCubit(authService: AuthService()),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {

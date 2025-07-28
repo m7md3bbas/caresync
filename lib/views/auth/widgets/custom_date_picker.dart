@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DatePickerField extends StatelessWidget {
   final TextEditingController controller;
@@ -10,7 +11,7 @@ class DatePickerField extends StatelessWidget {
     super.key,
     required this.controller,
     this.width = 360,
-    this.hintText = 'mm/dd/yyyy',
+    this.hintText = 'yyyy-mm-dd',
     this.validator,
   });
 
@@ -32,7 +33,9 @@ class DatePickerField extends StatelessWidget {
             },
           );
           if (picked != null) {
-            controller.text = '${picked.month}/${picked.day}/${picked.year}';
+            final formatted = DateFormat('yyyy-MM-dd').format(picked);
+            print('✅ Picked: $picked → $formatted'); // Add this line
+            controller.text = formatted;
           }
         },
         style: const TextStyle(color: Colors.white),
