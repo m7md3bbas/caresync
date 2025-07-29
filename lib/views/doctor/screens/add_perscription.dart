@@ -36,49 +36,53 @@ class _AddPrescriptionState extends State<AddPrescription> {
         ),
         centerTitle: true,
       ),
-      body: Form(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            spacing: 16,
-            children: [
-              SizedBox(height: 16),
-              CustomHeadline(text: "Patient ID"),
-              CustomTextField(
-                controller: _patientIDController,
-                label: "Enter Patient ID ",
-              ),
-              CustomHeadline(text: "Medicine Name"),
-              CustomTextField(
-                controller: _patientIDController,
-                label: "Enter medicine name ",
-              ),
-              CustomHeadline(text: "Dosage"),
-              CustomTextField(
-                controller: _patientIDController,
-                label: "Enter dosage ",
-              ),
-              CustomHeadline(text: "Instructions"),
-              CustomTextField(
-                controller: _patientIDController,
-                label: "Enter Patient ID ",
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(
-                    ColorManager.splashBackgroundColor,
+      body: ListView(
+        children: [
+          Form(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                spacing: 16,
+                children: [
+                  SizedBox(height: 16),
+                  CustomHeadline(text: "Patient ID"),
+                  CustomTextField(
+                    controller: _patientIDController,
+                    label: "Enter Patient ID ",
                   ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  "Add Perscription",
-                  style: TextStyle(color: ColorManager.primaryColorLight),
-                ),
+                  CustomHeadline(text: "Medicine Name"),
+                  CustomTextField(
+                    controller: _patientIDController,
+                    label: "Enter medicine name ",
+                  ),
+                  CustomHeadline(text: "Dosage"),
+                  CustomTextField(
+                    controller: _patientIDController,
+                    label: "Enter dosage ",
+                  ),
+                  CustomHeadline(text: "Instructions"),
+                  CustomTextField(
+                    controller: _patientIDController,
+                    label: "Enter Patient ID ",
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        ColorManager.splashBackgroundColor,
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      "Add Perscription",
+                      style: TextStyle(color: ColorManager.primaryColorLight),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

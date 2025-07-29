@@ -31,51 +31,55 @@ class _PatientDetailsState extends State<PatientDetails> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: Column(
-          spacing: 16,
-          children: [
-            SizedBox(height: 30),
-            CustomTextField(controller: _controller, label: 'National ID'),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(
-                  ColorManager.splashBackgroundColor,
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              spacing: 16,
+              children: [
+                SizedBox(height: 30),
+                CustomTextField(controller: _controller, label: 'National ID'),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      ColorManager.splashBackgroundColor,
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Get Perscribed Medicines",
+                    style: TextStyle(color: ColorManager.primaryColorLight),
+                  ),
                 ),
-              ),
-              onPressed: () {},
-              child: Text(
-                "Get Perscribed Medicines",
-                style: TextStyle(color: ColorManager.primaryColorLight),
-              ),
-            ),
-            CustomHeadline(text: "Pateint Details"),
-            SizedBox(
-              width: double.infinity,
-              height: 100,
-              child: Card(
-                elevation: 3,
-                child: Text(
-                  "No patient details available ",
-                  style: TextStyle(color: ColorManager.grey),
+                CustomHeadline(text: "Pateint Details"),
+                SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: Card(
+                    elevation: 3,
+                    child: Text(
+                      "No patient details available ",
+                      style: TextStyle(color: ColorManager.grey),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            CustomHeadline(text: "Prescritption Medicines"),
-            SizedBox(
-              width: double.infinity,
-              height: 100,
-              child: Card(
-                elevation: 3,
-                child: Text(
-                  "No prescribed medicines found for this patient ",
-                  style: TextStyle(color: ColorManager.grey),
+                CustomHeadline(text: "Prescritption Medicines"),
+                SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: Card(
+                    elevation: 3,
+                    child: Text(
+                      "No prescribed medicines found for this patient ",
+                      style: TextStyle(color: ColorManager.grey),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
