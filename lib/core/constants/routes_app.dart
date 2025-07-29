@@ -10,4 +10,5 @@ abstract class RoutesApp {
   static const String pharmacyRegister = '/pharmacy-register';
   static const String forgetPassword = "/forgetpassword";
   static const String verifyOtp = "/verify-otp";
+  static const String mainViewDoctor = "/main_view_doctor";
 }

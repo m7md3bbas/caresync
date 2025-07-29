@@ -1,14 +1,16 @@
 import 'package:caresync/core/constants/routes_app.dart';
-import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/views/auth/Pharmacy_register.dart';
 import 'package:caresync/views/auth/doctor_register.dart';
 import 'package:caresync/views/auth/forget_password.dart';
 import 'package:caresync/views/auth/login.dart';
 import 'package:caresync/views/auth/patient_register.dart';
 import 'package:caresync/views/auth/pre_register.dart';
+import 'package:caresync/views/doctor/cubitt/nav_cubit.dart';
+import 'package:caresync/views/doctor/main_doctor_screen.dart';
 import 'package:caresync/views/onboarding/onboarding.dart';
 import 'package:caresync/views/startup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -43,6 +45,11 @@ class AppRouter {
       GoRoute(
         path: RoutesApp.onBoarding,
         builder: (context, state) => OnboardingPage(),
+      ),
+      GoRoute(
+        path: RoutesApp.mainViewDoctor,
+        builder: (context, state) =>
+            BlocProvider(create: (_) => NavCubit(), child: MainDoctorScreen()),
       ),
     ],
     errorBuilder: (context, state) =>
