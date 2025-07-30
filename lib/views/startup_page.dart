@@ -19,17 +19,17 @@ class _StartupPageState extends State<StartupPage> {
   }
 
   Future<void> checkOnboardingSeen() async {
-    final hasSeenOnboarding = await SharedPrefHelper.getBool(
-      SharedPrefKeys.onboarding,
-    );
-    print('hasSeenOnboarding: $hasSeenOnboarding');
+    final hasSeenOnboarding =
+        await SharedPrefHelper.getBool(SharedPrefKeys.onboarding) ?? false;
 
     if (!mounted) return;
 
     if (hasSeenOnboarding == true) {
       GoRouter.of(context).go(RoutesApp.login);
-    } else {
-      GoRouter.of(context).go(RoutesApp.initialRoute);
+    } else if (hasSeenOnboarding == false) {
+      {
+        GoRouter.of(context).go(RoutesApp.onBoarding);
+      }
     }
   }
 

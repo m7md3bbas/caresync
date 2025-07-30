@@ -27,6 +27,23 @@ class DoctorModel {
     this.userType = "doctor",
   });
 
+  factory DoctorModel.fromJson(Map<String, dynamic> json) {
+    return DoctorModel(
+      fullName: json['full_name'],
+      email: json['email'],
+      nationalId: json['national_id'],
+      phoneNumber: json['phone_number'],
+      password: json['password'],
+      gender: json['gender'],
+      birthday: json['birthday'],
+      address: json['address'],
+      hospital: json['hospital'],
+      clinic: json['clinic'],
+      specialization: json['specialization'],
+      userType: json['user_type'],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "full_name": fullName,

@@ -42,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.authenticated) {
+          GoRouter.of(context).go(RoutesApp.home);
         } else if (state.authStatus == AuthStatus.error) {
           ScaffoldMessenger.of(
             context,

@@ -27,11 +27,14 @@ class AuthService {
     }
   }
 
-  Future<Response> registerDoctor(DoctorModel model) {
+  Future<Response> registerDoctor(DoctorModel model) async {
     try {
-      return _dio.post('register/', data: model.toJson());
+      final response = await _dio.post('register/', data: model.toJson());
+      print(response.data);
+      return response;
     } catch (e) {
-      throw Exception("server error");
+      print(e.toString());
+      throw Exception(e.toString());
     }
   }
 

@@ -86,7 +86,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
         if (state.authStatus == AuthStatus.error) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text("user Already exists")));
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
         }
       },
       builder: (context, state) {

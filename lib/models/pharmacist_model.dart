@@ -24,6 +24,20 @@ class PharmacistModel {
     required this.pharmacyAddress,
     this.userType = "pharmacist",
   });
+  factory PharmacistModel.fromJson(Map<String, dynamic> json) =>
+      PharmacistModel(
+        fullName: json['full_name'],
+        email: json['email'],
+        nationalId: json['national_id'],
+        phoneNumber: json['phone_number'],
+        password: json['password'],
+        gender: json['gender'],
+        birthday: json['birthday'],
+        address: json['address'],
+        pharmacyName: json['pharmacy_name'],
+        pharmacyAddress: json['pharmacy_address'],
+        userType: json['user_type'],
+      );
 
   Map<String, dynamic> toJson() {
     return {

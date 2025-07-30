@@ -29,6 +29,22 @@ class PatientModel {
     this.userType = "patient",
   });
 
+  factory PatientModel.fromJson(Map<String, dynamic> json) => PatientModel(
+    fullName: json["full_name"],
+    email: json["email"],
+    nationalId: json["national_id"],
+    phoneNumber: json["phone_number"],
+    password: json["password"],
+    gender: json["gender"],
+    birthday: json["birthday"],
+    address: json["address"],
+    diabetes: json["diabetes"],
+    heartDisease: json["heart_disease"],
+    allergies: List<String>.from(json["allergies"].map((x) => x)),
+    otherDiseases: json["other_diseases"],
+    userType: json["user_type"],
+  );
+
   Map<String, dynamic> toJson() {
     return {
       "full_name": fullName,

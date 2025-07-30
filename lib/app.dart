@@ -2,8 +2,14 @@ import 'package:caresync/config/locale/generated/l10n.dart';
 import 'package:caresync/config/locale/locale_cubit.dart';
 import 'package:caresync/config/locale/locale_state.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
+import 'package:caresync/controller/doctor/doctor_cubit.dart';
+import 'package:caresync/controller/profile/profile_cubit.dart';
 import 'package:caresync/core/routes/app_routes.dart';
 import 'package:caresync/core/service/auth_service.dart';
+import 'package:caresync/core/service/doctor_service.dart';
+import 'package:caresync/core/service/profile_service.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/core/theme/theme.dart';
 import 'package:caresync/core/theme/theme_cubit.dart';
 import 'package:caresync/core/theme/theme_state.dart';
@@ -22,6 +28,14 @@ class CureSync extends StatelessWidget {
         BlocProvider(create: (context) => LocaleCubit()),
         BlocProvider(
           create: (context) => AuthCubit(authService: AuthService()),
+        ),
+        BlocProvider(create: (context) => DoctorCubit(DoctorService())),
+        BlocProvider(
+          create: (context) => ProfileCubit(
+            ProfileService()..getProfile(
+              SharedPrefHelper.getString(SharedPrefKeys.token) ?? '',
+            ),
+          ),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

@@ -2,27 +2,32 @@ import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
   final String headline;
-  final String text;
   final IconData icon;
 
-  const CustomListTile({
-    super.key,
-    required this.headline,
-    required this.text,
-    required this.icon,
-  });
+  const CustomListTile({super.key, required this.headline, required this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Row(
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.blue, width: 1.0),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Row(
         children: [
-          Text(headline, style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(width: 2),
-          Text(text),
+          Icon(icon, color: Colors.blue),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              headline,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ),
         ],
       ),
-      leading: Icon(icon, color: Colors.blue),
     );
   }
 }

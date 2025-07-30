@@ -34,11 +34,13 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.1
   flutter_dotenv: ^5.2.1
+  flutter_launcher_icons: ^0.14.4
   flutter_localizations:
     sdk: flutter
   flutter_otp_text_field: ^1.5.1+1
   flutter_svg: ^2.2.0
   go_router: ^16.0.0
+  image_picker: ^1.1.2
   intl: ^0.20.2
   shared_preferences: ^2.5.3
 
@@ -85,3 +87,8 @@ flutter_intl:
   enabled: true
   output_dir: lib/config/locale/generated
   arb_dir: lib/config/locale/l10n
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/mainIcon.jpg"
