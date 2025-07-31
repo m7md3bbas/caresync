@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-class DoctorInformation extends StatefulWidget {
-  const DoctorInformation({super.key});
+class PatientInformation extends StatefulWidget {
+  const PatientInformation({super.key});
 
   @override
-  State<DoctorInformation> createState() => _DoctorInformationState();
+  State<PatientInformation> createState() => _DoctorInformationState();
 }
 
-class _DoctorInformationState extends State<DoctorInformation> {
+class _DoctorInformationState extends State<PatientInformation> {
   File? image;
 
   @override

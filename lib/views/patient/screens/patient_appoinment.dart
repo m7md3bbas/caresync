@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(DoctorAppointmentApp());
-}
+// void main() {
+//   runApp(DoctorAppointmentApp());
+// }
 
-class DoctorAppointmentApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Doctor Appointment',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: AppointmentBookingScreen(),
-    );
-  }
-}
+// class DoctorAppointmentApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Doctor Appointment',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//         visualDensity: VisualDensity.adaptivePlatformDensity,
+//       ),
+//       home: AppointmentBookingScreen(),
+//     );
+//   }
+// }
 
 class AppointmentBookingScreen extends StatefulWidget {
   @override
