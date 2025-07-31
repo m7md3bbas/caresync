@@ -9,6 +9,7 @@ import 'package:caresync/views/doctor/cubitt/nav_cubit.dart';
 import 'package:caresync/views/doctor/main_doctor_screen.dart';
 import 'package:caresync/views/doctor/screens/doctor_appoinment.dart';
 import 'package:caresync/views/onboarding/onboarding.dart';
+import 'package:caresync/views/patient/patient_main_screen.dart';
 import 'package:caresync/views/startup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,7 @@ import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: RoutesApp.initialRoute,
+    initialLocation: RoutesApp.mainViewPtient,
     routes: [
       GoRoute(
         path: RoutesApp.doctorAppointments,
@@ -55,6 +56,11 @@ class AppRouter {
         path: RoutesApp.mainViewDoctor,
         builder: (context, state) =>
             BlocProvider(create: (_) => NavCubit(), child: MainDoctorScreen()),
+      ),
+      GoRoute(
+        path: RoutesApp.mainViewPtient,
+        builder: (context, state) =>
+            BlocProvider(create: (_) => NavCubit(), child: PatientMainScreen()),
       ),
     ],
     errorBuilder: (context, state) =>
