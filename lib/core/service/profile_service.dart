@@ -32,7 +32,6 @@ class ProfileService {
 
     final data = response.data;
     final userType = data['user_type'];
-
     switch (userType) {
       case 'doctor':
         return DoctorProfile(DoctorModel.fromJson(data));

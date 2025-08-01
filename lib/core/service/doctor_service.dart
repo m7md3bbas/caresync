@@ -14,24 +14,33 @@ class DoctorService {
     String patientNationalId,
     PrescriptionModel model,
     String token,
-  ) {
-    return _dio.post(
-      'patients/$patientNationalId/prescriptions/',
-      data: model.toJson(),
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
+  ) async {
+    try {
+      final response = await _dio.post(
+        'patients/$patientNationalId/prescriptions/',
+        data: model.toJson(),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      return response;
+    } catch (e) {
+      throw Exception("server error");
+    }
   }
 
   Future<List<Appointment>> getDoctorAppointments(String token) async {
-    final response = await _dio.get(
-      '/appointments/doctor/appointments/',
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
+    try {
+      final response = await _dio.get(
+        '/appointments/doctor/appointments/',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
 
-    if (response.statusCode == 200) {
-      return List<Appointment>.from(response.data);
-    } else {
-      throw Exception('Failed to fetch appointments');
+      if (response.statusCode == 200) {
+        return List<Appointment>.from(response.data);
+      } else {
+        throw Exception('Failed to fetch appointments');
+      }
+    } catch (e) {
+      throw Exception("server error");
     }
   }
 }

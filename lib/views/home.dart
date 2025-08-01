@@ -14,6 +14,7 @@ class _HomeState extends State<Home> {
   late final String? userType;
   initialize() async {
     userType = SharedPrefHelper.getString(SharedPrefKeys.userType);
+    print(userType);
   }
 
   @override

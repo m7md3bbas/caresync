@@ -16,25 +16,25 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       final profile = await profileService.getProfile(token);
 
-      if (profile is DoctorModel) {
+      if (profile is DoctorProfile) {
         emit(
           state.copyWith(
             status: ProfileStatus.success,
-            doctorModel: profile as DoctorModel,
+            doctorModel: profile.data,
           ),
         );
-      } else if (profile is PatientModel) {
+      } else if (profile is PatientProfile) {
         emit(
           state.copyWith(
             status: ProfileStatus.success,
-            patientModel: profile as PatientModel,
+            patientModel: profile.data,
           ),
         );
-      } else if (profile is PharmacistModel) {
+      } else if (profile is PharmacistProfile) {
         emit(
           state.copyWith(
             status: ProfileStatus.success,
-            pharmacistModel: profile as PharmacistModel,
+            pharmacistModel: profile.data,
           ),
         );
       } else {

@@ -3,7 +3,7 @@ class DoctorModel {
   final String email;
   final String nationalId;
   final String phoneNumber;
-  final String password;
+  final String? password;
   final String? gender;
   final String birthday;
   final String address;
@@ -17,7 +17,7 @@ class DoctorModel {
     required this.email,
     required this.nationalId,
     required this.phoneNumber,
-    required this.password,
+    this.password,
     required this.gender,
     required this.birthday,
     required this.address,
@@ -33,7 +33,6 @@ class DoctorModel {
       email: json['email'],
       nationalId: json['national_id'],
       phoneNumber: json['phone_number'],
-      password: json['password'],
       gender: json['gender'],
       birthday: json['birthday'],
       address: json['address'],

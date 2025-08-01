@@ -5,7 +5,7 @@ class AuthValidation {
   static String? validateName(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return S.of(context).requiredField;
-    } else if (value.length > 12 || value.length < 3) {
+    } else if (value.length > 18 || value.length < 3) {
       return S.of(context).nameLength;
     } else {
       return null;

@@ -5,19 +5,18 @@ import 'package:caresync/views/auth/forget_password.dart';
 import 'package:caresync/views/auth/login.dart';
 import 'package:caresync/views/auth/patient_register.dart';
 import 'package:caresync/views/auth/pre_register.dart';
-import 'package:caresync/views/doctor/cubitt/nav_cubit.dart';
 import 'package:caresync/views/doctor/main_doctor_screen.dart';
 import 'package:caresync/views/doctor/screens/doctor_appoinment.dart';
+import 'package:caresync/views/home.dart';
 import 'package:caresync/views/onboarding/onboarding.dart';
 import 'package:caresync/views/patient/patient_main_screen.dart';
 import 'package:caresync/views/startup_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: RoutesApp.mainViewPtient,
+    initialLocation: RoutesApp.initialRoute,
     routes: [
       GoRoute(
         path: RoutesApp.doctorAppointments,
@@ -54,14 +53,13 @@ class AppRouter {
       ),
       GoRoute(
         path: RoutesApp.mainViewDoctor,
-        builder: (context, state) =>
-            BlocProvider(create: (_) => NavCubit(), child: MainDoctorScreen()),
+        builder: (context, state) => MainDoctorScreen(),
       ),
       GoRoute(
         path: RoutesApp.mainViewPtient,
-        builder: (context, state) =>
-            BlocProvider(create: (_) => NavCubit(), child: PatientMainScreen()),
+        builder: (context, state) => PatientMainScreen(),
       ),
+      GoRoute(path: RoutesApp.home, builder: (context, state) => Home()),
     ],
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('No route defined'))),

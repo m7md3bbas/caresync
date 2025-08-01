@@ -29,14 +29,6 @@ class CureSync extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthCubit(authService: AuthService()),
         ),
-        BlocProvider(create: (context) => DoctorCubit(DoctorService())),
-        BlocProvider(
-          create: (context) => ProfileCubit(
-            ProfileService()..getProfile(
-              SharedPrefHelper.getString(SharedPrefKeys.token) ?? '',
-            ),
-          ),
-        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, themeState) {

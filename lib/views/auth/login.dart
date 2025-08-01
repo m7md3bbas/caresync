@@ -2,6 +2,8 @@ import 'package:caresync/config/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,13 +23,25 @@ class _LoginPageState extends State<LoginPage> {
   late AutovalidateMode autovalidateMode;
   bool isObsecure = true;
 
+  void tokenExist() {
+    final token = SharedPrefHelper.getString(SharedPrefKeys.token);
+    if (token != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          GoRouter.of(context).go(RoutesApp.home);
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
+    super.initState();
     nationalIDController = TextEditingController();
     passwordController = TextEditingController();
     formKey = GlobalKey<FormState>();
     autovalidateMode = AutovalidateMode.disabled;
-    super.initState();
+    tokenExist();
   }
 
   @override

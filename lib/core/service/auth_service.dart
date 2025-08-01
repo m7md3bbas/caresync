@@ -33,8 +33,7 @@ class AuthService {
       print(response.data);
       return response;
     } catch (e) {
-      print(e.toString());
-      throw Exception(e.toString());
+      throw Exception("server error");
     }
   }
 

@@ -1,5 +1,12 @@
+import 'package:caresync/config/validation/auth_validation.dart';
+import 'package:caresync/controller/patient/patient_cubit.dart';
+import 'package:caresync/controller/patient/patient_state.dart';
 import 'package:caresync/core/colors/color_manager.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/custom_headline.dart';
 import '../widgets/custom_text_field.dart';
@@ -13,80 +20,166 @@ class PatientDetails extends StatefulWidget {
 
 class _PatientDetailsState extends State<PatientDetails> {
   final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    _controller;
-    super.initState();
-  }
-
+  AutovalidateMode autoValidate = AutovalidateMode.disabled;
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorManager.splashBackgroundColor,
-        title: Text(
-          "Get patient details",
-          style: TextStyle(color: ColorManager.primaryColorLight),
-        ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Column(
-              spacing: 16,
+    return BlocConsumer<PatientCubit, PatientState>(
+      listener: (context, state) {
+        if (state.status == PatientStatus.success) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message ?? "Success")));
+        }
+        if (state.status == PatientStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message ?? "An error occurred")),
+          );
+        }
+      },
+      builder: (context, state) {
+        final patient = state.getPatientModel;
+
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: ColorManager.splashBackgroundColor,
+            title: Text(
+              "Get patient details",
+              style: TextStyle(color: ColorManager.primaryColorLight),
+            ),
+            centerTitle: true,
+          ),
+          body: Form(
+            autovalidateMode: autoValidate,
+            key: _globalKey,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
               children: [
-                SizedBox(height: 30),
-                CustomTextField(controller: _controller, label: 'National ID'),
+                const SizedBox(height: 30),
+                CutsomTextFormFiled(
+                  validator: (value) =>
+                      AuthValidation.validateNationalID(value),
+                  textEditingController: _controller,
+                  isObsecure: false,
+                  textInputType: TextInputType.number,
+                  labelText: "National ID",
+                ),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
                       ColorManager.splashBackgroundColor,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    final id = _controller.text.trim();
+                    if (id.isNotEmpty) {
+                      if (_globalKey.currentState!.validate()) {
+                        context.read<PatientCubit>().getPatientPresceiption(
+                          nationalId: id,
+                          token:
+                              SharedPrefHelper.getString(
+                                SharedPrefKeys.token,
+                              ) ??
+                              '',
+                        );
+                      } else {
+                        setState(() {
+                          autoValidate = AutovalidateMode.always;
+                        });
+                      }
+                    }
+                  },
                   child: Text(
-                    "Get Perscribed Medicines",
+                    "Get Prescribed Medicines",
                     style: TextStyle(color: ColorManager.primaryColorLight),
                   ),
                 ),
-                CustomHeadline(text: "Pateint Details"),
-                SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: Card(
+                const SizedBox(height: 30),
+                CustomHeadline(text: "Patient Details"),
+                const SizedBox(height: 10),
+                if (state.status == PatientStatus.loading)
+                  const Center(child: CircularProgressIndicator())
+                else if (patient == null)
+                  Card(
                     elevation: 3,
-                    child: Text(
-                      "No patient details available ",
-                      style: TextStyle(color: ColorManager.grey),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        "No patient details available",
+                        style: TextStyle(color: ColorManager.grey),
+                      ),
+                    ),
+                  )
+                else
+                  Card(
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Full Name: ${patient.fullName}"),
+                          Text("Email: ${patient.email}"),
+                          Text("Phone: ${patient.phoneNumber}"),
+                          Text("Address: ${patient.address}"),
+                          Text("National ID: ${patient.nationalId}"),
+                          Text("Birthday: ${patient.birthday}"),
+                          Text("Diabetes: ${patient.diabetes ? "Yes" : "No"}"),
+                          Text(
+                            "Heart Disease: ${patient.heartDisease ? "Yes" : "No"}",
+                          ),
+                          Text("Allergies: ${patient.allergies.join(", ")}"),
+                          Text("Other Diseases: ${patient.otherDiseases}"),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                CustomHeadline(text: "Prescritption Medicines"),
-                SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: Card(
+                const SizedBox(height: 30),
+                CustomHeadline(text: "Prescription Medicines"),
+                const SizedBox(height: 10),
+                if (patient == null || patient.prescriptions.isEmpty)
+                  Card(
                     elevation: 3,
-                    child: Text(
-                      "No prescribed medicines found for this patient ",
-                      style: TextStyle(color: ColorManager.grey),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        "No prescribed medicines found for this patient",
+                        style: TextStyle(color: ColorManager.grey),
+                      ),
                     ),
+                  )
+                else
+                  ListView.builder(
+                    itemCount: patient.prescriptions.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final pres = patient.prescriptions[index];
+                      return Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          title: Text(pres.medicineName),
+                          subtitle: Text(
+                            "${pres.dosage} | ${pres.instructions}\nDoctor: ${pres.doctor}",
+                          ),
+                          trailing: Text(pres.createdAt),
+                        ),
+                      );
+                    },
                   ),
-                ),
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   @override
   void dispose() {
-    _controller;
+    _controller.dispose();
     super.dispose();
   }
 }

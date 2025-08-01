@@ -1,6 +1,6 @@
 import 'package:caresync/models/appoinment_model.dart';
 
-enum DoctorStatus { initial, loading, success, error }
+enum DoctorStatus { initial, loading, sent, success, error }
 
 class DoctorState {
   final DoctorStatus state;
