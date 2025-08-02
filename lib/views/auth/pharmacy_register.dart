@@ -2,10 +2,11 @@ import 'package:caresync/config/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/theme/theme_button.dart';
 import 'package:caresync/models/pharmacist_model.dart';
-import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
+import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -70,15 +71,7 @@ class _PharmacyRegistrationScreenState
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1D4ED8),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF161B22),
-            title: const Text(
-              'CareSync',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-          ),
+          appBar: AppBar(title: const Text('CareSync'), centerTitle: true),
           body: Center(
             child: SingleChildScrollView(
               child: Form(
@@ -87,25 +80,13 @@ class _PharmacyRegistrationScreenState
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   margin: const EdgeInsets.only(top: 24),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF161B22),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black26, blurRadius: 10),
-                    ],
-                  ),
                   child: Column(
                     spacing: 24,
                     children: [
-                      const Text(
+                      Text(
                         'Pharmacy Registration',
-                        style: TextStyle(
-                          fontSize: 26,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
-                      const SizedBox(height: 24),
                       CutsomTextFormFiled(
                         validator: (value) =>
                             AuthValidation.validateName(context, value),
@@ -245,52 +226,35 @@ class _PharmacyRegistrationScreenState
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
                       state.authStatus == AuthStatus.loading
                           ? const CircularProgressIndicator()
-                          : SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    final model = PharmacistModel(
-                                      fullName: fullNameController.text,
-                                      email: emailController.text,
-                                      nationalId: nationalIDController.text,
-                                      phoneNumber: phoneController.text,
-                                      password: passwordController.text,
-                                      gender: gender.value,
-                                      birthday: birthdayController.text,
-                                      address: addressController.text,
-                                      pharmacyName: pharmacyNameController.text,
-                                      pharmacyAddress:
-                                          pharmacyAddressController.text,
-                                      userType: 'pharmacist',
-                                    );
-                                    context
-                                        .read<AuthCubit>()
-                                        .registerPharmacist(model);
-                                  } else {
-                                    setState(() {
-                                      autovalidateMode =
-                                          AutovalidateMode.always;
-                                    });
-                                  }
-                                },
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+                          : CutomElvatedButton(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  final model = PharmacistModel(
+                                    fullName: fullNameController.text,
+                                    email: emailController.text,
+                                    nationalId: nationalIDController.text,
+                                    phoneNumber: phoneController.text,
+                                    password: passwordController.text,
+                                    gender: gender.value,
+                                    birthday: birthdayController.text,
+                                    address: addressController.text,
+                                    pharmacyName: pharmacyNameController.text,
+                                    pharmacyAddress:
+                                        pharmacyAddressController.text,
+                                    userType: 'pharmacist',
+                                  );
+                                  context.read<AuthCubit>().registerPharmacist(
+                                    model,
+                                  );
+                                } else {
+                                  setState(() {
+                                    autovalidateMode = AutovalidateMode.always;
+                                  });
+                                }
+                              },
+                              text: 'Register',
                             ),
                     ],
                   ),

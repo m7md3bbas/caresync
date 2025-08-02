@@ -5,37 +5,99 @@ class AppTheme {
   static final ThemeData light = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
+    listTileTheme: ListTileThemeData(
+      iconColor: ColorManager.primary,
+      textColor: ColorManager.primary,
+    ),
     appBarTheme: AppBarTheme(
-      backgroundColor: ColorManager.primaryColorLight,
-      foregroundColor: ColorManager.primaryColorDark,
+      backgroundColor: ColorManager.primary,
+      foregroundColor: ColorManager.secondary,
       elevation: 0,
     ),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
-      brightness: Brightness.light,
+    inputDecorationTheme: InputDecorationTheme(
+      suffixIconColor: ColorManager.primary,
+      labelStyle: TextStyle(color: ColorManager.primary),
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: ColorManager.secondary),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: ColorManager.secondary),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: ColorManager.secondary),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(fontSize: 16, color: Colors.black),
-      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: ColorManager.primary,
+      unselectedItemColor: Colors.grey,
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: ColorManager.primary,
+      brightness: Brightness.light,
+      secondary: ColorManager.secondary,
+      primary: ColorManager.primary,
+    ),
+
+    dividerColor: ColorManager.primary,
+    iconTheme: IconThemeData(color: ColorManager.primary),
+    textTheme: TextTheme(
+      headlineMedium: TextStyle(color: ColorManager.primary),
+      headlineLarge: TextStyle(color: ColorManager.primary),
+      bodyLarge: TextStyle(fontSize: 16, color: ColorManager.primary),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        color: ColorManager.primary,
+      ),
     ),
   );
-
-  // Dark Theme
   static final ThemeData dark = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF121212),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF1F1F1F),
-      foregroundColor: Colors.white,
+    scaffoldBackgroundColor: DarkColorManager.darkBackground,
+    appBarTheme: AppBarTheme(
+      backgroundColor: DarkColorManager.darkAppBar,
+      foregroundColor: DarkColorManager.darkText,
       elevation: 0,
     ),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.teal,
-      brightness: Brightness.dark,
+
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderSide: BorderSide(color: DarkColorManager.darkSecondaryText),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: DarkColorManager.darkSecondaryText),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: DarkColorManager.darkSecondaryText),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(fontSize: 16, color: Colors.white),
-      titleLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+    dividerColor: DarkColorManager.darkSecondaryText,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: DarkColorManager.darkAppBar,
+      selectedItemColor: DarkColorManager.darkText,
+      unselectedItemColor: DarkColorManager.darkSecondaryText,
+    ),
+    iconTheme: IconThemeData(color: DarkColorManager.darkSecondaryText),
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(fontSize: 16, color: DarkColorManager.darkText),
+      titleLarge: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        color: DarkColorManager.darkText,
+      ),
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: DarkColorManager.darkText,
+      brightness: Brightness.dark,
+      primary: DarkColorManager.darkText,
+      secondary: DarkColorManager.darkSecondaryText,
     ),
   );
 }

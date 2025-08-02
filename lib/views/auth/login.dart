@@ -4,6 +4,7 @@ import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/core/theme/theme_button.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,12 +66,11 @@ class _LoginPageState extends State<LoginPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1D4ED8),
           appBar: AppBar(
-            backgroundColor: const Color(0xFF0D1117),
+            centerTitle: true,
             title: const Text(
               'CareSync',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             actions: [
               TextButton(
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   GoRouter.of(context).go(RoutesApp.preRegister);
                 },
                 child: const Text(
-                  'Register',
+                  'Register now',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -89,31 +89,20 @@ class _LoginPageState extends State<LoginPage> {
               width: 400,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: const Color(0xFF0D1117),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 15,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
               ),
               child: Form(
                 key: formKey,
                 autovalidateMode: autovalidateMode,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Login',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue,
-                      ),
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     CutsomTextFormFiled(
                       isObsecure: false,
                       labelText: "National ID",
@@ -148,10 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             GoRouter.of(context).push(RoutesApp.forgetPassword);
                           },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.blue),
-                          ),
+                          child: const Text('Forgot Password?'),
                         ),
                         const Spacer(),
                         state.authStatus == AuthStatus.loading
@@ -167,9 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                     autovalidateMode = AutovalidateMode.always;
                                   }
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                ),
+                                style: ElevatedButton.styleFrom(),
                                 child: const Text('Login'),
                               ),
                       ],

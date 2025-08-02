@@ -6,6 +6,7 @@ import 'package:caresync/models/patient_model.dart';
 import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
+import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -73,38 +74,22 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1D4ED8),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF161B22),
-            title: const Text(
-              'CareSync',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-          ),
+          appBar: AppBar(title: const Text('CareSync'), centerTitle: true),
           body: Center(
             child: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.only(top: 24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF161B22),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],
-                ),
+
                 child: Form(
                   key: _formKey,
                   autovalidateMode: autovalidateMode,
                   child: Column(
                     spacing: 24,
                     children: [
-                      const Text(
+                      Text(
                         'Patient Registration',
-                        style: TextStyle(
-                          fontSize: 26,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -217,10 +202,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         ],
                       ),
                       CheckboxListTile(
-                        title: const Text(
-                          'I have diabetes',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        title: const Text('I have diabetes'),
                         value: hasDiabetes,
                         onChanged: (value) {
                           setState(() {
@@ -231,10 +213,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         checkColor: Colors.white,
                       ),
                       CheckboxListTile(
-                        title: const Text(
-                          'I have heart disease',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        title: const Text('I have heart disease'),
                         value: hasHeartDisease,
                         onChanged: (value) {
                           setState(() {
@@ -260,9 +239,8 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                                     return 'Allergies must be letters only, separated by commas';
                                   }
                                 }
-
-                                return null; // ✅ صالح
-                              }, // Optional field
+                                return null;
+                              },
                               textEditingController: allergiesController,
                               isObsecure: false,
                               hintText: 'e.g. Penicillin, Nuts, Pollen',
@@ -285,56 +263,38 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                       const SizedBox(height: 24),
                       state.authStatus == AuthStatus.loading
                           ? const CircularProgressIndicator()
-                          : SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    final model = PatientModel(
-                                      address: addressController.text,
-                                      allergies: allergiesController.text
-                                          .split(',')
-                                          .map((e) => e.trim())
-                                          .where((e) => e.isNotEmpty)
-                                          .toList(),
-                                      birthday: birthdayController.text,
-                                      diabetes: hasDiabetes,
-                                      email: emailController.text,
-                                      fullName: fullNameController.text,
-                                      gender: gender.value,
-                                      heartDisease: hasHeartDisease,
-                                      nationalId: nationalIDController.text,
-                                      otherDiseases:
-                                          otherDiseasesController.text,
-                                      password: passwordController.text,
-                                      phoneNumber: phoneController.text,
-                                      userType: 'patient',
-                                    );
-                                    print(model.toJson());
-                                    context.read<AuthCubit>().reigsterPatient(
-                                      model,
-                                    );
-                                  } else {
-                                    setState(() {
-                                      autovalidateMode =
-                                          AutovalidateMode.always;
-                                    });
-                                  }
-                                },
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+                          : CutomElvatedButton(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  final model = PatientModel(
+                                    address: addressController.text,
+                                    allergies: allergiesController.text
+                                        .split(',')
+                                        .map((e) => e.trim())
+                                        .where((e) => e.isNotEmpty)
+                                        .toList(),
+                                    birthday: birthdayController.text,
+                                    diabetes: hasDiabetes,
+                                    email: emailController.text,
+                                    fullName: fullNameController.text,
+                                    gender: gender.value,
+                                    heartDisease: hasHeartDisease,
+                                    nationalId: nationalIDController.text,
+                                    otherDiseases: otherDiseasesController.text,
+                                    password: passwordController.text,
+                                    phoneNumber: phoneController.text,
+                                    userType: 'patient',
+                                  );
+                                  context.read<AuthCubit>().reigsterPatient(
+                                    model,
+                                  );
+                                } else {
+                                  setState(() {
+                                    autovalidateMode = AutovalidateMode.always;
+                                  });
+                                }
+                              },
+                              text: 'Register',
                             ),
                     ],
                   ),

@@ -12,6 +12,7 @@ import 'package:caresync/views/doctor/screens/doctor_information.dart';
 import 'package:caresync/views/doctor/screens/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'screens/add_perscription.dart';
 
 class MainDoctorScreen extends StatefulWidget {
@@ -22,9 +23,14 @@ class MainDoctorScreen extends StatefulWidget {
 }
 
 class _MainDoctorScreenState extends State<MainDoctorScreen> {
-  final PageController _pageController = PageController();
-  int currentIndex = 0;
-  final List<Widget> _screens = [
+  final PageController _pageController = PageController(initialPage: 3);
+  int currentIndex = 3;
+
+  late final DoctorCubit doctorCubit;
+  late final PatientCubit patientCubit;
+  late final ProfileCubit profileCubit;
+
+  final List<Widget> _screens = const [
     PatientDetails(),
     AddPrescription(),
     DoctorAppointmentsPage(),
@@ -32,20 +38,28 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     final token = SharedPrefHelper.getString(SharedPrefKeys.token) ?? '';
+    print("profile token: $token");
+    doctorCubit = DoctorCubit(DoctorService())..getDoctorAppointments(token);
+    patientCubit = PatientCubit(PatientService());
+    profileCubit = ProfileCubit(ProfileService())..getProfile(token);
+  }
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) =>
-              DoctorCubit(DoctorService())..getDoctorAppointments(token),
-        ),
-        BlocProvider(create: (context) => PatientCubit(PatientService())),
-        BlocProvider(
-          create: (context) =>
-              ProfileCubit(ProfileService())..getProfile(token),
-        ),
+        BlocProvider.value(value: doctorCubit),
+        BlocProvider.value(value: patientCubit),
+        BlocProvider.value(value: profileCubit),
       ],
       child: Scaffold(
         body: PageView.builder(
@@ -54,13 +68,9 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
           onPageChanged: (index) => setState(() {
             currentIndex = index;
           }),
-          itemBuilder: (context, index) {
-            return _screens[index];
-          },
+          itemBuilder: (context, index) => _screens[index],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: ColorManager.splashBackgroundColor,
-          unselectedItemColor: ColorManager.grey,
           currentIndex: currentIndex,
           onTap: (index) {
             setState(() {
@@ -70,18 +80,21 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.medical_information_outlined),
-              label: "patient",
+              icon: Icon(Icons.people_outline),
+              label: "Patients",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.medical_services),
-              label: "perscription",
+              icon: Icon(FontAwesomeIcons.prescription),
+              label: "Prescription",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),
-              label: "appointment",
+              label: "Appointments",
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.user),
+              label: "Profile",
+            ),
           ],
         ),
       ),

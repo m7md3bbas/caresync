@@ -1,4 +1,5 @@
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/theme/theme_button.dart';
 import 'package:caresync/views/auth/widgets/custom_role_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -34,19 +35,20 @@ class PreRegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1117),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF161B22),
         title: const Text(
           'CareSync',
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(
             onPressed: () {
               GoRouter.of(context).push(RoutesApp.login);
             },
-            child: const Text('Login', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Login now',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -55,18 +57,14 @@ class PreRegisterScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Welcome to CareSync!',
-              style: TextStyle(
-                fontSize: 28,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Select your role to get started:',
-              style: TextStyle(fontSize: 18, color: Colors.white70),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 30),
             Expanded(

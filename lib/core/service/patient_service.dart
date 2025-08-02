@@ -1,9 +1,25 @@
 import 'package:caresync/core/service/api_service.dart';
+import 'package:caresync/models/book_appoinment.dart';
 import 'package:caresync/models/get_patient_details.dart';
 import 'package:dio/dio.dart';
 
 class PatientService {
   final Dio _dio = ApiClient.dio;
+
+  Future<void> bookAppointment(
+    AppointmentBookingModel model,
+    String token,
+  ) async {
+    final response = await _dio.post(
+      'appointments/book/',
+      data: model.toJson(),
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+    );
+
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      throw Exception("Failed to book appointment");
+    }
+  }
 
   Future<GetPatientModel> searchPatientByNationalId(
     String nationalId,
@@ -14,7 +30,6 @@ class PatientService {
         'search-patient/$nationalId/',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
-
       if (response.statusCode == 200) {
         return GetPatientModel.fromJson(response.data);
       } else {

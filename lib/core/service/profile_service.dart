@@ -29,7 +29,6 @@ class ProfileService {
       'profile/',
       options: Options(headers: {'Authorization': 'Bearer $token'}),
     );
-
     final data = response.data;
     final userType = data['user_type'];
     switch (userType) {

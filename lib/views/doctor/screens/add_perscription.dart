@@ -2,12 +2,10 @@ import 'package:caresync/config/validation/auth_validation.dart';
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
-import 'package:caresync/views/doctor/widgets/custom_headline.dart';
-import 'package:caresync/views/doctor/widgets/custom_text_field.dart';
+import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/colors/color_manager.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 
@@ -43,14 +41,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: ColorManager.splashBackgroundColor,
-            title: Text(
-              "Add Prescription",
-              style: TextStyle(color: ColorManager.primaryColorLight),
-            ),
-            centerTitle: true,
-          ),
+          appBar: AppBar(title: Text("Add Prescription"), centerTitle: true),
           body: state.state == DoctorStatus.loading
               ? Center(child: const CircularProgressIndicator())
               : ListView(
@@ -101,13 +92,8 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             maxLines: 5,
                           ),
                           const SizedBox(height: 24),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                ColorManager.splashBackgroundColor,
-                              ),
-                            ),
-                            onPressed: () {
+                          CutomElvatedButton(
+                            onTap: () {
                               if (_formKey.currentState!.validate()) {
                                 final token =
                                     SharedPrefHelper.getString(
@@ -132,12 +118,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                 });
                               }
                             },
-                            child: Text(
-                              "Add Prescription",
-                              style: TextStyle(
-                                color: ColorManager.primaryColorLight,
-                              ),
-                            ),
+                            text: "Add Prescription",
                           ),
                         ],
                       ),

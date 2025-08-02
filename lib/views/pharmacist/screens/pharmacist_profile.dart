@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
 import 'package:caresync/controller/profile/profile_state.dart';
-import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/core/constants/routes_app.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
@@ -14,14 +13,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PatientInformation extends StatefulWidget {
-  const PatientInformation({super.key});
+class PharmacistInformation extends StatefulWidget {
+  const PharmacistInformation({super.key});
 
   @override
-  State<PatientInformation> createState() => _PatientInformationState();
+  State<PharmacistInformation> createState() => _PharmacistInformationState();
 }
 
-class _PatientInformationState extends State<PatientInformation> {
+class _PharmacistInformationState extends State<PharmacistInformation> {
   File? image;
 
   @override
@@ -32,7 +31,7 @@ class _PatientInformationState extends State<PatientInformation> {
   void loadImage() async {
     final imagePath = await SharedPrefHelper.getString(
       SharedPrefKeys.profileImage +
-          context.read<ProfileCubit>().state.patientModel!.nationalId,
+          context.read<ProfileCubit>().state.pharmacistModel!.nationalId,
     );
     if (imagePath != null) {
       setState(() {
@@ -50,7 +49,7 @@ class _PatientInformationState extends State<PatientInformation> {
         image = File(pickedFile.path);
         SharedPrefHelper.setString(
           SharedPrefKeys.profileImage +
-              context.read<ProfileCubit>().state.patientModel!.nationalId,
+              context.read<ProfileCubit>().state.pharmacistModel!.nationalId,
           pickedFile.path,
         );
       });
@@ -60,7 +59,10 @@ class _PatientInformationState extends State<PatientInformation> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.status == ProfileStatus.success) {}
+        if (state.status == ProfileStatus.error) {}
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -77,7 +79,7 @@ class _PatientInformationState extends State<PatientInformation> {
                 },
               ),
             ],
-            title: Text("Patient Profile"),
+            title: Text("Pharmacist Profile"),
             leading: ThemeButton(),
             centerTitle: true,
           ),
@@ -109,7 +111,7 @@ class _PatientInformationState extends State<PatientInformation> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    state.patientModel?.fullName.toUpperCase() ?? "",
+                    state.pharmacistModel?.fullName.toUpperCase() ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).textTheme.titleLarge!.color,
@@ -117,24 +119,25 @@ class _PatientInformationState extends State<PatientInformation> {
                   ),
                   Divider(height: 40, thickness: 2),
                   CustomListTile(
-                    headline: state.patientModel?.phoneNumber ?? "",
+                    headline: state.pharmacistModel?.phoneNumber ?? "",
                     icon: FontAwesomeIcons.phone,
                   ),
                   CustomListTile(
-                    headline: state.patientModel?.email ?? "",
+                    headline: state.pharmacistModel?.email ?? "",
                     icon: FontAwesomeIcons.envelope,
                   ),
                   CustomListTile(
-                    headline: state.patientModel?.address ?? "",
+                    headline: state.pharmacistModel?.address ?? "",
                     icon: FontAwesomeIcons.locationDot,
                   ),
                   CustomListTile(
-                    headline: state.patientModel?.birthday ?? "",
+                    headline: state.pharmacistModel?.birthday ?? "",
                     icon: FontAwesomeIcons.birthdayCake,
                   ),
                   CustomListTile(
-                    headline: state.patientModel?.gender ?? "",
-                    icon: state.patientModel?.gender?.toLowerCase() == "female"
+                    headline: state.pharmacistModel?.gender ?? "",
+                    icon:
+                        state.pharmacistModel?.gender?.toLowerCase() == "female"
                         ? FontAwesomeIcons.venus
                         : FontAwesomeIcons.mars,
                   ),

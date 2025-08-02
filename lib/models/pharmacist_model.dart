@@ -3,7 +3,7 @@ class PharmacistModel {
   final String email;
   final String nationalId;
   final String phoneNumber;
-  final String password;
+  final String? password;
   final String? gender;
   final String birthday;
   final String address;
@@ -16,7 +16,7 @@ class PharmacistModel {
     required this.email,
     required this.nationalId,
     required this.phoneNumber,
-    required this.password,
+    this.password,
     required this.gender,
     required this.birthday,
     required this.address,

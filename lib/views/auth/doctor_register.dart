@@ -6,6 +6,7 @@ import 'package:caresync/models/doctor_model.dart';
 import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
+import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -91,15 +92,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1D4ED8),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF161B22),
-            title: const Text(
-              'CareSync',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
-          ),
+          appBar: AppBar(title: const Text('CareSync'), centerTitle: true),
           body: Center(
             child: SingleChildScrollView(
               child: Form(
@@ -108,23 +101,12 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(24),
                   margin: const EdgeInsets.only(top: 24),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF161B22),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black26, blurRadius: 10),
-                    ],
-                  ),
                   child: Column(
                     spacing: 24,
                     children: [
-                      const Text(
+                      Text(
                         'Doctor Registration',
-                        style: TextStyle(
-                          fontSize: 26,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -279,50 +261,34 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                       ),
                       state.authStatus == AuthStatus.loading
                           ? const CircularProgressIndicator()
-                          : SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    final model = DoctorModel(
-                                      address: addressController.text,
-                                      birthday: birthdayController.text,
-                                      email: emailController.text,
-                                      fullName: fullNameController.text,
-                                      gender: gender.value,
-                                      nationalId: nationalIDController.text,
-                                      password: passwordController.text,
-                                      phoneNumber: phoneController.text,
-                                      userType: 'doctor',
-                                      hospital: hospitalController.text,
-                                      clinic: clinicController.text,
-                                      specialization:
-                                          specializationController.text,
-                                    );
-                                    context.read<AuthCubit>().registerDoctor(
-                                      model,
-                                    );
-                                  } else {
-                                    setState(() {
-                                      autovalidateMode =
-                                          AutovalidateMode.always;
-                                    });
-                                  }
-                                },
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+                          : CutomElvatedButton(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  final model = DoctorModel(
+                                    address: addressController.text,
+                                    birthday: birthdayController.text,
+                                    email: emailController.text,
+                                    fullName: fullNameController.text,
+                                    gender: gender.value,
+                                    nationalId: nationalIDController.text,
+                                    password: passwordController.text,
+                                    phoneNumber: phoneController.text,
+                                    userType: 'doctor',
+                                    hospital: hospitalController.text,
+                                    clinic: clinicController.text,
+                                    specialization:
+                                        specializationController.text,
+                                  );
+                                  context.read<AuthCubit>().registerDoctor(
+                                    model,
+                                  );
+                                } else {
+                                  setState(() {
+                                    autovalidateMode = AutovalidateMode.always;
+                                  });
+                                }
+                              },
+                              text: 'Create Account',
                             ),
                     ],
                   ),

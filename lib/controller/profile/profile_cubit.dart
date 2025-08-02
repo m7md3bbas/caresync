@@ -1,8 +1,5 @@
 import 'package:caresync/controller/profile/profile_state.dart';
 import 'package:caresync/core/service/profile_service.dart';
-import 'package:caresync/models/doctor_model.dart';
-import 'package:caresync/models/patient_model.dart';
-import 'package:caresync/models/pharmacist_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -13,9 +10,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> getProfile(String token) async {
     try {
       emit(state.copyWith(status: ProfileStatus.loading));
-
-      final profile = await profileService.getProfile(token);
-
+      final profile = await profileService.getProfile(token.trim());
       if (profile is DoctorProfile) {
         emit(
           state.copyWith(
@@ -46,6 +41,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         );
       }
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: ProfileStatus.error, message: e.toString()));
     }
   }

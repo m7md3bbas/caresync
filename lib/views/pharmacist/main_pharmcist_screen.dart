@@ -9,27 +9,22 @@ import 'package:caresync/core/service/pharmacist_service.dart';
 import 'package:caresync/core/service/profile_service.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
-import 'package:caresync/views/patient/screens/nearest_pharmacy.dart';
-import 'package:caresync/views/patient/screens/patient_appoinment.dart';
-import 'package:caresync/views/patient/screens/patient_information.dart';
+import 'package:caresync/views/doctor/screens/patient_details.dart';
+import 'package:caresync/views/pharmacist/screens/pharmacist_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PatientMainScreen extends StatefulWidget {
-  const PatientMainScreen({super.key});
+class PharmacistMainScreen extends StatefulWidget {
+  const PharmacistMainScreen({super.key});
 
   @override
-  State<PatientMainScreen> createState() => _PatientMainScreenState();
+  State<PharmacistMainScreen> createState() => _PharmacistMainScreenState();
 }
 
-class _PatientMainScreenState extends State<PatientMainScreen> {
-  final PageController _pageController = PageController(initialPage: 2);
-  int currentIndex = 2;
-  final List<Widget> _screens = [
-    NearestPharmacy(),
-    AppointmentBookingScreen(),
-    PatientInformation(),
-  ];
+class _PharmacistMainScreenState extends State<PharmacistMainScreen> {
+  final PageController _pageController = PageController(initialPage: 1);
+  int currentIndex = 1;
+  final List<Widget> _screens = [PatientDetails(), PharmacistInformation()];
   late final PatientCubit patientCubit;
   late final ProfileCubit profileCubit;
   late final AppointmentCubit appointmentCubit;
@@ -80,12 +75,8 @@ class _PatientMainScreenState extends State<PatientMainScreen> {
           },
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.local_pharmacy),
-              label: "Pharmcy",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined),
-              label: "appointment",
+              icon: Icon(Icons.people),
+              label: "Patients",
             ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],

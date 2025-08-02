@@ -22,6 +22,7 @@ class DatePickerField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         readOnly: true,
+
         onTap: () async {
           final DateTime? picked = await showDatePicker(
             context: context,
@@ -34,18 +35,14 @@ class DatePickerField extends StatelessWidget {
           );
           if (picked != null) {
             final formatted = DateFormat('yyyy-MM-dd').format(picked);
-            print('✅ Picked: $picked → $formatted'); // Add this line
             controller.text = formatted;
           }
         },
-        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
+          suffixIcon: const Icon(Icons.calendar_month),
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.white38),
           filled: true,
-          fillColor: const Color(0xFF0D1117),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          suffixIcon: const Icon(Icons.calendar_today, color: Colors.white38),
         ),
         validator:
             validator ??

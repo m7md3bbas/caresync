@@ -1,4 +1,3 @@
-import 'package:caresync/core/colors/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class CustomHeadline extends StatelessWidget {
@@ -9,11 +8,7 @@ class CustomHeadline extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
-        color: ColorManager.splashBackgroundColor,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-      ),
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 }

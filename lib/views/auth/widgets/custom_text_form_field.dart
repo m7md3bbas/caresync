@@ -23,17 +23,9 @@ class CutsomTextFormFiled extends StatelessWidget {
     return TextFormField(
       controller: textEditingController,
       validator: validator,
-
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
         suffixIcon: suffixIcon,
         hintText: hintText,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
         labelText: labelText,
       ),
       obscureText: isObsecure,

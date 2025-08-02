@@ -1,5 +1,6 @@
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
+import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/models/appoinment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,19 +20,11 @@ class DoctorAppointmentsPage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text("CareSync", style: TextStyle(color: Colors.blue)),
-          ),
+          appBar: AppBar(centerTitle: true, title: const Text("Appointments")),
           body: Column(
             children: [
               const SizedBox(height: 20),
-              const Text(
-                "Doctor Appointments",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const Text("Manage your upcoming and past appointments"),
-              const SizedBox(height: 20),
+
               if (state.state == DoctorStatus.success &&
                   state.appointments != null)
                 _buildStatusSummary(state.appointments!)
@@ -84,29 +77,18 @@ class DoctorAppointmentsPage extends StatelessWidget {
   }
 
   Widget _statusCard(String count, String label) {
-    return Container(
-      width: 120,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Text(
-            count,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
-        ],
+    return Card(
+      child: Container(
+        width: 120,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          children: [
+            Text(count, style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
       ),
     );
   }

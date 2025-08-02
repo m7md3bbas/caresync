@@ -2,8 +2,10 @@ import 'package:caresync/config/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/theme/theme_button.dart';
 import 'package:caresync/models/password_reset_model.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
+import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -64,34 +66,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: const Color(0xFF1D4ED8),
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF0D1117),
-            title: const Text(
-              'CareSync',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
-          ),
+          appBar: AppBar(title: Text('CareSync'), actions: [ThemeButton()]),
           body: Center(
             child: state.authStatus == AuthStatus.loading
-                ? CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    color: Color(0xFF0D1117),
-                  )
+                ? CircularProgressIndicator(strokeWidth: 2.5)
                 : Container(
                     width: 400,
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0D1117),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 15,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
+
                     child: Form(
                       key: formKey,
                       autovalidateMode: autovalidateMode,
@@ -105,11 +87,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 : state.authStatus == AuthStatus.otpSent
                                 ? 'Verify OTP'
                                 : 'Reset Password',
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           Text(
                             state.authStatus == AuthStatus.initial
@@ -121,10 +99,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                       "and create a new password."
                                 : "Enter your new password and confirm it to reset your password.",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           state.authStatus == AuthStatus.initial
                               ? CutsomTextFormFiled(
@@ -182,65 +157,43 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               : TextFormField(),
                           state.authStatus == AuthStatus.otpSent
                               ? SizedBox()
-                              : SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      print(emailController.text);
-                                      print(otpVerify.text);
-                                      print(setNewPassword.text);
-                                      if (formKey.currentState!.validate()) {
-                                        if (state.authStatus ==
-                                            AuthStatus.initial) {
-                                          context
-                                              .read<AuthCubit>()
-                                              .requestPasswordReset(
-                                                PasswordResetRequest(
-                                                  emailController.text,
-                                                ),
-                                              );
-                                        } else if (state.authStatus ==
-                                            AuthStatus.otpVerified) {
-                                          context
-                                              .read<AuthCubit>()
-                                              .setNewPassword(
-                                                SetNewPasswordRequest(
-                                                  emailController.text,
-                                                  otpVerify.text,
-                                                  setNewPassword.text,
-                                                ),
-                                              );
-                                        }
-                                      } else {
-                                        setState(() {
-                                          autovalidateMode =
-                                              AutovalidateMode.always;
-                                        });
+                              : CutomElvatedButton(
+                                  onTap: () {
+                                    if (formKey.currentState!.validate()) {
+                                      if (state.authStatus ==
+                                          AuthStatus.initial) {
+                                        context
+                                            .read<AuthCubit>()
+                                            .requestPasswordReset(
+                                              PasswordResetRequest(
+                                                emailController.text,
+                                              ),
+                                            );
+                                      } else if (state.authStatus ==
+                                          AuthStatus.otpVerified) {
+                                        context
+                                            .read<AuthCubit>()
+                                            .setNewPassword(
+                                              SetNewPasswordRequest(
+                                                emailController.text,
+                                                otpVerify.text,
+                                                setNewPassword.text,
+                                              ),
+                                            );
                                       }
-                                    },
-
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 16,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      state.authStatus == AuthStatus.initial
-                                          ? 'Send OTP'
-                                          : state.authStatus ==
-                                                AuthStatus.otpVerified
-                                          ? 'Reset Password'
-                                          : "",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
+                                    } else {
+                                      setState(() {
+                                        autovalidateMode =
+                                            AutovalidateMode.always;
+                                      });
+                                    }
+                                  },
+                                  text: state.authStatus == AuthStatus.initial
+                                      ? 'Send OTP'
+                                      : state.authStatus ==
+                                            AuthStatus.otpVerified
+                                      ? 'Reset Password'
+                                      : "",
                                 ),
                         ],
                       ),

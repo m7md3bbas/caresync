@@ -1,3 +1,4 @@
+import 'package:caresync/core/colors/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class CustomRoleWidget extends StatelessWidget {
@@ -22,15 +23,8 @@ class CustomRoleWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF161B22),
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
         ),
         child: Row(
           children: [

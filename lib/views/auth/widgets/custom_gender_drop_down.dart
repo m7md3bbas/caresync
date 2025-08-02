@@ -16,13 +16,9 @@ class GenderDropdown extends StatelessWidget {
           return DropdownButtonFormField<String>(
             value: selectedGender,
             onChanged: (value) => gender.value = value,
-            dropdownColor: const Color(0xFF0D1117),
-            style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               hintText: 'Select gender',
-              hintStyle: const TextStyle(color: Colors.white38),
               filled: true,
-              fillColor: const Color(0xFF0D1117),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
