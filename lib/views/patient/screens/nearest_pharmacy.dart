@@ -1,11 +1,36 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:caresync/controller/pharmacist/get_pharmacy_cubit.dart';
 import 'package:caresync/controller/pharmacist/getall_pharmacy_state.dart';
-import 'package:caresync/views/doctor/widgets/custom_list_tile.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NearestPharmacy extends StatelessWidget {
   const NearestPharmacy({super.key});
+  Future<void> _makePhoneCall(BuildContext context, String phoneNumber) async {
+    try {
+      var status = await Permission.phone.status;
+      if (!status.isGranted) {
+        status = await Permission.phone.request();
+      }
+
+      if (status.isGranted) {
+        final url = 'tel:$phoneNumber';
+        if (await canLaunchUrl(Uri.parse(url))) {
+          await launchUrl(Uri.parse(url));
+        } else {
+          ToastHelper.showError('unable to make phone call');
+        }
+      } else {
+        ToastHelper.showError('Permission not granted');
+      }
+    } catch (e) {
+      ToastHelper.showError(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,34 +57,130 @@ class NearestPharmacy extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       final current = state.pharmacies![index];
                       return Card(
-                        elevation: 3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomListTile(
-                                headline: current.fullName,
-                                icon: Icons.person,
-                              ),
-                              CustomListTile(
-                                headline: current.pharmacyName,
-                                icon: Icons.local_pharmacy,
-                              ),
-                              CustomListTile(
-                                headline: current.pharmacyAddress,
-                                icon: Icons.location_on,
-                              ),
-                              CustomListTile(
-                                headline: current.phoneNumber,
-                                icon: Icons.phone,
-                              ),
-                              CustomListTile(
-                                headline: current.email,
-                                icon: Icons.email,
-                              ),
-                            ],
+                        elevation: 4,
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(
+                            color: Colors.grey.shade200,
+                            width: 1,
                           ),
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    'https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/pharmacy.jpeg',
+                                height: 150,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, error, stackTrace) =>
+                                    const Center(child: Icon(Icons.error)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height / 6,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            current.pharmacyName,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                FontAwesomeIcons.user,
+                                                size: 16,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(current.fullName),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.verified,
+                                                size: 16,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Expanded(child: Text("verified")),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                FontAwesomeIcons.phone,
+                                                size: 16,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Text(
+                                                  current.phoneNumber,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: GestureDetector(
+                                      onTap: () => _makePhoneCall(
+                                        context,
+                                        current.phoneNumber,
+                                      ),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(15),
+                                          ),
+                                        ),
+                                        height: double.infinity,
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.call,
+                                            color: Colors.white,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -67,6 +188,30 @@ class NearestPharmacy extends StatelessWidget {
                 ),
         );
       },
+    );
+  }
+}
+
+class CustomPharmacyCard extends StatelessWidget {
+  const CustomPharmacyCard({
+    required this.pharmacyName,
+    required this.icon,
+    super.key,
+  });
+  final String pharmacyName;
+  final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(icon),
+          const SizedBox(width: 18),
+          Text(pharmacyName, style: Theme.of(context).textTheme.headlineSmall),
+        ],
+      ),
     );
   }
 }

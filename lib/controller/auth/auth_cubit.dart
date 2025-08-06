@@ -1,4 +1,5 @@
 import 'package:caresync/controller/auth/auth_state.dart';
+import 'package:caresync/core/exception/parseerror.dart';
 import 'package:caresync/core/service/auth_service.dart';
 import 'package:caresync/models/doctor_model.dart';
 import 'package:caresync/models/login_request_model.dart';
@@ -19,18 +20,14 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(state.copyWith(authStatus: AuthStatus.loading));
     try {
-      final response = await authService.login(
+      await authService.login(
         LoginRequest(nationalId: nationalID, password: password),
       );
 
       emit(state.copyWith(authStatus: AuthStatus.authenticated));
     } catch (e) {
-      emit(
-        state.copyWith(
-          authStatus: AuthStatus.error,
-          errorMessage: e.toString(),
-        ),
-      );
+      final message = ParseError.extractErrorMessage(e);
+      emit(state.copyWith(authStatus: AuthStatus.error, errorMessage: message));
     }
   }
 
@@ -38,15 +35,11 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(authStatus: AuthStatus.loading));
 
     try {
-      final response = await authService.registerPatient(patientModel);
+      await authService.registerPatient(patientModel);
       emit(state.copyWith(authStatus: AuthStatus.registerd));
     } catch (e) {
-      emit(
-        state.copyWith(
-          authStatus: AuthStatus.error,
-          errorMessage: e.toString(),
-        ),
-      );
+      final error = ParseError.extractErrorMessage(e.toString());
+      emit(state.copyWith(authStatus: AuthStatus.error, errorMessage: error));
     }
   }
 
@@ -54,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(authStatus: AuthStatus.loading));
 
     try {
-      final response = await authService.registerPharmacist(pharmacistModel);
+      await authService.registerPharmacist(pharmacistModel);
       emit(state.copyWith(authStatus: AuthStatus.registerd));
     } catch (e) {
       emit(
@@ -70,7 +63,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(authStatus: AuthStatus.loading));
 
     try {
-      final response = await authService.registerDoctor(doctorModel);
+      await authService.registerDoctor(doctorModel);
       emit(state.copyWith(authStatus: AuthStatus.registerd));
     } catch (e) {
       emit(

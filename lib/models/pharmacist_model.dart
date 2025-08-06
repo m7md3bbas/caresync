@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+
 class PharmacistModel {
   final String fullName;
   final String email;
@@ -9,6 +13,8 @@ class PharmacistModel {
   final String address;
   final String pharmacyName;
   final String pharmacyAddress;
+  final File? faceIdImage;
+  final File? backIdImage;
   final String userType;
 
   PharmacistModel({
@@ -22,6 +28,8 @@ class PharmacistModel {
     required this.address,
     required this.pharmacyName,
     required this.pharmacyAddress,
+    this.faceIdImage,
+    this.backIdImage,
     this.userType = "pharmacist",
   });
   factory PharmacistModel.fromJson(Map<String, dynamic> json) =>
@@ -38,9 +46,8 @@ class PharmacistModel {
         pharmacyAddress: json['pharmacy_address'],
         userType: json['user_type'],
       );
-
-  Map<String, dynamic> toJson() {
-    return {
+  FormData toFormData() {
+    return FormData.fromMap({
       "full_name": fullName,
       "email": email,
       "national_id": nationalId,
@@ -52,6 +59,14 @@ class PharmacistModel {
       "pharmacy_name": pharmacyName,
       "pharmacy_address": pharmacyAddress,
       "user_type": userType,
-    };
+      "face_id_image": MultipartFile.fromFileSync(
+        faceIdImage!.path,
+        filename: faceIdImage!.path.split('/').last,
+      ),
+      "back_id_image": MultipartFile.fromFileSync(
+        backIdImage!.path,
+        filename: backIdImage!.path.split('/').last,
+      ),
+    });
   }
 }

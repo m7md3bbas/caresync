@@ -1,14 +1,20 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'dart:io';
+
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/locale/locale_button.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/patient_model.dart';
-import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
+import 'package:caresync/views/auth/widgets/custom_image_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -38,7 +44,6 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
   bool isObsecure = true;
   bool hasDiabetes = false;
   bool hasHeartDisease = false;
-
   @override
   void initState() {
     fullNameController = TextEditingController();
@@ -60,27 +65,22 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.registerd) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("registerd")));
+          Fluttertoast.showToast(msg: "user created wait for admin approval");
           GoRouter.of(context).pushReplacement(RoutesApp.login);
         } else {
           if (state.authStatus == AuthStatus.error) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text("User already exist")));
+            Fluttertoast.showToast(msg: state.errorMessage.toString());
           }
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('CareSync'), centerTitle: true),
+          appBar: AppBar(centerTitle: true, title: Text(S.of(context).appName)),
           body: Center(
             child: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(24),
                 margin: const EdgeInsets.only(top: 24),
-
                 child: Form(
                   key: _formKey,
                   autovalidateMode: autovalidateMode,
@@ -88,7 +88,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                     spacing: 24,
                     children: [
                       Text(
-                        'Patient Registration',
+                        S.of(context).patientRegisterTitle,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       CutsomTextFormFiled(
@@ -97,7 +97,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         textEditingController: fullNameController,
                         isObsecure: false,
                         textInputType: TextInputType.text,
-                        labelText: 'Full Name',
+                        labelText: S.of(context).fullName,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -105,18 +105,21 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         textEditingController: emailController,
                         isObsecure: false,
                         textInputType: TextInputType.emailAddress,
-                        labelText: 'Email',
+                        labelText: S.of(context).email,
                       ),
                       Row(
                         children: [
                           Expanded(
                             child: CutsomTextFormFiled(
                               validator: (value) =>
-                                  AuthValidation.validateAddress(value),
+                                  AuthValidation.validateAddress(
+                                    value,
+                                    context,
+                                  ),
                               textEditingController: addressController,
                               isObsecure: false,
                               textInputType: TextInputType.text,
-                              labelText: 'Address',
+                              labelText: S.of(context).address,
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -130,18 +133,18 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                               textEditingController: phoneController,
                               isObsecure: false,
                               textInputType: TextInputType.phone,
-                              labelText: 'Phone Number',
+                              labelText: S.of(context).phoneNumber,
                             ),
                           ),
                         ],
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
-                            AuthValidation.validateNationalID(value),
+                            AuthValidation.validateNationalID(value, context),
                         textEditingController: nationalIDController,
                         isObsecure: false,
                         textInputType: TextInputType.number,
-                        labelText: 'National ID',
+                        labelText: S.of(context).nationalID,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -149,7 +152,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         textEditingController: passwordController,
                         isObsecure: isObsecure,
                         textInputType: TextInputType.visiblePassword,
-                        labelText: 'Password',
+                        labelText: S.of(context).password,
                         suffixIcon: IconButton(
                           icon: Icon(
                             isObsecure
@@ -185,12 +188,12 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please select your birthday';
+                                  return S.of(context).fieldIsRequired;
                                 }
                                 return null;
                               },
-                              decoration: const InputDecoration(
-                                labelText: 'Birthday',
+                              decoration: InputDecoration(
+                                labelText: S.of(context).birthday,
                                 border: OutlineInputBorder(),
                                 suffixIcon: Icon(Icons.calendar_today),
                               ),
@@ -202,7 +205,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         ],
                       ),
                       CheckboxListTile(
-                        title: const Text('I have diabetes'),
+                        title: Text(S.of(context).iHaveDiabetes),
                         value: hasDiabetes,
                         onChanged: (value) {
                           setState(() {
@@ -213,7 +216,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                         checkColor: Colors.white,
                       ),
                       CheckboxListTile(
-                        title: const Text('I have heart disease'),
+                        title: Text(S.of(context).IHaveHeartDisease),
                         value: hasHeartDisease,
                         onChanged: (value) {
                           setState(() {
@@ -229,23 +232,23 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                             child: CutsomTextFormFiled(
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter at least one allergy';
+                                  return S.of(context).fieldIsRequired;
                                 }
                                 final List<String> allergies = value.split(',');
                                 for (String item in allergies) {
                                   if (!RegExp(
                                     r'^[a-zA-Z\s]+$',
                                   ).hasMatch(item.trim())) {
-                                    return 'Allergies must be letters only, separated by commas';
+                                    return S.of(context).invalidAllergies;
                                   }
                                 }
                                 return null;
                               },
                               textEditingController: allergiesController,
                               isObsecure: false,
-                              hintText: 'e.g. Penicillin, Nuts, Pollen',
+                              hintText: S.of(context).allergiesExample,
                               textInputType: TextInputType.text,
-                              labelText: 'Allergies (comma separated)',
+                              labelText: S.of(context).allergies,
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -255,12 +258,11 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                               textEditingController: otherDiseasesController,
                               isObsecure: false,
                               textInputType: TextInputType.text,
-                              labelText: 'Other diseases (comma separated)',
+                              labelText: S.of(context).otherDiseases,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
                       state.authStatus == AuthStatus.loading
                           ? const CircularProgressIndicator()
                           : CutomElvatedButton(
@@ -294,7 +296,7 @@ class _PatientRegistrationScreenState extends State<PatientRegistrationScreen> {
                                   });
                                 }
                               },
-                              text: 'Register',
+                              text: S.of(context).createAccount,
                             ),
                     ],
                   ),

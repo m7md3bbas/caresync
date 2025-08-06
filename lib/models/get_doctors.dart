@@ -1,4 +1,5 @@
 class GetDoctorModel {
+  final int id;
   final String fullName;
   final String email;
   final String phoneNumber;
@@ -7,6 +8,7 @@ class GetDoctorModel {
   final String clinic;
 
   GetDoctorModel({
+    required this.id,
     required this.fullName,
     required this.email,
     required this.phoneNumber,
@@ -17,6 +19,7 @@ class GetDoctorModel {
 
   factory GetDoctorModel.fromJson(Map<String, dynamic> json) {
     return GetDoctorModel(
+      id: json['id'],
       fullName: json['full_name'],
       email: json['email'],
       phoneNumber: json['phone_number'],
@@ -28,6 +31,7 @@ class GetDoctorModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'full_name': fullName,
       'email': email,
       'phone_number': phoneNumber,

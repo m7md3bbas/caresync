@@ -40,9 +40,9 @@ class PatientModel {
     address: json["address"],
     diabetes: json["diabetes"],
     heartDisease: json["heart_disease"],
-    allergies: List<String>.from(json["allergies"].map((x) => x)),
+    allergies: List<String>.from(json["allergies"] ?? []),
     otherDiseases: json["other_diseases"],
-    userType: json["user_type"],
+    userType: json["user_type"] ?? "patient",
   );
 
   Map<String, dynamic> toJson() {
@@ -59,6 +59,25 @@ class PatientModel {
       "heart_disease": heartDisease,
       "allergies": allergies,
       "other_diseases": otherDiseases,
+      "user_type": userType,
+    };
+  }
+
+  Map<String, dynamic> toFormDataMap() {
+    return {
+      "full_name": fullName,
+      "email": email,
+      "national_id": nationalId,
+      "phone_number": phoneNumber,
+      "password": password,
+      "gender": gender,
+      "birthday": birthday,
+      "address": address,
+      "diabetes": diabetes,
+      "heart_disease": heartDisease,
+      "allergies": allergies,
+      "other_diseases": otherDiseases,
+
       "user_type": userType,
     };
   }

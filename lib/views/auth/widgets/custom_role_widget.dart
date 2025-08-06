@@ -1,4 +1,4 @@
-import 'package:caresync/core/colors/color_manager.dart';
+import 'package:caresync/views/auth/widgets/custom_cached_image_network.dart';
 import 'package:flutter/material.dart';
 
 class CustomRoleWidget extends StatelessWidget {
@@ -28,7 +28,7 @@ class CustomRoleWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.asset(image, width: 50, height: 50),
+            CustomCachedImageNetwork(image: image, width: 50, height: 50),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

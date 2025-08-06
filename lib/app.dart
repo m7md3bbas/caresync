@@ -1,6 +1,6 @@
-import 'package:caresync/config/locale/generated/l10n.dart';
-import 'package:caresync/config/locale/locale_cubit.dart';
-import 'package:caresync/config/locale/locale_state.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/locale/locale_cubit.dart';
+import 'package:caresync/core/locale/locale_state.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/core/routes/app_routes.dart';
 import 'package:caresync/core/service/auth_service.dart';

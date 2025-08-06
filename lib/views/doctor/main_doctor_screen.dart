@@ -1,7 +1,8 @@
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
+import 'package:caresync/controller/doctor/doctor_schedule_cubit.dart';
 import 'package:caresync/controller/patient/patient_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
-import 'package:caresync/core/colors/color_manager.dart';
+import 'package:caresync/core/service/doctor_schedule_service.dart';
 import 'package:caresync/core/service/doctor_service.dart';
 import 'package:caresync/core/service/patient_service.dart';
 import 'package:caresync/core/service/profile_service.dart';
@@ -9,6 +10,7 @@ import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/views/doctor/screens/doctor_appoinment.dart';
 import 'package:caresync/views/doctor/screens/doctor_information.dart';
+import 'package:caresync/views/doctor/screens/manage_avalibality.dart';
 import 'package:caresync/views/doctor/screens/patient_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,11 +31,13 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
   late final DoctorCubit doctorCubit;
   late final PatientCubit patientCubit;
   late final ProfileCubit profileCubit;
+  late final DoctorScheduleCubit scheduleCubit;
 
   final List<Widget> _screens = const [
     PatientDetails(),
     AddPrescription(),
     DoctorAppointmentsPage(),
+    DoctorScheduleManagementPage(),
     DoctorInformation(),
   ];
 
@@ -41,10 +45,10 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
   void initState() {
     super.initState();
     final token = SharedPrefHelper.getString(SharedPrefKeys.token) ?? '';
-    print("profile token: $token");
     doctorCubit = DoctorCubit(DoctorService())..getDoctorAppointments(token);
     patientCubit = PatientCubit(PatientService());
     profileCubit = ProfileCubit(ProfileService())..getProfile(token);
+    scheduleCubit = DoctorScheduleCubit(DoctorScheduleService());
   }
 
   @override
@@ -60,6 +64,7 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
         BlocProvider.value(value: doctorCubit),
         BlocProvider.value(value: patientCubit),
         BlocProvider.value(value: profileCubit),
+        BlocProvider.value(value: scheduleCubit),
       ],
       child: Scaffold(
         body: PageView.builder(
@@ -90,6 +95,10 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),
               label: "Appointments",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.calendarCheck),
+              label: "Schedule",
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.user),

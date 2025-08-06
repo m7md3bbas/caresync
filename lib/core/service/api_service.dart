@@ -5,7 +5,7 @@ class ApiClient {
     BaseOptions(
       baseUrl: 'https://grackle-notable-hardly.ngrok-free.app/api/',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'ngrok-skip-browser-warning': 'true',
       },
     ),

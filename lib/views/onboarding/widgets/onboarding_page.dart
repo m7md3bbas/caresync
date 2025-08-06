@@ -18,7 +18,13 @@ class OnboardingContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(image, height: 250),
+          SvgPicture.network(
+            image,
+            height: 250,
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.error),
+            placeholderBuilder: (context) => const CircularProgressIndicator(),
+          ),
           const SizedBox(height: 40),
           Text(
             title,

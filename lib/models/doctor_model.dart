@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+
 class DoctorModel {
   final String fullName;
   final String email;
@@ -10,6 +14,8 @@ class DoctorModel {
   final String hospital;
   final String clinic;
   final String specialization;
+  final File? faceIdImage;
+  final File? backIdImage;
   final String userType;
 
   DoctorModel({
@@ -24,6 +30,8 @@ class DoctorModel {
     required this.hospital,
     required this.clinic,
     required this.specialization,
+    this.faceIdImage,
+    this.backIdImage,
     this.userType = "doctor",
   });
 
@@ -43,8 +51,8 @@ class DoctorModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  FormData toFormData() {
+    return FormData.fromMap({
       "full_name": fullName,
       "email": email,
       "national_id": nationalId,
@@ -57,6 +65,14 @@ class DoctorModel {
       "clinic": clinic,
       "specialization": specialization,
       "user_type": userType,
-    };
+      "face_id_image": MultipartFile.fromFileSync(
+        faceIdImage!.path,
+        filename: faceIdImage!.path.split('/').last,
+      ),
+      "back_id_image": MultipartFile.fromFileSync(
+        backIdImage!.path,
+        filename: backIdImage!.path.split('/').last,
+      ),
+    });
   }
 }

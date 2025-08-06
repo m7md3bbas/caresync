@@ -21,19 +21,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
       "title": "Your Medical Companion – All in One Place",
       "description":
           "Whether you're a Doctor, Patient, or Pharmacist, this app is tailored just for you. Register your role and access features designed specifically to meet your needs.",
-      "image": "assets/images/undraw_doctors_djoj.svg",
+      "image":
+          "https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/undraw_doctors_djoj.svg",
     },
     {
       "title": "Book Appointments & Access Medical Records",
       "description":
           "Patients can easily book appointments with doctors. Doctors can review patient history, manage visits, and write digital prescriptions in seconds.",
-      "image": "assets/images/undraw_online-calendar_zaoc.svg",
+      "image":
+          "https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/undraw_online-calendar_zaoc.svg",
     },
     {
       "title": "Prescriptions Made Simple",
       "description":
           "Doctors can create digital prescriptions. Pharmacists can view the latest ones and prepare orders for the patients—faster, safer, and paper-free.",
-      "image": "assets/images/undraw_terms_sx63.svg",
+      "image":
+          "https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/undraw_terms_sx63.svg",
     },
   ];
   @override

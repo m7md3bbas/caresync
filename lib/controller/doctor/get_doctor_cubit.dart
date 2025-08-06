@@ -1,6 +1,5 @@
 import 'package:caresync/controller/doctor/get_doctor_state.dart';
 import 'package:caresync/core/service/doctor_service.dart';
-import 'package:caresync/models/get_doctors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetDoctorsCubit extends Cubit<GetDoctorsState> {
@@ -8,16 +7,13 @@ class GetDoctorsCubit extends Cubit<GetDoctorsState> {
   GetDoctorsCubit(this.doctorService)
     : super(GetDoctorsState(status: GetDoctorsStatus.initial));
 
-  Future<void> fetchDoctors() async {
+  Future<void> fetchDoctors(String token) async {
     emit(state.copyWith(status: GetDoctorsStatus.loading));
 
     try {
-      final response = await doctorService.getDoctorCategories();
-      final doctors = (response.data as List)
-          .map((json) => GetDoctorModel.fromJson(json))
-          .toList();
+      final response = await doctorService.getDoctors(token);
 
-      emit(state.copyWith(status: GetDoctorsStatus.success, doctors: doctors));
+      emit(state.copyWith(status: GetDoctorsStatus.success, doctors: response));
     } catch (e) {
       emit(
         state.copyWith(

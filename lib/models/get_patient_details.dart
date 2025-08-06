@@ -22,6 +22,16 @@ class GetPrescriptionModel {
       doctor: json['doctor'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'medicine_name': medicineName,
+      'dosage': dosage,
+      'instructions': instructions,
+      'created_at': createdAt,
+      'doctor': doctor,
+    };
+  }
 }
 
 class GetPatientModel {
@@ -74,5 +84,21 @@ class GetPatientModel {
           .map((e) => GetPrescriptionModel.fromJson(e))
           .toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'full_name': fullName,
+      'national_id': nationalId,
+      'email': email,
+      'phone_number': phoneNumber,
+      'birthday': birthday,
+      'address': address,
+      'diabetes': diabetes,
+      'heart_disease': heartDisease,
+      'allergies': allergies,
+      'other_diseases': otherDiseases,
+      'prescriptions': prescriptions.map((e) => e.toJson()).toList(),
+    };
   }
 }

@@ -34,4 +34,16 @@ class Appointment {
       canCancel: json['can_cancel'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'patient_name': patientName,
+    'doctor_name': doctorName,
+    'doctor_specialization': specialization,
+    'appointment_date': date,
+    'appointment_time': time,
+    'status': status,
+    'notes': notes,
+    'can_cancel': canCancel,
+  };
 }

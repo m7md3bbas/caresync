@@ -1,12 +1,15 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'dart:io';
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/doctor_model.dart';
-import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
+import 'package:caresync/views/auth/widgets/custom_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,21 +27,20 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
   late final GlobalKey<FormState> _formKey;
 
   late final TextEditingController fullNameController;
-
   late final TextEditingController emailController;
-
   late final TextEditingController nationalIDController;
-
   late final TextEditingController phoneController;
-
   late final TextEditingController passwordController;
-
   late final TextEditingController birthdayController;
   late final TextEditingController addressController;
   late final TextEditingController hospitalController;
   late final TextEditingController clinicController;
   late final TextEditingController specializationController;
   late final ValueNotifier<String?> gender;
+
+  File? frontIdImage;
+  File? backIdImage;
+
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   bool isObsecure = true;
 
@@ -79,20 +81,16 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.registerd) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("user Registered")));
+          ToastHelper.showSuccess(S.of(context).accountApprovalMessage);
           GoRouter.of(context).go(RoutesApp.login);
         }
         if (state.authStatus == AuthStatus.error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          ToastHelper.showError(state.errorMessage.toString());
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: const Text('CareSync'), centerTitle: true),
+          appBar: AppBar(centerTitle: true, title: Text(S.of(context).appName)),
           body: Center(
             child: SingleChildScrollView(
               child: Form(
@@ -105,7 +103,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                     spacing: 24,
                     children: [
                       Text(
-                        'Doctor Registration',
+                        S.of(context).doctorRegisterTitle,
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       CutsomTextFormFiled(
@@ -114,7 +112,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                         textEditingController: fullNameController,
                         isObsecure: false,
                         textInputType: TextInputType.text,
-                        labelText: 'Full Name',
+                        labelText: S.of(context).fullName,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -122,7 +120,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                         textEditingController: emailController,
                         isObsecure: false,
                         textInputType: TextInputType.emailAddress,
-                        labelText: 'Email',
+                        labelText: S.of(context).email,
                       ),
                       Row(
                         children: [
@@ -136,30 +134,32 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                               textEditingController: phoneController,
                               isObsecure: false,
                               textInputType: TextInputType.phone,
-                              labelText: 'Phone Number',
+                              labelText: S.of(context).phoneNumber,
                             ),
                           ),
-
                           const SizedBox(width: 16),
                           Expanded(
                             child: CutsomTextFormFiled(
                               validator: (value) =>
-                                  AuthValidation.validateAddress(value),
+                                  AuthValidation.validateAddress(
+                                    value,
+                                    context,
+                                  ),
                               textEditingController: addressController,
                               isObsecure: false,
                               textInputType: TextInputType.text,
-                              labelText: 'Address',
+                              labelText: S.of(context).address,
                             ),
                           ),
                         ],
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
-                            AuthValidation.validateNationalID(value),
+                            AuthValidation.validateNationalID(value, context),
                         textEditingController: nationalIDController,
                         isObsecure: false,
                         textInputType: TextInputType.number,
-                        labelText: 'National ID',
+                        labelText: S.of(context).nationalID,
                       ),
                       CutsomTextFormFiled(
                         validator: (value) =>
@@ -167,7 +167,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                         textEditingController: passwordController,
                         isObsecure: isObsecure,
                         textInputType: TextInputType.visiblePassword,
-                        labelText: 'Password',
+                        labelText: S.of(context).password,
                         suffixIcon: IconButton(
                           icon: Icon(
                             isObsecure
@@ -181,7 +181,6 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                           },
                         ),
                       ),
-
                       Row(
                         children: [
                           Expanded(
@@ -204,19 +203,18 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please select your birthday';
+                                  return S.of(context).fieldIsRequired;
                                 }
                                 return null;
                               },
-                              decoration: const InputDecoration(
-                                labelText: 'Birthday',
-                                border: OutlineInputBorder(),
-                                suffixIcon: Icon(Icons.calendar_today),
+                              decoration: InputDecoration(
+                                labelText: S.of(context).birthday,
+                                border: const OutlineInputBorder(),
+                                suffixIcon: const Icon(Icons.calendar_today),
                               ),
                             ),
                           ),
                           const SizedBox(width: 16),
-
                           Expanded(child: GenderDropdown(gender: gender)),
                         ],
                       ),
@@ -229,7 +227,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                               textEditingController: hospitalController,
                               isObsecure: false,
                               textInputType: TextInputType.text,
-                              labelText: 'Hospital',
+                              labelText: S.of(context).hospital,
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -240,29 +238,49 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                               textEditingController: clinicController,
                               isObsecure: false,
                               textInputType: TextInputType.text,
-                              labelText: 'Clinic',
+                              labelText: S.of(context).clinic,
                             ),
                           ),
                         ],
                       ),
+                      CutsomTextFormFiled(
+                        validator: (value) =>
+                            AuthValidation.validateName(context, value),
+                        textEditingController: specializationController,
+                        isObsecure: false,
+                        textInputType: TextInputType.text,
+                        labelText: S.of(context).specialization,
+                      ),
+
                       Row(
                         children: [
                           Expanded(
-                            child: CutsomTextFormFiled(
-                              validator: (value) =>
-                                  AuthValidation.validateName(context, value),
-                              textEditingController: specializationController,
-                              isObsecure: false,
-                              textInputType: TextInputType.text,
-                              labelText: 'Specialization',
+                            child: CustomImagePicker(
+                              label: S.of(context).uploadFrontIdImage,
+                              onImageSelected: (file) => frontIdImage = file,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: CustomImagePicker(
+                              label: S.of(context).uploadBackIdImage,
+                              onImageSelected: (file) => backIdImage = file,
                             ),
                           ),
                         ],
                       ),
+
                       state.authStatus == AuthStatus.loading
                           ? const CircularProgressIndicator()
                           : CutomElvatedButton(
                               onTap: () {
+                                if (frontIdImage == null ||
+                                    backIdImage == null) {
+                                  ToastHelper.showError(
+                                    'Please upload ID images',
+                                  );
+                                  return;
+                                }
                                 if (_formKey.currentState!.validate()) {
                                   final model = DoctorModel(
                                     address: addressController.text,
@@ -278,7 +296,10 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                                     clinic: clinicController.text,
                                     specialization:
                                         specializationController.text,
+                                    faceIdImage: frontIdImage!,
+                                    backIdImage: backIdImage!,
                                   );
+
                                   context.read<AuthCubit>().registerDoctor(
                                     model,
                                   );
@@ -288,7 +309,7 @@ class _DoctorRegistrationScreenState extends State<DoctorRegistrationScreen> {
                                   });
                                 }
                               },
-                              text: 'Create Account',
+                              text: S.of(context).createAccount,
                             ),
                     ],
                   ),

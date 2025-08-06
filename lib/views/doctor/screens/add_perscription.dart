@@ -1,4 +1,4 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
@@ -54,7 +54,10 @@ class _AddPrescriptionState extends State<AddPrescription> {
                         children: [
                           CutsomTextFormFiled(
                             validator: (value) =>
-                                AuthValidation.validateNationalID(value),
+                                AuthValidation.validateNationalID(
+                                  value,
+                                  context,
+                                ),
                             textEditingController: _patientIDController,
                             labelText: "Enter Patient ID",
                             isObsecure: false,

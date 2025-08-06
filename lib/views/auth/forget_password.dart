@@ -1,8 +1,10 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
 import 'package:caresync/core/theme/theme_button.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/password_reset_model.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
@@ -45,28 +47,26 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.otpSent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('OTP sent successfully')),
-          );
+          ToastHelper.showSuccess('OTP sent successfully');
         }
         if (state.authStatus == AuthStatus.passwordReset) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password reset successfully')),
-          );
+          ToastHelper.showSuccess('Password reset successfully');
           context.read<AuthCubit>().onAuthReset();
           GoRouter.of(context).pushReplacement(RoutesApp.login);
         }
         if (state.authStatus == AuthStatus.error) {
           GoRouter.of(context).go(RoutesApp.login);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("something went wrong , please try again")),
-          );
+          print(state.errorMessage);
+          ToastHelper.showError(state.errorMessage.toString());
           context.read<AuthCubit>().onAuthReset();
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: Text('CareSync'), actions: [ThemeButton()]),
+          appBar: AppBar(
+            title: Text(S.of(context).appName),
+            actions: [ThemeButton()],
+          ),
           body: Center(
             child: state.authStatus == AuthStatus.loading
                 ? CircularProgressIndicator(strokeWidth: 2.5)
@@ -83,21 +83,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         children: [
                           Text(
                             state.authStatus == AuthStatus.initial
-                                ? 'Forgot Password'
+                                ? S.of(context).titleForgetPassword
                                 : state.authStatus == AuthStatus.otpSent
-                                ? 'Verify OTP'
-                                : 'Reset Password',
+                                ? S.of(context).verifyOtpTitle
+                                : S.of(context).resetPasswordTitle,
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           Text(
                             state.authStatus == AuthStatus.initial
-                                ? "Enter your email address and we'll send you a\n"
-                                      "one-time password (OTP) to reset your\n"
-                                      "password."
+                                ? S.of(context).subTitleForgetPassword
                                 : state.authStatus == AuthStatus.otpSent
-                                ? "Enter the OTP sent to your email address\n"
-                                      "and create a new password."
-                                : "Enter your new password and confirm it to reset your password.",
+                                ? S.of(context).verifyOtpSubTitle
+                                : S.of(context).resetPasswordSubTitle,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
@@ -111,7 +108,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                         value,
                                       ),
                                   textInputType: TextInputType.emailAddress,
-                                  labelText: 'Email Address',
+                                  labelText: S.of(context).email,
                                 )
                               : state.authStatus == AuthStatus.otpSent
                               ? OtpTextField(
@@ -119,7 +116,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   borderColor: Colors.white,
                                   showFieldAsBox: true,
                                   onCodeChanged: (String code) =>
-                                      AuthValidation.validateOTP(code),
+                                      AuthValidation.validateOTP(code, context),
                                   onSubmit: (String verificationCode) {
                                     otpVerify.text = verificationCode;
                                     context.read<AuthCubit>().verifyOtp(
@@ -140,7 +137,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   textEditingController: setNewPassword,
                                   isObsecure: isObscure,
                                   textInputType: TextInputType.visiblePassword,
-                                  labelText: 'New Password',
+                                  labelText: S.of(context).newPassword,
                                   suffixIcon: IconButton(
                                     icon: Icon(
                                       isObscure
@@ -189,10 +186,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     }
                                   },
                                   text: state.authStatus == AuthStatus.initial
-                                      ? 'Send OTP'
+                                      ? S.of(context).sendOTP
                                       : state.authStatus ==
                                             AuthStatus.otpVerified
-                                      ? 'Reset Password'
+                                      ? S.of(context).resetPassword
                                       : "",
                                 ),
                         ],

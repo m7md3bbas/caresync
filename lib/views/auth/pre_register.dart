@@ -1,5 +1,6 @@
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/locale/locale_button.dart';
 import 'package:caresync/core/constants/routes_app.dart';
-import 'package:caresync/core/theme/theme_button.dart';
 import 'package:caresync/views/auth/widgets/custom_role_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,24 +10,25 @@ class PreRegisterScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> roles = [
     {
-      'title': 'Doctor',
-      'description':
-          'Manage your patients and view their medical records efficiently.',
-      'image': 'assets/images/doctorI.png',
+      'title': (context) => S.of(context).doctor,
+      'description': (context) => S.of(context).preregisterTitleDoctor,
+      'image':
+          'https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/doctorI.png',
       'onTap': (context) => GoRouter.of(context).push(RoutesApp.doctorRegister),
     },
     {
-      'title': 'Patient',
-      'description':
-          'Access your health information and manage your prescriptions.',
-      'image': 'assets/images/patient.png',
+      'title': (context) => S.of(context).patient,
+      'description': (context) => S.of(context).preregisterTitlePatient,
+      'image':
+          'https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/patient.png',
       'onTap': (context) =>
           GoRouter.of(context).push(RoutesApp.patientRegister),
     },
     {
-      'title': 'Pharmacist',
-      'description': 'View and manage prescriptions and medical data.',
-      'image': 'assets/images/pharmacy.png',
+      'title': (context) => S.of(context).pharmacist,
+      'description': (context) => S.of(context).preregisterTitlePharmacist,
+      'image':
+          'https://reaikvslnvtzdllrrong.supabase.co/storage/v1/object/public/images/pojectImages/pharmacy.png',
       'onTap': (context) =>
           GoRouter.of(context).push(RoutesApp.pharmacyRegister),
     },
@@ -36,8 +38,8 @@ class PreRegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'CareSync',
+        title: Text(
+          S.of(context).appName,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -45,8 +47,8 @@ class PreRegisterScreen extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).push(RoutesApp.login);
             },
-            child: const Text(
-              'Login now',
+            child: Text(
+              S.of(context).loginNow,
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -58,22 +60,24 @@ class PreRegisterScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             Text(
-              'Welcome to CareSync!',
+              S.of(context).preregisterTitle,
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(height: 10),
             Text(
-              'Select your role to get started:',
+              S.of(context).preregisterSubTitle,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 30),
+            LocaleButton(),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: roles.length,
                 itemBuilder: (context, index) {
                   return CustomRoleWidget(
-                    title: roles[index]['title'],
-                    description: roles[index]['description'],
+                    title: roles[index]['title'](context),
+                    description: roles[index]['description'](context),
                     onTap: () => roles[index]['onTap'](context),
                     image: roles[index]['image'],
                   );

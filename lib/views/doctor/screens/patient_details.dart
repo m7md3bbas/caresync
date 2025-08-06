@@ -1,4 +1,4 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/patient/patient_cubit.dart';
 import 'package:caresync/controller/patient/patient_state.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
@@ -55,7 +55,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                         const SizedBox(height: 30),
                         CutsomTextFormFiled(
                           validator: (value) =>
-                              AuthValidation.validateNationalID(value),
+                              AuthValidation.validateNationalID(value, context),
                           textEditingController: _controller,
                           isObsecure: false,
                           textInputType: TextInputType.number,

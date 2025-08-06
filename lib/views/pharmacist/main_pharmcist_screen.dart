@@ -38,7 +38,7 @@ class _PharmacistMainScreenState extends State<PharmacistMainScreen> {
     patientCubit = PatientCubit(PatientService());
     profileCubit = ProfileCubit(ProfileService())..getProfile(token);
     appointmentCubit = AppointmentCubit(PatientService());
-    doctorsCubit = GetDoctorsCubit(DoctorService())..fetchDoctors();
+    doctorsCubit = GetDoctorsCubit(DoctorService())..fetchDoctors(token);
     pharmacyCubit = GetPharmacyCubit(PharmacistService())..getPharmacy();
   }
 

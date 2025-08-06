@@ -13,15 +13,32 @@ class AuthService {
 
   Future<Response> registerPatient(PatientModel model) {
     try {
-      return _dio.post('register/', data: model.toJson());
+      return _dio.post('register/', data: model.toFormDataMap());
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
     } catch (e) {
       throw Exception("server error");
     }
   }
 
-  Future<Response> registerPharmacist(PharmacistModel model) {
+  Future<Response> registerPharmacist(PharmacistModel model) async {
     try {
-      return _dio.post('register/', data: model.toJson());
+      final formData = await model.toFormData();
+      return await _dio.post(
+        'register/',
+        data: formData,
+        options: Options(headers: {"Content-Type": "multipart/form-data"}),
+      );
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
     } catch (e) {
       throw Exception("server error");
     }
@@ -29,9 +46,19 @@ class AuthService {
 
   Future<Response> registerDoctor(DoctorModel model) async {
     try {
-      final response = await _dio.post('register/', data: model.toJson());
-      print(response.data);
+      final response = await _dio.post(
+        'register/',
+        data: model.toFormData(),
+        options: Options(headers: {"Content-Type": "multipart/form-data"}),
+      );
       return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        print(e.response?.data);
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
     } catch (e) {
       throw Exception("server error");
     }
@@ -50,12 +77,16 @@ class AuthService {
           SharedPrefKeys.userType,
           response.data['user_type'],
         );
-      } else if (response.statusCode == 400 || response.statusCode == 401) {
-        throw Exception(response.data['detail']);
       }
       return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception("server error");
     }
   }
 
@@ -64,15 +95,54 @@ class AuthService {
     await SharedPrefHelper.remove(SharedPrefKeys.userType);
   }
 
-  Future<Response> requestPasswordReset(PasswordResetRequest request) {
-    return _dio.post('request-password-reset/', data: request.toJson());
+  Future<Response> requestPasswordReset(PasswordResetRequest request) async {
+    try {
+      final response = await _dio.post(
+        'request-password-reset/',
+        data: request.toJson(),
+      );
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
+    } catch (e) {
+      throw Exception("server error");
+    }
   }
 
-  Future<Response> verifyOtp(VerifyOtpRequest request) {
-    return _dio.post('verify-otp/', data: request.toJson());
+  Future<Response> verifyOtp(VerifyOtpRequest request) async {
+    try {
+      final response = _dio.post('verify-otp/', data: request.toJson());
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
+    } catch (e) {
+      throw Exception("server error");
+    }
   }
 
-  Future<Response> setNewPassword(SetNewPasswordRequest request) {
-    return _dio.post('set-new-password/', data: request.toJson());
+  Future<Response> setNewPassword(SetNewPasswordRequest request) async {
+    try {
+      final response = await _dio.post(
+        'set-new-password/',
+        data: request.toJson(),
+      );
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        throw Exception(e.response?.data);
+      } else {
+        throw Exception("Network error");
+      }
+    } catch (e) {
+      throw Exception("server error");
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class GenderDropdown extends StatelessWidget {
@@ -17,18 +18,25 @@ class GenderDropdown extends StatelessWidget {
             value: selectedGender,
             onChanged: (value) => gender.value = value,
             decoration: InputDecoration(
-              hintText: 'Select gender',
+              hintText: S.of(context).selectGender,
               filled: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            items: const [
-              DropdownMenuItem(value: 'Male', child: Text('Male')),
-              DropdownMenuItem(value: 'Female', child: Text('Female')),
-              DropdownMenuItem(value: 'Other', child: Text('Other')),
+            items: [
+              DropdownMenuItem(value: 'Male', child: Text(S.of(context).male)),
+              DropdownMenuItem(
+                value: 'Female',
+                child: Text(S.of(context).female),
+              ),
+              DropdownMenuItem(
+                value: 'Other',
+                child: Text(S.of(context).other),
+              ),
             ],
-            validator: (value) => value == null ? 'Gender is required' : null,
+            validator: (value) =>
+                value == null ? S.of(context).fieldIsRequired : null,
           );
         },
       ),

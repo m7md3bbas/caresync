@@ -1,10 +1,11 @@
-import 'package:caresync/config/validation/auth_validation.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
-import 'package:caresync/core/theme/theme_button.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,6 +53,10 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  void _handleLoginError(String? message) async {
+    ToastHelper.showError(message ?? 'Unknown error');
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
@@ -59,17 +64,14 @@ class _LoginPageState extends State<LoginPage> {
         if (state.authStatus == AuthStatus.authenticated) {
           GoRouter.of(context).go(RoutesApp.home);
         } else if (state.authStatus == AuthStatus.error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          _handleLoginError(state.errorMessage);
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            centerTitle: true,
-            title: const Text(
-              'CareSync',
+            title: Text(
+              S.of(context).appName,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             actions: [
@@ -77,8 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   GoRouter.of(context).go(RoutesApp.preRegister);
                 },
-                child: const Text(
-                  'Register now',
+                child: Text(
+                  S.of(context).registerNow,
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -99,26 +101,27 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Login',
+                      S.of(context).login,
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     const SizedBox(height: 16),
                     CutsomTextFormFiled(
                       isObsecure: false,
-                      labelText: "National ID",
+                      labelText: S.of(context).nationalID,
                       textEditingController: nationalIDController,
                       textInputType: TextInputType.number,
                       validator: (value) =>
-                          AuthValidation.validateNationalID(value),
+                          AuthValidation.validateNationalID(value, context),
                       suffixIcon: null,
                     ),
                     const SizedBox(height: 16),
                     CutsomTextFormFiled(
                       isObsecure: isObsecure,
-                      labelText: "Password",
+                      labelText: S.of(context).password,
                       textEditingController: passwordController,
                       textInputType: TextInputType.visiblePassword,
-                      validator: (value) => null,
+                      validator: (value) =>
+                          value!.isEmpty ? S.of(context).fieldIsRequired : null,
                       suffixIcon: IconButton(
                         icon: Icon(
                           isObsecure ? Icons.visibility_off : Icons.visibility,
@@ -137,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             GoRouter.of(context).push(RoutesApp.forgetPassword);
                           },
-                          child: const Text('Forgot Password?'),
+                          child: Text(S.of(context).forgetPasswordquestion),
                         ),
                         const Spacer(),
                         state.authStatus == AuthStatus.loading
@@ -154,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(),
-                                child: const Text('Login'),
+                                child: Text(S.of(context).login),
                               ),
                       ],
                     ),

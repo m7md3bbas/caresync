@@ -22,4 +22,12 @@ class SinglePharmacy {
       pharmacyAddress: json['pharmacy_address'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'full_name': fullName,
+    'phone_number': phoneNumber,
+    'email': email,
+    'pharmacy_name': pharmacyName,
+    'pharmacy_address': pharmacyAddress,
+  };
 }

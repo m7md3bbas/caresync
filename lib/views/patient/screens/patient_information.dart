@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
 import 'package:caresync/controller/profile/profile_state.dart';
-import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/locale/locale_button.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/core/theme/theme_button.dart';
@@ -32,7 +32,8 @@ class _PatientInformationState extends State<PatientInformation> {
   void loadImage() async {
     final imagePath = await SharedPrefHelper.getString(
       SharedPrefKeys.profileImage +
-          context.read<ProfileCubit>().state.patientModel!.nationalId,
+              context.read<ProfileCubit>().state.patientModel!.nationalId ??
+          '',
     );
     if (imagePath != null) {
       setState(() {
@@ -78,7 +79,16 @@ class _PatientInformationState extends State<PatientInformation> {
               ),
             ],
             title: Text("Patient Profile"),
-            leading: ThemeButton(),
+            leading: PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [ThemeButton(), LocaleButton()],
+                  ),
+                ),
+              ],
+            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(

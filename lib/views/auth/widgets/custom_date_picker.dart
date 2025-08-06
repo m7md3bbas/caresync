@@ -6,6 +6,8 @@ class DatePickerField extends StatelessWidget {
   final double? width;
   final String hintText;
   final String? Function(String?)? validator;
+  final bool futureDatesOnly;
+  final Function(String)? onChanged;
 
   const DatePickerField({
     super.key,
@@ -13,6 +15,8 @@ class DatePickerField extends StatelessWidget {
     this.width = 360,
     this.hintText = 'yyyy-mm-dd',
     this.validator,
+    this.futureDatesOnly = false,
+    this.onChanged,
   });
 
   @override
@@ -22,13 +26,12 @@ class DatePickerField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         readOnly: true,
-
         onTap: () async {
           final DateTime? picked = await showDatePicker(
             context: context,
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-            initialDate: DateTime(2000),
+            firstDate: futureDatesOnly ? DateTime.now() : DateTime(1900),
+            lastDate: DateTime(2100),
+            initialDate: DateTime.tryParse(controller.text) ?? DateTime.now(),
             builder: (context, child) {
               return Theme(data: ThemeData.dark(), child: child!);
             },
@@ -36,6 +39,7 @@ class DatePickerField extends StatelessWidget {
           if (picked != null) {
             final formatted = DateFormat('yyyy-MM-dd').format(picked);
             controller.text = formatted;
+            onChanged?.call(formatted);
           }
         },
         decoration: InputDecoration(
@@ -46,8 +50,9 @@ class DatePickerField extends StatelessWidget {
         ),
         validator:
             validator ??
-            (value) =>
-                value == null || value.isEmpty ? 'Birthday is required' : null,
+            (value) => (value == null || value.isEmpty)
+                ? 'This field is required'
+                : null,
       ),
     );
   }

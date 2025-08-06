@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
 import 'package:caresync/controller/profile/profile_state.dart';
-import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/core/constants/routes_app.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';

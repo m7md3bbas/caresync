@@ -1,6 +1,7 @@
 import 'package:caresync/core/service/api_service.dart';
 import 'package:caresync/models/book_appoinment.dart';
 import 'package:caresync/models/get_patient_details.dart';
+import 'package:caresync/models/appoinment_model.dart';
 import 'package:dio/dio.dart';
 
 class PatientService {
@@ -34,6 +35,39 @@ class PatientService {
         return GetPatientModel.fromJson(response.data);
       } else {
         throw Exception(response.data['detail'] ?? 'Failed to fetch patient');
+      }
+    } catch (e) {
+      throw Exception("Server error");
+    }
+  }
+
+  Future<List<Appointment>> getMyAppointments(String token) async {
+    try {
+      final response = await _dio.get(
+        'appointments/my-appointments/',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => Appointment.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch appointments');
+      }
+    } catch (e) {
+      throw Exception("Server error");
+    }
+  }
+
+  Future<void> cancelAppointment(int appointmentId, String token) async {
+    try {
+      final response = await _dio.delete(
+        'appointments/appointments/$appointmentId/',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        throw Exception('Failed to cancel appointment');
       }
     } catch (e) {
       throw Exception("Server error");

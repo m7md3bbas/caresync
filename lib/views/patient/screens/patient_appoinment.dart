@@ -45,7 +45,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
   final List<String> availableDates = [
     "2025-07-30",
     "2025-07-31",
-    "2025-08-01",
+    "2025-08-04",
   ];
 
   @override
@@ -96,7 +96,9 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                 counter++;
               });
               if (_currentSection == 0) {
-                await context.read<GetDoctorsCubit>().fetchDoctors();
+                await context.read<GetDoctorsCubit>().fetchDoctors(
+                  SharedPrefHelper.getString(SharedPrefKeys.token) ?? '',
+                );
               }
             },
             child: SingleChildScrollView(
@@ -164,14 +166,16 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentSection >= step
-                ? Theme.of(context).primaryColor
-                : Colors.grey.shade300,
+                ? Theme.of(context).colorScheme.primary
+                : null,
           ),
           child: Center(
             child: Text(
               (step + 1).toString(),
               style: TextStyle(
-                color: _currentSection >= step ? Colors.white : Colors.black,
+                color: _currentSection >= step
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : null,
               ),
             ),
           ),
@@ -182,8 +186,8 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
           style: TextStyle(
             fontSize: 12,
             color: _currentSection >= step
-                ? Theme.of(context).primaryColor
-                : Colors.grey,
+                ? Theme.of(context).colorScheme.primary
+                : null,
           ),
         ),
       ],
@@ -223,7 +227,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
           decoration: BoxDecoration(
             border: Border.all(
               color: selectedDoctor == doctor
-                  ? Theme.of(context).primaryColor
+                  ? Theme.of(context).colorScheme.primary
                   : Colors.transparent,
               width: 2,
             ),
@@ -289,12 +293,14 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                 alignment: Alignment.center,
                 margin: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: selectedTime == time
-                      ? Colors.blue.shade100
-                      : Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: Text(time),
+                child: ChoiceChip(
+                  label: Text(time),
+                  selected: selectedTime == time,
+                  onSelected: (selected) =>
+                      setState(() => selectedTime = selected ? time : null),
+                ),
               ),
             );
           }).toList(),
@@ -311,6 +317,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
             context,
           ).showSnackBar(const SnackBar(content: Text("Appointment Booked")));
         } else if (state.status == AppointmentStatus.error) {
+          print(state.message);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message ?? "An error occurred")),
           );
@@ -345,12 +352,14 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
                         return;
 
                       final model = AppointmentBookingModel(
-                        doctor: 6, // ✅ Dynamic doctor ID
+                        doctor: selectedDoctor!.id, // ✅ Dynamic doctor ID
                         appointmentDate: selectedDate!,
                         appointmentTime: selectedTime!,
                         notes: notesController.text,
                       );
-
+                      print(
+                        "${selectedDate} ${selectedTime} ${notesController.text} ${selectedDoctor!.id} here",
+                      );
                       context.read<AppointmentCubit>().bookAppointment(
                         model,
                         token,

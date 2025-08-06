@@ -1,6 +1,5 @@
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
-import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/models/appoinment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
