@@ -1,5 +1,6 @@
 import 'package:caresync/controller/doctor/doctor_schedule_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_schedule_state.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/models/doctor_schedule_model.dart';
@@ -8,8 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddEditScheduleDialog extends StatefulWidget {
   final DoctorSchedule? schedule;
+  final String? currentWeekStart; // Add this parameter
 
-  const AddEditScheduleDialog({super.key, this.schedule});
+  const AddEditScheduleDialog({
+    super.key,
+    this.schedule,
+    this.currentWeekStart,
+  });
 
   @override
   State<AddEditScheduleDialog> createState() => _AddEditScheduleDialogState();
@@ -35,9 +41,15 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
         ? 'Recurring Schedule'
         : 'Weekly Schedule';
 
-    weekStarting = existing != null
-        ? DateTime.tryParse(existing.weekStartDate) ?? DateTime.now()
-        : DateTime.now();
+    // Use the current week start from the main page if available
+    if (widget.currentWeekStart != null && existing == null) {
+      weekStarting =
+          DateTime.tryParse(widget.currentWeekStart!) ?? DateTime.now();
+    } else {
+      weekStarting = existing != null
+          ? DateTime.tryParse(existing.weekStartDate) ?? DateTime.now()
+          : DateTime.now();
+    }
 
     weekStartController.text = weekStarting.toIso8601String().split('T').first;
 
@@ -51,7 +63,7 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
             'Saturday',
             'Sunday',
           ][existing.dayOfWeek]
-        : null;
+        : 'Monday'; // Set default to Monday instead of null
 
     isWorkingDay = existing?.isWorkingDay ?? true;
 
@@ -68,8 +80,18 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
     if (timeStr == null || timeStr.isEmpty) {
       return const TimeOfDay(hour: 9, minute: 0);
     }
-    final parts = timeStr.split(':');
-    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+    try {
+      final parts = timeStr.split(':');
+      if (parts.length >= 2) {
+        return TimeOfDay(
+          hour: int.parse(parts[0]),
+          minute: int.parse(parts[1]),
+        );
+      }
+    } catch (e) {
+      print('Error parsing time: $timeStr');
+    }
+    return const TimeOfDay(hour: 9, minute: 0);
   }
 
   String _formatTime(TimeOfDay time) {
@@ -92,27 +114,44 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
   Widget build(BuildContext context) {
     return BlocListener<DoctorScheduleCubit, DoctorScheduleState>(
       listener: (context, state) {
-        if (state.status == DoctorScheduleStatus.addSuccess ||
-            state.status == DoctorScheduleStatus.updateSuccess) {
+                 if (state.status == DoctorScheduleStatus.addSuccess) {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+               content: Text(S.of(context).scheduleAddedSuccessfully),
+               backgroundColor: Colors.green,
+             ),
+           );
+          Navigator.pop(context);
+        }
+                 if (state.status == DoctorScheduleStatus.updateSuccess) {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+               content: Text(S.of(context).scheduleUpdatedSuccessfully),
+               backgroundColor: Colors.green,
+             ),
+           );
           Navigator.pop(context);
         }
         if (state.status == DoctorScheduleStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'An error occurred')),
+            SnackBar(
+              content: Text(state.errorMessage ?? 'An error occurred'),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },
       child: AlertDialog(
-        title: Text(widget.schedule != null ? "Edit Schedule" : "Add Schedule"),
+                 title: Text(widget.schedule != null ? S.of(context).editSchedule : S.of(context).addSchedule),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 children: [
-                  ChoiceChip(
-                    label: const Text('Weekly Schedule'),
-                    selected: selectedScheduleType == 'Weekly Schedule',
+                                     ChoiceChip(
+                     label: Text(S.of(context).weeklySchedule),
+                     selected: selectedScheduleType == 'Weekly Schedule',
                     onSelected: (_) {
                       setState(() {
                         selectedScheduleType = 'Weekly Schedule';
@@ -120,9 +159,9 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     },
                   ),
                   const SizedBox(width: 8),
-                  ChoiceChip(
-                    label: const Text('Recurring Schedule'),
-                    selected: selectedScheduleType == 'Recurring Schedule',
+                                     ChoiceChip(
+                     label: Text(S.of(context).recurringSchedule),
+                     selected: selectedScheduleType == 'Recurring Schedule',
                     onSelected: (_) {
                       setState(() {
                         selectedScheduleType = 'Recurring Schedule';
@@ -133,43 +172,59 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
               ),
               const SizedBox(height: 12),
               if (selectedScheduleType == 'Weekly Schedule')
-                TextFormField(
-                  readOnly: true,
-                  decoration: const InputDecoration(labelText: 'Week Starting'),
+                                 TextFormField(
+                   readOnly: true,
+                   decoration: InputDecoration(labelText: S.of(context).weekStarting),
                   controller: weekStartController,
                   onTap: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: weekStarting,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime(2030),
-                    );
-                    if (picked != null) {
-                      setState(() {
-                        weekStarting = picked;
-                        weekStartController.text = picked
-                            .toIso8601String()
-                            .split('T')
-                            .first;
-                      });
+                    try {
+                      final now = DateTime.now();
+                      final initialDate =
+                          DateTime.tryParse(weekStartController.text) ?? now;
+
+                      // Ensure initialDate is not before today
+                      final safeInitialDate = initialDate.isBefore(now)
+                          ? now
+                          : initialDate;
+
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: safeInitialDate,
+                        firstDate: now,
+                        lastDate: DateTime(2030),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          weekStarting = picked;
+                          weekStartController.text = picked
+                              .toIso8601String()
+                              .split('T')
+                              .first;
+                        });
+                      }
+                    } catch (e) {
+                      print('Date picker error: $e');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error selecting date: $e')),
+                      );
                     }
                   },
                 ),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Day of Week'),
+                             DropdownButtonFormField<String>(
+                 decoration: InputDecoration(labelText: S.of(context).dayOfWeek),
                 value: selectedDay,
-                items: const [
-                  DropdownMenuItem(value: 'Monday', child: Text('Monday')),
-                  DropdownMenuItem(value: 'Tuesday', child: Text('Tuesday')),
-                  DropdownMenuItem(
-                    value: 'Wednesday',
-                    child: Text('Wednesday'),
-                  ),
-                  DropdownMenuItem(value: 'Thursday', child: Text('Thursday')),
-                  DropdownMenuItem(value: 'Friday', child: Text('Friday')),
-                  DropdownMenuItem(value: 'Saturday', child: Text('Saturday')),
-                  DropdownMenuItem(value: 'Sunday', child: Text('Sunday')),
-                ],
+                                 items: [
+                   DropdownMenuItem(value: 'Monday', child: Text(S.of(context).monday)),
+                   DropdownMenuItem(value: 'Tuesday', child: Text(S.of(context).tuesday)),
+                   DropdownMenuItem(
+                     value: 'Wednesday',
+                     child: Text(S.of(context).wednesday),
+                   ),
+                   DropdownMenuItem(value: 'Thursday', child: Text(S.of(context).thursday)),
+                   DropdownMenuItem(value: 'Friday', child: Text(S.of(context).friday)),
+                   DropdownMenuItem(value: 'Saturday', child: Text(S.of(context).saturday)),
+                   DropdownMenuItem(value: 'Sunday', child: Text(S.of(context).sunday)),
+                 ],
                 onChanged: (value) {
                   setState(() {
                     selectedDay = value;
@@ -184,11 +239,11 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     isWorkingDay = val;
                   });
                 },
-                title: const Text("Is Working Day"),
+                                 title: Text(S.of(context).isWorkingDay),
               ),
               if (isWorkingDay) ...[
-                ListTile(
-                  title: const Text("Start Time"),
+                                 ListTile(
+                   title: Text(S.of(context).startTime),
                   subtitle: Text(startTime.format(context)),
                   onTap: () async {
                     TimeOfDay? picked = await showTimePicker(
@@ -202,8 +257,8 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     }
                   },
                 ),
-                ListTile(
-                  title: const Text("End Time"),
+                                 ListTile(
+                   title: Text(S.of(context).endTime),
                   subtitle: Text(endTime.format(context)),
                   onTap: () async {
                     TimeOfDay? picked = await showTimePicker(
@@ -217,29 +272,90 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     }
                   },
                 ),
-                TextFormField(
-                  controller: durationController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Appointment Duration (minutes)',
-                  ),
-                ),
+                                 TextFormField(
+                   controller: durationController,
+                   keyboardType: TextInputType.number,
+                   decoration: InputDecoration(
+                     labelText: S.of(context).appointmentDuration,
+                   ),
+                 ),
               ],
             ],
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
+                     TextButton(
+             onPressed: () => Navigator.pop(context),
+             child: Text(S.of(context).cancel),
+           ),
           ElevatedButton(
             onPressed: () async {
+              // Validate inputs
+                             if (selectedDay == null) {
+                 ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(
+                     content: Text(S.of(context).pleaseSelectDay),
+                   ),
+                 );
+                 return;
+               }
+
+              if (isWorkingDay) {
+                                 if (startTime.hour > endTime.hour ||
+                     (startTime.hour == endTime.hour &&
+                         startTime.minute >= endTime.minute)) {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                       content: Text(S.of(context).endTimeMustBeAfterStartTime),
+                     ),
+                   );
+                   return;
+                 }
+
+                                 final duration = int.tryParse(durationController.text);
+                 if (duration == null || duration <= 0) {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                       content: Text(S.of(context).pleaseEnterValidDuration),
+                     ),
+                   );
+                   return;
+                 }
+              }
+
               final cubit = context.read<DoctorScheduleCubit>();
               final token =
                   SharedPrefHelper.getString(SharedPrefKeys.token) ?? '';
 
               final dayIndex = _dayToIndex(selectedDay);
+
+              // Use the current week start from the main page if available
+              String weekStartDate;
+              if (selectedScheduleType == 'Recurring Schedule') {
+                weekStartDate = "2000-01-01";
+              } else if (widget.currentWeekStart != null &&
+                  widget.schedule == null) {
+                // For new schedules, use the current week from main page
+                weekStartDate = widget.currentWeekStart!;
+              } else {
+                // For existing schedules or when no current week is provided
+                weekStartDate = weekStartController.text;
+              }
+
+              print('Creating schedule with weekStartDate: $weekStartDate');
+
+              // Debug the week calculation
+              print('=== SCHEDULE CREATION DEBUG ===');
+              print('Selected schedule type: $selectedScheduleType');
+              print(
+                'Current week start from main page: ${widget.currentWeekStart}',
+              );
+              print('Week start controller text: ${weekStartController.text}');
+              print('Final weekStartDate: $weekStartDate');
+              print('Selected day: $selectedDay');
+              print('Day index: $dayIndex');
+              print('=== END SCHEDULE CREATION DEBUG ===');
+
               final schedule = DoctorSchedule(
                 id: widget.schedule?.id,
                 doctor: widget.schedule?.doctor,
@@ -251,20 +367,26 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                 isWorkingDay: isWorkingDay,
                 appointmentDuration:
                     int.tryParse(durationController.text) ?? 30,
-                weekStartDate: selectedScheduleType == 'Recurring Schedule'
-                    ? "2000-01-01"
-                    : weekStartController.text,
+                weekStartDate: weekStartDate,
                 isRecurring: selectedScheduleType == 'Recurring Schedule',
                 weekRange: widget.schedule?.weekRange,
               );
 
               if (schedule.id != null) {
-                await cubit.updateSchedule(token, schedule);
+                await cubit.updateSchedule(
+                  token,
+                  schedule,
+                  widget.currentWeekStart ?? weekStartController.text,
+                );
               } else {
-                await cubit.addSchedule(token, schedule);
+                await cubit.addSchedule(
+                  token,
+                  schedule,
+                  widget.currentWeekStart ?? weekStartController.text,
+                );
               }
             },
-            child: const Text("Save"),
+                           child: Text(S.of(context).save),
           ),
         ],
       ),

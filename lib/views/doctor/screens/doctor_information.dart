@@ -32,8 +32,7 @@ class _DoctorInformationState extends State<DoctorInformation> {
   void loadImage() async {
     final imagePath = await SharedPrefHelper.getString(
       SharedPrefKeys.profileImage +
-              context.read<ProfileCubit>().state.doctorModel!.nationalId ??
-          "",
+              context.read<ProfileCubit>().state.doctorModel!.nationalId ,
     );
     if (imagePath != null) {
       setState(() {

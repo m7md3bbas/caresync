@@ -1,8 +1,9 @@
 import 'package:caresync/controller/doctor/doctor_schedule_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_schedule_state.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
-import 'package:caresync/views/auth/widgets/custom_date_picker.dart';
+import 'package:caresync/core/widget/offline_indicator.dart';
 import 'package:caresync/views/doctor/screens/AddEditScheduleDialog.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +48,23 @@ class _DoctorScheduleManagementPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return OfflineIndicator(
+      token: token,
+      child: Scaffold(
       appBar: AppBar(
-        title: const Text("Manage Availability"),
+        title: Text(S.of(context).manageAvailability),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              context.read<DoctorScheduleCubit>().fetchSchedules(
+                token,
+                selectedWeek,
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,55 +75,157 @@ class _DoctorScheduleManagementPageState
             Row(
               children: [
                 ChoiceChip(
-                  label: const Text('Weekly'),
+                  label: Text(S.of(context).weekly),
                   selected: true,
                   onSelected: (_) {},
                 ),
                 const SizedBox(width: 8),
-                ChoiceChip(
-                  label: const Text('Days Off'),
-                  selected: false,
-                  onSelected: (_) {},
+                ElevatedButton(
+                  onPressed: () {
+                    // Show cache statistics
+                    final stats = context.read<DoctorScheduleCubit>().getCacheStatistics();
+                                         showDialog(
+                       context: context,
+                       builder: (context) => AlertDialog(
+                         title: Text(S.of(context).cacheStatistics),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                                                     children: [
+                             Text('${S.of(context).cacheBox}: ${stats['cache_box'] ?? 0} ${S.of(context).items}'),
+                             Text('${S.of(context).userDataBox}: ${stats['user_data_box'] ?? 0} ${S.of(context).items}'),
+                             Text('${S.of(context).apiCacheBox}: ${stats['api_cache_box'] ?? 0} ${S.of(context).items}'),
+                             Text('${S.of(context).settingsBox}: ${stats['settings_box'] ?? 0} ${S.of(context).items}'),
+                             const SizedBox(height: 10),
+                             Text(S.of(context).cacheStatisticsDescription),
+                           ],
+                        ),
+                                                 actions: [
+                           TextButton(
+                             onPressed: () => Navigator.pop(context),
+                             child: Text(S.of(context).close),
+                           ),
+                         ],
+                      ),
+                    );
+                  },
+                                     child: Text(S.of(context).cacheStatistics),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    // Clear cache
+                                         showDialog(
+                       context: context,
+                       builder: (context) => AlertDialog(
+                         title: Text(S.of(context).clearCache),
+                         content: Text(S.of(context).clearCacheDescription),
+                                                 actions: [
+                           TextButton(
+                             onPressed: () => Navigator.pop(context),
+                             child: Text(S.of(context).cancel),
+                           ),
+                           ElevatedButton(
+                             onPressed: () {
+                               Navigator.pop(context);
+                               context.read<DoctorScheduleCubit>().clearCache();
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                 SnackBar(
+                                   content: Text(S.of(context).cacheClearedSuccessfully),
+                                   backgroundColor: Colors.green,
+                                 ),
+                               );
+                             },
+                             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                             child: Text(S.of(context).clearCache),
+                           ),
+                         ],
+                      ),
+                    );
+                  },
+                                     child: Text(S.of(context).clearCache),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    // Preload cache
+                                         context.read<DoctorScheduleCubit>().preloadCache(token);
+                     ScaffoldMessenger.of(context).showSnackBar(
+                       SnackBar(
+                         content: Text(S.of(context).preloadingCache),
+                         backgroundColor: Colors.blue,
+                       ),
+                     );
+                  },
+                                     child: Text(S.of(context).preloadCache),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            DatePickerField(
+            // Use a custom date picker that handles the date constraints properly
+            TextFormField(
               controller: dateController,
-              hintText: 'Select Week Date',
-              futureDatesOnly: true,
-              onChanged: (value) {
+              readOnly: true,
+                             decoration: InputDecoration(
+                 labelText: S.of(context).selectWeekDate,
+                suffixIcon: Icon(Icons.calendar_month),
+                border: OutlineInputBorder(),
+              ),
+              onTap: () async {
                 try {
-                  final pickedDate = DateTime.parse(value);
-                  final startOfWeek = getStartOfWeek(pickedDate);
-                  final formattedWeek = DateFormat(
-                    'yyyy-MM-dd',
-                  ).format(startOfWeek);
+                  final now = DateTime.now();
+                  final startOfWeek = getStartOfWeek(now);
+                  final initialDate =
+                      DateTime.tryParse(dateController.text) ?? startOfWeek;
 
-                  setState(() {
-                    selectedWeek = formattedWeek;
-                  });
+                  // Ensure initialDate is not before today
+                  final safeInitialDate = initialDate.isBefore(now)
+                      ? now
+                      : initialDate;
 
-                  context.read<DoctorScheduleCubit>().fetchSchedules(
-                    token,
-                    formattedWeek,
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: safeInitialDate,
+                    firstDate: now,
+                    lastDate: DateTime(2030),
                   );
-                } catch (_) {
-                  debugPrint('Invalid date format');
+
+                  if (picked != null) {
+                    final startOfPickedWeek = getStartOfWeek(picked);
+                    final formattedWeek = DateFormat(
+                      'yyyy-MM-dd',
+                    ).format(startOfPickedWeek);
+
+                    print('=== DATE PICKER DEBUG ===');
+                    print('Picked date: $picked');
+                    print('Start of picked week: $startOfPickedWeek');
+                    print('Formatted week: $formattedWeek');
+                    print('Picked weekday: ${picked.weekday}');
+                    print('=== END DATE PICKER DEBUG ===');
+
+                    setState(() {
+                      selectedWeek = formattedWeek;
+                      dateController.text = formattedWeek;
+                    });
+
+                    context.read<DoctorScheduleCubit>().fetchSchedules(
+                      token,
+                      formattedWeek,
+                    );
+                  }
+                } catch (e) {
+                  print('Date picker error: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error selecting date: $e')),
+                  );
                 }
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select a date';
-                }
-                return null;
               },
             ),
             const SizedBox(height: 12),
-            Text(
-              "Week: ${getWeekRangeText(selectedWeek)}",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+                         Text(
+               "${S.of(context).week}: ${getWeekRangeText(selectedWeek)}",
+               style: const TextStyle(fontWeight: FontWeight.bold),
+             ),
             const SizedBox(height: 20),
             Expanded(
               child: BlocBuilder<DoctorScheduleCubit, DoctorScheduleState>(
@@ -124,43 +240,94 @@ class _DoctorScheduleManagementPageState
 
                   final schedules = state.schedules ?? [];
 
+                  // Debug: Print schedules for debugging
+                  print('=== DEBUG INFO ===');
+                  print('Total schedules: ${schedules.length}');
+                  print('Selected week: $selectedWeek');
+                  print('Selected week type: ${selectedWeek.runtimeType}');
+
+                  schedules.forEach((schedule) {
+                    print(
+                      'Schedule: ${schedule.weekStartDate} (${schedule.weekStartDate.runtimeType}) - ${schedule.dayName} - ${schedule.isWorkingDay}',
+                    );
+                  });
+
                   final filteredSchedules = schedules.where((schedule) {
-                    return schedule.weekStartDate == selectedWeek ||
-                        schedule.isRecurring;
+                    final matchesWeek = schedule.weekStartDate == selectedWeek;
+                    final isRecurring = schedule.isRecurring;
+                    print(
+                      'Filtering: ${schedule.dayName} - weekStart="${schedule.weekStartDate}" (${schedule.weekStartDate.runtimeType}) - selectedWeek="$selectedWeek" (${selectedWeek.runtimeType}) - matches=$matchesWeek - recurring=$isRecurring',
+                    );
+
+                    // Additional debugging for week comparison
+                    if (!matchesWeek && !isRecurring) {
+                      print(
+                        '  ❌ Schedule NOT matching week: ${schedule.weekStartDate} != $selectedWeek',
+                      );
+                    } else {
+                      print(
+                        '  ✅ Schedule matching: ${schedule.weekStartDate} == $selectedWeek OR recurring=$isRecurring',
+                      );
+                    }
+
+                    return matchesWeek || isRecurring;
                   }).toList();
 
+                  print('Filtered schedules: ${filteredSchedules.length}');
+                  print('=== END DEBUG ===');
+
                   if (filteredSchedules.isEmpty) {
-                    return const Center(
-                      child: Text("No schedules found for this week."),
-                    );
+                                         return Center(
+                       child: Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           Text(S.of(context).noSchedulesFound),
+                           const SizedBox(height: 20),
+                           ElevatedButton(
+                             onPressed: () {
+                               showDialog(
+                                 context: context,
+                                 builder: (_) => BlocProvider.value(
+                                   value: context.read<DoctorScheduleCubit>(),
+                                   child: AddEditScheduleDialog(
+                                     currentWeekStart: selectedWeek,
+                                   ),
+                                 ),
+                               );
+                             },
+                             child: Text(S.of(context).addScheduleForThisWeek),
+                           ),
+                         ],
+                       ),
+                     );
                   }
 
-                  final dayNames = [
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday',
-                    'Sunday',
-                  ];
+                                     final dayNames = [
+                     S.of(context).monday,
+                     S.of(context).tuesday,
+                     S.of(context).wednesday,
+                     S.of(context).thursday,
+                     S.of(context).friday,
+                     S.of(context).saturday,
+                     S.of(context).sunday,
+                   ];
 
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
                       key: ValueKey(selectedWeek),
-                      columns: const [
-                        DataColumn(label: Text('Week')),
-                        DataColumn(label: Text('Day')),
-                        DataColumn(label: Text('Working')),
-                        DataColumn(label: Text('Hours')),
-                        DataColumn(label: Text('Duration')),
-                        DataColumn(label: Text('Actions')),
-                      ],
+                                             columns: [
+                         DataColumn(label: Text(S.of(context).week)),
+                         DataColumn(label: Text(S.of(context).day)),
+                         DataColumn(label: Text(S.of(context).working)),
+                         DataColumn(label: Text(S.of(context).hours)),
+                         DataColumn(label: Text(S.of(context).duration)),
+                         DataColumn(label: Text(S.of(context).actions)),
+                       ],
                       rows: filteredSchedules.map((schedule) {
-                        final weekText = schedule.isRecurring
-                            ? 'Recurring'
-                            : schedule.weekStartDate;
+                                                 final weekText = schedule.isRecurring
+                             ? S.of(context).recurring
+                             : schedule.weekStartDate;
 
                         return DataRow(
                           cells: [
@@ -170,27 +337,28 @@ class _DoctorScheduleManagementPageState
                                 dayNames[schedule.dayOfWeek % dayNames.length],
                               ),
                             ),
-                            DataCell(
-                              Text(schedule.isWorkingDay ? 'Yes' : 'No'),
-                            ),
-                            DataCell(
-                              Text(
-                                schedule.isWorkingDay
-                                    ? '${schedule.startTime} - ${schedule.endTime}'
-                                    : 'Day Off',
-                              ),
-                            ),
+                                                         DataCell(
+                               Text(schedule.isWorkingDay ? S.of(context).yes : S.of(context).no),
+                             ),
+                                                         DataCell(
+                               Text(
+                                 schedule.isWorkingDay
+                                     ? '${schedule.startTime} - ${schedule.endTime}'
+                                     : S.of(context).dayOff,
+                               ),
+                             ),
                             DataCell(
                               Text('${schedule.appointmentDuration} min'),
                             ),
-                            DataCell(
-                              CutomElvatedButton(
-                                text: 'Edit',
+                                                         DataCell(
+                               CutomElvatedButton(
+                                 text: S.of(context).edit,
                                 onTap: () {
                                   showDialog(
                                     context: context,
                                     builder: (_) => AddEditScheduleDialog(
                                       schedule: schedule,
+                                      currentWeekStart: selectedWeek,
                                     ),
                                   );
                                 },
@@ -213,12 +381,12 @@ class _DoctorScheduleManagementPageState
             context: context,
             builder: (_) => BlocProvider.value(
               value: context.read<DoctorScheduleCubit>(),
-              child: const AddEditScheduleDialog(),
+              child: AddEditScheduleDialog(currentWeekStart: selectedWeek),
             ),
           );
         },
         child: const Icon(Icons.add),
       ),
-    );
+    ));
   }
 }

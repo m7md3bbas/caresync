@@ -608,7 +608,7 @@ class _MyAppointmentsWidgetState extends State<MyAppointmentsWidget> {
     bool isTablet,
     bool isSmallScreen,
   ) {
-    final isUpcoming = _isUpcoming(appointment.date, appointment.time);
+    // final isUpcoming = _isUpcoming(appointment.date, appointment.time);
 
     return Card(
       margin: EdgeInsets.only(bottom: isTablet ? 20 : 16),
@@ -848,8 +848,8 @@ class _MyAppointmentsWidgetState extends State<MyAppointmentsWidget> {
     return '$displayHour:${parts[1]} $ampm';
   }
 
-  bool _isUpcoming(String dateString, String timeString) {
-    final appointmentDateTime = DateTime.parse('${dateString}T$timeString');
-    return appointmentDateTime.isAfter(DateTime.now());
-  }
+  // bool _isUpcoming(String dateString, String timeString) {
+  //   final appointmentDateTime = DateTime.parse('${dateString}T$timeString');
+  //   return appointmentDateTime.isAfter(DateTime.now());
+  // }
 }

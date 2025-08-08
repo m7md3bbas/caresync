@@ -28,6 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountApprovalMessage": MessageLookupByLibrary.simpleMessage(
       "تم إرسال طلبك. سيتم إبلاغك على بريدك عند القبول.",
     ),
+    "actions": MessageLookupByLibrary.simpleMessage("الإجراءات"),
+    "addSchedule": MessageLookupByLibrary.simpleMessage("إضافة جدول"),
+    "addScheduleForThisWeek": MessageLookupByLibrary.simpleMessage(
+      "إضافة جدول لهذا الأسبوع",
+    ),
     "address": MessageLookupByLibrary.simpleMessage("العنوان"),
     "addressLength": MessageLookupByLibrary.simpleMessage(
       "يجب أن يكون العنوان 5 أحرف على الأقل",
@@ -36,24 +41,56 @@ class MessageLookup extends MessageLookupByLibrary {
     "allergiesExample": MessageLookupByLibrary.simpleMessage(
       "مثال: بنسلين، مكسرات، لقاح",
     ),
+    "apiCacheBox": MessageLookupByLibrary.simpleMessage("صندوق تخزين API"),
     "appName": MessageLookupByLibrary.simpleMessage("كير سينك"),
+    "appointmentDuration": MessageLookupByLibrary.simpleMessage(
+      "مدة الموعد (دقائق)",
+    ),
     "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
     "birthday": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
+    "cacheBox": MessageLookupByLibrary.simpleMessage("صندوق التخزين المؤقت"),
+    "cacheClearedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم مسح التخزين المؤقت بنجاح!",
+    ),
+    "cacheStatistics": MessageLookupByLibrary.simpleMessage(
+      "إحصائيات التخزين المؤقت",
+    ),
+    "cacheStatisticsDescription": MessageLookupByLibrary.simpleMessage(
+      "هذا يوضح عدد العناصر المخزنة مؤقتًا في كل صندوق تخزين.",
+    ),
+    "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "clearCache": MessageLookupByLibrary.simpleMessage("مسح التخزين المؤقت"),
+    "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
+      "سيؤدي هذا إلى مسح جميع البيانات المخزنة مؤقتًا. ستحتاج التطبيق لجلب بيانات جديدة من الخادم.",
+    ),
     "clinic": MessageLookupByLibrary.simpleMessage("العيادة"),
+    "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "day": MessageLookupByLibrary.simpleMessage("اليوم"),
+    "dayOfWeek": MessageLookupByLibrary.simpleMessage("يوم الأسبوع"),
+    "dayOff": MessageLookupByLibrary.simpleMessage("يوم إجازة"),
     "doctor": MessageLookupByLibrary.simpleMessage("طبيب"),
     "doctorRegisterTitle": MessageLookupByLibrary.simpleMessage("تسجيل الطبيب"),
+    "duration": MessageLookupByLibrary.simpleMessage("المدة"),
+    "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+    "editSchedule": MessageLookupByLibrary.simpleMessage("تعديل الجدول"),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
+    "endTime": MessageLookupByLibrary.simpleMessage("وقت النهاية"),
+    "endTimeMustBeAfterStartTime": MessageLookupByLibrary.simpleMessage(
+      "يجب أن يكون وقت النهاية بعد وقت البداية",
+    ),
     "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
     "female": MessageLookupByLibrary.simpleMessage("انثى"),
     "fieldIsRequired": MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب"),
     "forgetPasswordquestion": MessageLookupByLibrary.simpleMessage(
       "هل نسيت كلمة المرور؟",
     ),
+    "friday": MessageLookupByLibrary.simpleMessage("الجمعة"),
     "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
     "hospital": MessageLookupByLibrary.simpleMessage("المستشفى"),
+    "hours": MessageLookupByLibrary.simpleMessage("الساعات"),
     "iHaveDiabetes": MessageLookupByLibrary.simpleMessage(
       "أعاني من مرض السكري",
     ),
@@ -66,10 +103,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidEmail": MessageLookupByLibrary.simpleMessage(
       "عنوان البريد الإلكتروني غير صالح",
     ),
+    "isWorkingDay": MessageLookupByLibrary.simpleMessage("يوم عمل"),
+    "items": MessageLookupByLibrary.simpleMessage("عناصر"),
     "languageTitle": MessageLookupByLibrary.simpleMessage("اختر لغتك"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginNow": MessageLookupByLibrary.simpleMessage("سجّل الدخول الآن"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
+    "manageAvailability": MessageLookupByLibrary.simpleMessage("إدارة التوفر"),
+    "monday": MessageLookupByLibrary.simpleMessage("الاثنين"),
     "nameLength": MessageLookupByLibrary.simpleMessage(
       "يجب أن يحتوي الاسم على 3 أحرف على الأقل",
     ),
@@ -82,6 +123,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "next": MessageLookupByLibrary.simpleMessage("التالي"),
+    "no": MessageLookupByLibrary.simpleMessage("لا"),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "لا يوجد اتصال بالإنترنت",
+    ),
+    "noSchedulesFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على جداول لهذا الأسبوع.",
+    ),
+    "offlineActionsPending": MessageLookupByLibrary.simpleMessage(
+      "إجراءات معلقة",
+    ),
+    "offlineActionsSynced": MessageLookupByLibrary.simpleMessage(
+      "تمت مزامنة الإجراءات غير المتصلة!",
+    ),
+    "offlineIndicator": MessageLookupByLibrary.simpleMessage("غير متصل"),
     "onboardingPageOneSubTitle": MessageLookupByLibrary.simpleMessage(
       "سواء كنت طبيبًا أو مريضًا أو صيدليًا، هذا التطبيق مصمم خصيصًا لك. قم بتسجيل دورك واستمتع بالمميزات المصممة لتلبية احتياجاتك.",
     ),
@@ -123,6 +178,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("عنوان الصيدلية"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("اسم الصيدلية"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "pleaseEnterValidDuration": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال مدة صحيحة",
+    ),
+    "pleaseSelectDay": MessageLookupByLibrary.simpleMessage(
+      "يرجى اختيار يوم من الأسبوع",
+    ),
+    "preloadCache": MessageLookupByLibrary.simpleMessage(
+      "تحميل التخزين المؤقت مسبقًا",
+    ),
+    "preloadingCache": MessageLookupByLibrary.simpleMessage(
+      "جاري تحميل التخزين المؤقت...",
+    ),
     "preregisterSubTitle": MessageLookupByLibrary.simpleMessage(
       "اختر دورك للبدء:",
     ),
@@ -138,6 +205,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "preregisterTitlePharmacist": MessageLookupByLibrary.simpleMessage(
       "عرض وإدارة الوصفات الطبية والبيانات الصحية.",
     ),
+    "recurring": MessageLookupByLibrary.simpleMessage("متكرر"),
+    "recurringSchedule": MessageLookupByLibrary.simpleMessage("جدول متكرر"),
     "registerNow": MessageLookupByLibrary.simpleMessage("سجل الآن"),
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
@@ -148,24 +217,55 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordTitle": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
+    "saturday": MessageLookupByLibrary.simpleMessage("السبت"),
+    "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "scheduleAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم إضافة الجدول بنجاح!",
+    ),
+    "scheduleDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم حذف الجدول بنجاح!",
+    ),
+    "scheduleType": MessageLookupByLibrary.simpleMessage("نوع الجدول"),
+    "scheduleUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث الجدول بنجاح!",
+    ),
     "selectGender": MessageLookupByLibrary.simpleMessage("اختر الجنس"),
+    "selectWeekDate": MessageLookupByLibrary.simpleMessage(
+      "اختر تاريخ الأسبوع",
+    ),
     "sendOTP": MessageLookupByLibrary.simpleMessage("إرسال الرمز"),
+    "settingsBox": MessageLookupByLibrary.simpleMessage("صندوق الإعدادات"),
     "specialization": MessageLookupByLibrary.simpleMessage("التخصص"),
+    "startTime": MessageLookupByLibrary.simpleMessage("وقت البداية"),
     "subTitleForgetPassword": MessageLookupByLibrary.simpleMessage(
       "أدخل بريدك الإلكتروني وسنرسل لك رمز تحقق لمرة واحدة (OTP) لإعادة تعيين كلمة المرور الخاصة بك.",
     ),
+    "sunday": MessageLookupByLibrary.simpleMessage("الأحد"),
+    "sync": MessageLookupByLibrary.simpleMessage("مزامنة"),
+    "thursday": MessageLookupByLibrary.simpleMessage("الخميس"),
     "titleForgetPassword": MessageLookupByLibrary.simpleMessage(
       "نسيت كلمة المرور",
     ),
+    "tuesday": MessageLookupByLibrary.simpleMessage("الثلاثاء"),
     "uploadBackIdImage": MessageLookupByLibrary.simpleMessage(
       "تحميل صورة البطاقة (الظهر)",
     ),
     "uploadFrontIdImage": MessageLookupByLibrary.simpleMessage(
       "تحميل صورة البطاقة (الوجه)",
     ),
+    "userDataBox": MessageLookupByLibrary.simpleMessage(
+      "صندوق بيانات المستخدم",
+    ),
     "verifyOtpSubTitle": MessageLookupByLibrary.simpleMessage(
       "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني وأنشئ كلمة مرور جديدة.",
     ),
     "verifyOtpTitle": MessageLookupByLibrary.simpleMessage("تأكيد الرمز"),
+    "wednesday": MessageLookupByLibrary.simpleMessage("الأربعاء"),
+    "week": MessageLookupByLibrary.simpleMessage("الأسبوع"),
+    "weekStarting": MessageLookupByLibrary.simpleMessage("بداية الأسبوع"),
+    "weekly": MessageLookupByLibrary.simpleMessage("أسبوعي"),
+    "weeklySchedule": MessageLookupByLibrary.simpleMessage("جدول أسبوعي"),
+    "working": MessageLookupByLibrary.simpleMessage("العمل"),
+    "yes": MessageLookupByLibrary.simpleMessage("نعم"),
   };
 }

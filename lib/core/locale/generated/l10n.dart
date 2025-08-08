@@ -663,6 +663,461 @@ class S {
       args: [],
     );
   }
+
+  /// `Manage Availability`
+  String get manageAvailability {
+    return Intl.message(
+      'Manage Availability',
+      name: 'manageAvailability',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cache Statistics`
+  String get cacheStatistics {
+    return Intl.message(
+      'Cache Statistics',
+      name: 'cacheStatistics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cache Box`
+  String get cacheBox {
+    return Intl.message('Cache Box', name: 'cacheBox', desc: '', args: []);
+  }
+
+  /// `User Data Box`
+  String get userDataBox {
+    return Intl.message(
+      'User Data Box',
+      name: 'userDataBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `API Cache Box`
+  String get apiCacheBox {
+    return Intl.message(
+      'API Cache Box',
+      name: 'apiCacheBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings Box`
+  String get settingsBox {
+    return Intl.message(
+      'Settings Box',
+      name: 'settingsBox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `items`
+  String get items {
+    return Intl.message('items', name: 'items', desc: '', args: []);
+  }
+
+  /// `This shows the number of cached items in each storage box.`
+  String get cacheStatisticsDescription {
+    return Intl.message(
+      'This shows the number of cached items in each storage box.',
+      name: 'cacheStatisticsDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get close {
+    return Intl.message('Close', name: 'close', desc: '', args: []);
+  }
+
+  /// `Clear Cache`
+  String get clearCache {
+    return Intl.message('Clear Cache', name: 'clearCache', desc: '', args: []);
+  }
+
+  /// `This will clear all cached data. The app will need to fetch fresh data from the server.`
+  String get clearCacheDescription {
+    return Intl.message(
+      'This will clear all cached data. The app will need to fetch fresh data from the server.',
+      name: 'clearCacheDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Cache cleared successfully!`
+  String get cacheClearedSuccessfully {
+    return Intl.message(
+      'Cache cleared successfully!',
+      name: 'cacheClearedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preload Cache`
+  String get preloadCache {
+    return Intl.message(
+      'Preload Cache',
+      name: 'preloadCache',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preloading cache...`
+  String get preloadingCache {
+    return Intl.message(
+      'Preloading cache...',
+      name: 'preloadingCache',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weekly`
+  String get weekly {
+    return Intl.message('Weekly', name: 'weekly', desc: '', args: []);
+  }
+
+  /// `Select Week Date`
+  String get selectWeekDate {
+    return Intl.message(
+      'Select Week Date',
+      name: 'selectWeekDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Week`
+  String get week {
+    return Intl.message('Week', name: 'week', desc: '', args: []);
+  }
+
+  /// `No schedules found for this week.`
+  String get noSchedulesFound {
+    return Intl.message(
+      'No schedules found for this week.',
+      name: 'noSchedulesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Schedule for This Week`
+  String get addScheduleForThisWeek {
+    return Intl.message(
+      'Add Schedule for This Week',
+      name: 'addScheduleForThisWeek',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day`
+  String get day {
+    return Intl.message('Day', name: 'day', desc: '', args: []);
+  }
+
+  /// `Working`
+  String get working {
+    return Intl.message('Working', name: 'working', desc: '', args: []);
+  }
+
+  /// `Hours`
+  String get hours {
+    return Intl.message('Hours', name: 'hours', desc: '', args: []);
+  }
+
+  /// `Duration`
+  String get duration {
+    return Intl.message('Duration', name: 'duration', desc: '', args: []);
+  }
+
+  /// `Actions`
+  String get actions {
+    return Intl.message('Actions', name: 'actions', desc: '', args: []);
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message('No', name: 'no', desc: '', args: []);
+  }
+
+  /// `Day Off`
+  String get dayOff {
+    return Intl.message('Day Off', name: 'dayOff', desc: '', args: []);
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+  }
+
+  /// `Offline`
+  String get offlineIndicator {
+    return Intl.message(
+      'Offline',
+      name: 'offlineIndicator',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `actions pending`
+  String get offlineActionsPending {
+    return Intl.message(
+      'actions pending',
+      name: 'offlineActionsPending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection`
+  String get noInternetConnection {
+    return Intl.message(
+      'No internet connection',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sync`
+  String get sync {
+    return Intl.message('Sync', name: 'sync', desc: '', args: []);
+  }
+
+  /// `Offline actions synced!`
+  String get offlineActionsSynced {
+    return Intl.message(
+      'Offline actions synced!',
+      name: 'offlineActionsSynced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule added successfully!`
+  String get scheduleAddedSuccessfully {
+    return Intl.message(
+      'Schedule added successfully!',
+      name: 'scheduleAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule updated successfully!`
+  String get scheduleUpdatedSuccessfully {
+    return Intl.message(
+      'Schedule updated successfully!',
+      name: 'scheduleUpdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule deleted successfully!`
+  String get scheduleDeletedSuccessfully {
+    return Intl.message(
+      'Schedule deleted successfully!',
+      name: 'scheduleDeletedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Schedule`
+  String get addSchedule {
+    return Intl.message(
+      'Add Schedule',
+      name: 'addSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Schedule`
+  String get editSchedule {
+    return Intl.message(
+      'Edit Schedule',
+      name: 'editSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule Type`
+  String get scheduleType {
+    return Intl.message(
+      'Schedule Type',
+      name: 'scheduleType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weekly Schedule`
+  String get weeklySchedule {
+    return Intl.message(
+      'Weekly Schedule',
+      name: 'weeklySchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recurring Schedule`
+  String get recurringSchedule {
+    return Intl.message(
+      'Recurring Schedule',
+      name: 'recurringSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Week Starting`
+  String get weekStarting {
+    return Intl.message(
+      'Week Starting',
+      name: 'weekStarting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day of Week`
+  String get dayOfWeek {
+    return Intl.message('Day of Week', name: 'dayOfWeek', desc: '', args: []);
+  }
+
+  /// `Is Working Day`
+  String get isWorkingDay {
+    return Intl.message(
+      'Is Working Day',
+      name: 'isWorkingDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Time`
+  String get startTime {
+    return Intl.message('Start Time', name: 'startTime', desc: '', args: []);
+  }
+
+  /// `End Time`
+  String get endTime {
+    return Intl.message('End Time', name: 'endTime', desc: '', args: []);
+  }
+
+  /// `Appointment Duration (minutes)`
+  String get appointmentDuration {
+    return Intl.message(
+      'Appointment Duration (minutes)',
+      name: 'appointmentDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: '', args: []);
+  }
+
+  /// `Please select a day of the week`
+  String get pleaseSelectDay {
+    return Intl.message(
+      'Please select a day of the week',
+      name: 'pleaseSelectDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End time must be after start time`
+  String get endTimeMustBeAfterStartTime {
+    return Intl.message(
+      'End time must be after start time',
+      name: 'endTimeMustBeAfterStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid duration`
+  String get pleaseEnterValidDuration {
+    return Intl.message(
+      'Please enter a valid duration',
+      name: 'pleaseEnterValidDuration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monday`
+  String get monday {
+    return Intl.message('Monday', name: 'monday', desc: '', args: []);
+  }
+
+  /// `Tuesday`
+  String get tuesday {
+    return Intl.message('Tuesday', name: 'tuesday', desc: '', args: []);
+  }
+
+  /// `Wednesday`
+  String get wednesday {
+    return Intl.message('Wednesday', name: 'wednesday', desc: '', args: []);
+  }
+
+  /// `Thursday`
+  String get thursday {
+    return Intl.message('Thursday', name: 'thursday', desc: '', args: []);
+  }
+
+  /// `Friday`
+  String get friday {
+    return Intl.message('Friday', name: 'friday', desc: '', args: []);
+  }
+
+  /// `Saturday`
+  String get saturday {
+    return Intl.message('Saturday', name: 'saturday', desc: '', args: []);
+  }
+
+  /// `Sunday`
+  String get sunday {
+    return Intl.message('Sunday', name: 'sunday', desc: '', args: []);
+  }
+
+  /// `Recurring`
+  String get recurring {
+    return Intl.message('Recurring', name: 'recurring', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

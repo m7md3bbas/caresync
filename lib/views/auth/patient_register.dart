@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:caresync/core/locale/generated/l10n.dart';
-import 'package:caresync/core/locale/locale_button.dart';
 import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
-import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/patient_model.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
-import 'package:caresync/views/auth/widgets/custom_image_picker.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';

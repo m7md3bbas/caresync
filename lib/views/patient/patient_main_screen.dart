@@ -11,8 +11,6 @@ import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/views/patient/screens/nearest_pharmacy.dart';
 import 'package:caresync/views/patient/screens/appointment_booking_screen.dart';
-import 'package:caresync/views/patient/screens/patient_appoinment.dart'
-    hide AppointmentBookingScreen;
 import 'package:caresync/views/patient/screens/patient_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

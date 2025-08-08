@@ -4,7 +4,6 @@ import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/auth/auth_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
-import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/pharmacist_model.dart';
 import 'package:caresync/views/auth/widgets/custom_gender_drop_down.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';

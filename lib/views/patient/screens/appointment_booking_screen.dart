@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:caresync/controller/patient/book_appoinment_cubit.dart';
 import 'package:caresync/core/colors/color_manager.dart';
 import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/get_doctors.dart';
-import 'package:caresync/models/appoinment_model.dart';
 import 'widgets/doctor_list_widget.dart';
 import 'widgets/doctor_schedule_widget.dart';
 import 'widgets/booking_form_widget.dart';

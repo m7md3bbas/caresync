@@ -143,7 +143,7 @@ class DoctorAppointmentsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                       ),
-                      child: const Text("✔ Confirm"),
+                      child: const Text("Confirm"),
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
@@ -153,7 +153,7 @@ class DoctorAppointmentsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                       ),
-                      child: const Text("✖ Reject"),
+                      child: const Text("Reject"),
                     ),
                   ],
                 ),

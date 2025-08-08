@@ -4,12 +4,7 @@ import 'package:caresync/models/get_doctors.dart';
 import 'package:caresync/core/service/doctor_service.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
-import 'package:flutter/material.dart';
-import 'package:caresync/core/colors/color_manager.dart';
-import 'package:caresync/models/get_doctors.dart';
-import 'package:caresync/core/service/doctor_service.dart';
-import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
-import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+
 
 class DoctorScheduleWidget extends StatefulWidget {
   final GetDoctorModel doctor;

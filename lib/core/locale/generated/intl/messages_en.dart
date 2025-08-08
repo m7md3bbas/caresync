@@ -28,6 +28,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountApprovalMessage": MessageLookupByLibrary.simpleMessage(
       "Your request has been submitted. You\'ll be notified by email once approved.",
     ),
+    "actions": MessageLookupByLibrary.simpleMessage("Actions"),
+    "addSchedule": MessageLookupByLibrary.simpleMessage("Add Schedule"),
+    "addScheduleForThisWeek": MessageLookupByLibrary.simpleMessage(
+      "Add Schedule for This Week",
+    ),
     "address": MessageLookupByLibrary.simpleMessage("Address"),
     "addressLength": MessageLookupByLibrary.simpleMessage(
       "Address must be at least 5 characters",
@@ -36,17 +41,45 @@ class MessageLookup extends MessageLookupByLibrary {
     "allergiesExample": MessageLookupByLibrary.simpleMessage(
       "e.g. Penicillin, Nuts, Pollen etc.",
     ),
+    "apiCacheBox": MessageLookupByLibrary.simpleMessage("API Cache Box"),
     "appName": MessageLookupByLibrary.simpleMessage("CareSync"),
+    "appointmentDuration": MessageLookupByLibrary.simpleMessage(
+      "Appointment Duration (minutes)",
+    ),
     "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
     "birthday": MessageLookupByLibrary.simpleMessage("Birthday"),
+    "cacheBox": MessageLookupByLibrary.simpleMessage("Cache Box"),
+    "cacheClearedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Cache cleared successfully!",
+    ),
+    "cacheStatistics": MessageLookupByLibrary.simpleMessage("Cache Statistics"),
+    "cacheStatisticsDescription": MessageLookupByLibrary.simpleMessage(
+      "This shows the number of cached items in each storage box.",
+    ),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "clearCache": MessageLookupByLibrary.simpleMessage("Clear Cache"),
+    "clearCacheDescription": MessageLookupByLibrary.simpleMessage(
+      "This will clear all cached data. The app will need to fetch fresh data from the server.",
+    ),
     "clinic": MessageLookupByLibrary.simpleMessage("Clinic"),
+    "close": MessageLookupByLibrary.simpleMessage("Close"),
     "createAccount": MessageLookupByLibrary.simpleMessage("Create Account"),
+    "day": MessageLookupByLibrary.simpleMessage("Day"),
+    "dayOfWeek": MessageLookupByLibrary.simpleMessage("Day of Week"),
+    "dayOff": MessageLookupByLibrary.simpleMessage("Day Off"),
     "doctor": MessageLookupByLibrary.simpleMessage("Doctor"),
     "doctorRegisterTitle": MessageLookupByLibrary.simpleMessage(
       "Doctor Registration",
     ),
+    "duration": MessageLookupByLibrary.simpleMessage("Duration"),
+    "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "editSchedule": MessageLookupByLibrary.simpleMessage("Edit Schedule"),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+    "endTime": MessageLookupByLibrary.simpleMessage("End Time"),
+    "endTimeMustBeAfterStartTime": MessageLookupByLibrary.simpleMessage(
+      "End time must be after start time",
+    ),
     "english": MessageLookupByLibrary.simpleMessage("English"),
     "female": MessageLookupByLibrary.simpleMessage("Female"),
     "fieldIsRequired": MessageLookupByLibrary.simpleMessage(
@@ -55,9 +88,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgetPasswordquestion": MessageLookupByLibrary.simpleMessage(
       "Forget password?",
     ),
+    "friday": MessageLookupByLibrary.simpleMessage("Friday"),
     "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
     "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
     "hospital": MessageLookupByLibrary.simpleMessage("Hospital"),
+    "hours": MessageLookupByLibrary.simpleMessage("Hours"),
     "iHaveDiabetes": MessageLookupByLibrary.simpleMessage("I have diabetes"),
     "invalidAllergies": MessageLookupByLibrary.simpleMessage(
       "Allergies must be letters only, separated by commas",
@@ -68,10 +103,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "invalidEmail": MessageLookupByLibrary.simpleMessage(
       "Invalid email address",
     ),
+    "isWorkingDay": MessageLookupByLibrary.simpleMessage("Is Working Day"),
+    "items": MessageLookupByLibrary.simpleMessage("items"),
     "languageTitle": MessageLookupByLibrary.simpleMessage("Your Language"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginNow": MessageLookupByLibrary.simpleMessage("Login now"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
+    "manageAvailability": MessageLookupByLibrary.simpleMessage(
+      "Manage Availability",
+    ),
+    "monday": MessageLookupByLibrary.simpleMessage("Monday"),
     "nameLength": MessageLookupByLibrary.simpleMessage(
       "Name must be at least 3 characters",
     ),
@@ -84,6 +125,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "next": MessageLookupByLibrary.simpleMessage("Next"),
+    "no": MessageLookupByLibrary.simpleMessage("No"),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "No internet connection",
+    ),
+    "noSchedulesFound": MessageLookupByLibrary.simpleMessage(
+      "No schedules found for this week.",
+    ),
+    "offlineActionsPending": MessageLookupByLibrary.simpleMessage(
+      "actions pending",
+    ),
+    "offlineActionsSynced": MessageLookupByLibrary.simpleMessage(
+      "Offline actions synced!",
+    ),
+    "offlineIndicator": MessageLookupByLibrary.simpleMessage("Offline"),
     "onboardingPageOneSubTitle": MessageLookupByLibrary.simpleMessage(
       "Whether you\'re a Doctor, Patient, or Pharmacist, this app is tailored just for you. Register your role and access features designed specifically to meet your needs.",
     ),
@@ -125,6 +180,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("Pharmacy Address"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("Pharmacy Name"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("PhoneNumber"),
+    "pleaseEnterValidDuration": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid duration",
+    ),
+    "pleaseSelectDay": MessageLookupByLibrary.simpleMessage(
+      "Please select a day of the week",
+    ),
+    "preloadCache": MessageLookupByLibrary.simpleMessage("Preload Cache"),
+    "preloadingCache": MessageLookupByLibrary.simpleMessage(
+      "Preloading cache...",
+    ),
     "preregisterSubTitle": MessageLookupByLibrary.simpleMessage(
       "Select your role to get started:",
     ),
@@ -140,6 +205,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "preregisterTitlePharmacist": MessageLookupByLibrary.simpleMessage(
       "View and manage prescriptions and medical data.",
     ),
+    "recurring": MessageLookupByLibrary.simpleMessage("Recurring"),
+    "recurringSchedule": MessageLookupByLibrary.simpleMessage(
+      "Recurring Schedule",
+    ),
     "registerNow": MessageLookupByLibrary.simpleMessage("Register Now"),
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
     "resetPasswordSubTitle": MessageLookupByLibrary.simpleMessage(
@@ -148,24 +217,51 @@ class MessageLookup extends MessageLookupByLibrary {
     "resetPasswordTitle": MessageLookupByLibrary.simpleMessage(
       "Reset Password",
     ),
+    "saturday": MessageLookupByLibrary.simpleMessage("Saturday"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "scheduleAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Schedule added successfully!",
+    ),
+    "scheduleDeletedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Schedule deleted successfully!",
+    ),
+    "scheduleType": MessageLookupByLibrary.simpleMessage("Schedule Type"),
+    "scheduleUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Schedule updated successfully!",
+    ),
     "selectGender": MessageLookupByLibrary.simpleMessage("Select Gender"),
+    "selectWeekDate": MessageLookupByLibrary.simpleMessage("Select Week Date"),
     "sendOTP": MessageLookupByLibrary.simpleMessage("Send OTP"),
+    "settingsBox": MessageLookupByLibrary.simpleMessage("Settings Box"),
     "specialization": MessageLookupByLibrary.simpleMessage("Specialization"),
+    "startTime": MessageLookupByLibrary.simpleMessage("Start Time"),
     "subTitleForgetPassword": MessageLookupByLibrary.simpleMessage(
       "Enter your email address and we\'ll send you a one-time password (OTP) to reset your password.",
     ),
+    "sunday": MessageLookupByLibrary.simpleMessage("Sunday"),
+    "sync": MessageLookupByLibrary.simpleMessage("Sync"),
+    "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
     "titleForgetPassword": MessageLookupByLibrary.simpleMessage(
       "Forget password",
     ),
+    "tuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),
     "uploadBackIdImage": MessageLookupByLibrary.simpleMessage(
       "Upload ID card image (Back)",
     ),
     "uploadFrontIdImage": MessageLookupByLibrary.simpleMessage(
       "Upload ID card image (Front)",
     ),
+    "userDataBox": MessageLookupByLibrary.simpleMessage("User Data Box"),
     "verifyOtpSubTitle": MessageLookupByLibrary.simpleMessage(
       "Enter the OTP sent to your email address and create a new password.",
     ),
     "verifyOtpTitle": MessageLookupByLibrary.simpleMessage("Verify OTP"),
+    "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
+    "week": MessageLookupByLibrary.simpleMessage("Week"),
+    "weekStarting": MessageLookupByLibrary.simpleMessage("Week Starting"),
+    "weekly": MessageLookupByLibrary.simpleMessage("Weekly"),
+    "weeklySchedule": MessageLookupByLibrary.simpleMessage("Weekly Schedule"),
+    "working": MessageLookupByLibrary.simpleMessage("Working"),
+    "yes": MessageLookupByLibrary.simpleMessage("Yes"),
   };
 }

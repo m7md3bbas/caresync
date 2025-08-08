@@ -45,7 +45,11 @@ class DoctorService {
       );
 
       if (response.statusCode == 200) {
-        return List<Appointment>.from(response.data);
+        final appointments = (response.data as List)
+            .map((e) => Appointment.fromJson(e))
+            .toList();
+        print(appointments);
+        return appointments;
       } else {
         throw Exception('Failed to fetch appointments');
       }
