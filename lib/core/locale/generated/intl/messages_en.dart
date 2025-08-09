@@ -90,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "friday": MessageLookupByLibrary.simpleMessage("Friday"),
     "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
+    "full_name": MessageLookupByLibrary.simpleMessage("Full Name"),
     "getStarted": MessageLookupByLibrary.simpleMessage("Get Started"),
     "hospital": MessageLookupByLibrary.simpleMessage("Hospital"),
     "hours": MessageLookupByLibrary.simpleMessage("Hours"),
@@ -108,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageTitle": MessageLookupByLibrary.simpleMessage("Your Language"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "loginNow": MessageLookupByLibrary.simpleMessage("Login now"),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
     "manageAvailability": MessageLookupByLibrary.simpleMessage(
       "Manage Availability",
@@ -177,9 +179,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "pharmacistRegisterTitle": MessageLookupByLibrary.simpleMessage(
       "Pharmacist Registration",
     ),
+    "pharmacist_profile": MessageLookupByLibrary.simpleMessage(
+      "Pharmacist Profile",
+    ),
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("Pharmacy Address"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("Pharmacy Name"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("PhoneNumber"),
+    "phone_number": MessageLookupByLibrary.simpleMessage("Phone Number"),
     "pleaseEnterValidDuration": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid duration",
     ),

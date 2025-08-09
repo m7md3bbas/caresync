@@ -131,5 +131,9 @@
   "friday": "Friday",
   "saturday": "Saturday",
   "sunday": "Sunday",
-  "recurring": "Recurring"
+  "recurring": "Recurring",
+  "pharmacist_profile": "Pharmacist Profile",
+  "logout": "Logout",
+  "full_name": "Full Name",
+  "phone_number": "Phone Number"
 }

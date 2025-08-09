@@ -3,6 +3,7 @@ import 'package:caresync/controller/auth/auth_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
 import 'package:caresync/controller/profile/profile_state.dart';
 import 'package:caresync/core/constants/routes_app.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/core/theme/theme_button.dart';
@@ -79,7 +80,7 @@ class _PharmacistInformationState extends State<PharmacistInformation> {
                 },
               ),
             ],
-            title: Text("Pharmacist Profile"),
+            title: Text(S.of(context).pharmacist_profile),
             leading: ThemeButton(),
             centerTitle: true,
           ),

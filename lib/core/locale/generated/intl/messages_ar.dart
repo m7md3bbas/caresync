@@ -88,6 +88,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "friday": MessageLookupByLibrary.simpleMessage("الجمعة"),
     "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
+    "full_name": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
     "hospital": MessageLookupByLibrary.simpleMessage("المستشفى"),
     "hours": MessageLookupByLibrary.simpleMessage("الساعات"),
@@ -108,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageTitle": MessageLookupByLibrary.simpleMessage("اختر لغتك"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "loginNow": MessageLookupByLibrary.simpleMessage("سجّل الدخول الآن"),
+    "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
     "manageAvailability": MessageLookupByLibrary.simpleMessage("إدارة التوفر"),
     "monday": MessageLookupByLibrary.simpleMessage("الاثنين"),
@@ -175,9 +177,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "pharmacistRegisterTitle": MessageLookupByLibrary.simpleMessage(
       "تسجيل الصيدلي",
     ),
+    "pharmacist_profile": MessageLookupByLibrary.simpleMessage("ملف الصيدلي"),
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("عنوان الصيدلية"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("اسم الصيدلية"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "phone_number": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "pleaseEnterValidDuration": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال مدة صحيحة",
     ),

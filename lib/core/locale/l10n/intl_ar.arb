@@ -131,5 +131,9 @@
   "friday": "الجمعة",
   "saturday": "السبت",
   "sunday": "الأحد",
-  "recurring": "متكرر"
+  "recurring": "متكرر",
+  "pharmacist_profile": "ملف الصيدلي",
+  "logout": "تسجيل الخروج",
+  "full_name": "الاسم الكامل",
+  "phone_number": "رقم الهاتف"
 }

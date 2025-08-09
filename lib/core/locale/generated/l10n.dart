@@ -1118,6 +1118,36 @@ class S {
   String get recurring {
     return Intl.message('Recurring', name: 'recurring', desc: '', args: []);
   }
+
+  /// `Pharmacist Profile`
+  String get pharmacist_profile {
+    return Intl.message(
+      'Pharmacist Profile',
+      name: 'pharmacist_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+  }
+
+  /// `Full Name`
+  String get full_name {
+    return Intl.message('Full Name', name: 'full_name', desc: '', args: []);
+  }
+
+  /// `Phone Number`
+  String get phone_number {
+    return Intl.message(
+      'Phone Number',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
