@@ -88,8 +88,6 @@ class _BookingFormWidgetState extends State<BookingFormWidget> {
         appointmentTime: widget.slot['time'],
         notes: _notesController.text.trim(),
       );
-      print(appointmentData.toJson());
-
       await _patientService.bookAppointment(appointmentData, token);
 
       widget.onBookingComplete();
@@ -104,8 +102,6 @@ class _BookingFormWidgetState extends State<BookingFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.slot);
-    print(widget.doctor);
     return Scaffold(
       body: Column(
         children: [
@@ -137,19 +133,13 @@ class _BookingFormWidgetState extends State<BookingFormWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Appointment Summary
                   _buildAppointmentSummary(),
                   const SizedBox(height: 24),
 
-                  // Booking Form
                   _buildBookingForm(),
                   const SizedBox(height: 24),
-
-                  // Important Notice
                   _buildImportantNotice(),
                   const SizedBox(height: 32),
-
-                  // Action Buttons
                   _buildActionButtons(),
                 ],
               ),

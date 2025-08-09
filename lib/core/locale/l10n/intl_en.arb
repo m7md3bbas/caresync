@@ -112,8 +112,8 @@
   "addSchedule": "Add Schedule",
   "editSchedule": "Edit Schedule",
   "scheduleType": "Schedule Type",
-  "weeklySchedule": "Weekly Schedule",
-  "recurringSchedule": "Recurring Schedule",
+  "weeklySchedule": "Weekly",
+  "recurringSchedule": "Recurring",
   "weekStarting": "Week Starting",
   "dayOfWeek": "Day of Week",
   "isWorkingDay": "Is Working Day",
@@ -166,6 +166,7 @@
   "patients": "Patients",
   "prescription": "Prescription",
   "appointmentConfirmed": "Appointment confirmed successfully!",
-  "appointmentCancelled": "Appointment cancelled successfully!"
-
+  "appointmentCancelled": "Appointment cancelled successfully!",
+  "pharmacy": "Pharmacy",
+  "appoinment": "Appoinment"
 }

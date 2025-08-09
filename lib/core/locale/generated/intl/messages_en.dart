@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "apiCacheBox": MessageLookupByLibrary.simpleMessage("API Cache Box"),
     "appName": MessageLookupByLibrary.simpleMessage("CareSync"),
+    "appoinment": MessageLookupByLibrary.simpleMessage("Appoinment"),
     "appointmentCancelled": MessageLookupByLibrary.simpleMessage(
       "Appointment cancelled successfully!",
     ),
@@ -222,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pharmacist_profile": MessageLookupByLibrary.simpleMessage(
       "Pharmacist Profile",
     ),
+    "pharmacy": MessageLookupByLibrary.simpleMessage("Pharmacy"),
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("Pharmacy Address"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("Pharmacy Name"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("PhoneNumber"),
@@ -260,9 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "recurring": MessageLookupByLibrary.simpleMessage("Recurring"),
-    "recurringSchedule": MessageLookupByLibrary.simpleMessage(
-      "Recurring Schedule",
-    ),
+    "recurringSchedule": MessageLookupByLibrary.simpleMessage("Recurring"),
     "registerNow": MessageLookupByLibrary.simpleMessage("Register Now"),
     "reject": MessageLookupByLibrary.simpleMessage("Reject"),
     "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
@@ -319,7 +319,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "week": MessageLookupByLibrary.simpleMessage("Week"),
     "weekStarting": MessageLookupByLibrary.simpleMessage("Week Starting"),
     "weekly": MessageLookupByLibrary.simpleMessage("Weekly"),
-    "weeklySchedule": MessageLookupByLibrary.simpleMessage("Weekly Schedule"),
+    "weeklySchedule": MessageLookupByLibrary.simpleMessage("Weekly"),
     "working": MessageLookupByLibrary.simpleMessage("Working"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
   };

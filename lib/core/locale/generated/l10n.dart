@@ -979,20 +979,15 @@ class S {
     );
   }
 
-  /// `Weekly Schedule`
+  /// `Weekly`
   String get weeklySchedule {
-    return Intl.message(
-      'Weekly Schedule',
-      name: 'weeklySchedule',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Weekly', name: 'weeklySchedule', desc: '', args: []);
   }
 
-  /// `Recurring Schedule`
+  /// `Recurring`
   String get recurringSchedule {
     return Intl.message(
-      'Recurring Schedule',
+      'Recurring',
       name: 'recurringSchedule',
       desc: '',
       args: [],
@@ -1397,6 +1392,16 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Pharmacy`
+  String get pharmacy {
+    return Intl.message('Pharmacy', name: 'pharmacy', desc: '', args: []);
+  }
+
+  /// `Appoinment`
+  String get appoinment {
+    return Intl.message('Appoinment', name: 'appoinment', desc: '', args: []);
   }
 }
 

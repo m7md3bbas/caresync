@@ -11,6 +11,11 @@ class ParseError {
     )) {
       return "Invalid credentials";
     }
+    if (message.contains(
+      "{error: {'non_field_errors': [ErrorDetail(string='[ErrorDetail(string='Appointment must be scheduled for a future date and time.', code='invalid')]', code='invalid')]}}",
+    )) {
+      return "Appointment must be scheduled for a future date and time.";
+    }
     if (message.contains("status: User created")) {
       return "User created";
     }

@@ -1,4 +1,6 @@
+import 'package:caresync/core/exception/parseerror.dart';
 import 'package:caresync/core/service/api_service.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/book_appoinment.dart';
 import 'package:caresync/models/get_patient_details.dart';
 import 'package:caresync/models/appoinment_model.dart';
@@ -11,14 +13,19 @@ class PatientService {
     AppointmentBookingModel model,
     String token,
   ) async {
-    final response = await _dio.post(
-      'appointments/book/',
-      data: model.toJson(),
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
-
-    if (response.statusCode != 201 && response.statusCode != 200) {
-      throw Exception("Failed to book appointment");
+    try {
+      final response = await _dio.post(
+        'appointments/book/',
+        data: model.toJson(),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+    } on DioException catch (e) {
+      print(e.response?.data);
+      final error = ParseError.extractErrorMessage(e.toString());
+      ToastHelper.showError(error);
+    } on Exception catch (e) {
+      print(e);
+      ToastHelper.showError(e.toString());
     }
   }
 

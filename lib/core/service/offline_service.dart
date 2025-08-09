@@ -21,7 +21,10 @@ class OfflineService {
 
   // ===== OFFLINE DATA MANAGEMENT =====
 
-  Future<void> saveOfflineAction(String actionType, Map<String, dynamic> data) async {
+  Future<void> saveOfflineAction(
+    String actionType,
+    Map<String, dynamic> data,
+  ) async {
     final actionId = DateTime.now().millisecondsSinceEpoch.toString();
     final offlineAction = {
       'id': actionId,
@@ -31,7 +34,6 @@ class OfflineService {
     };
 
     await _cacheManager.cacheOfflineData(actionId, offlineAction);
-    print('📱 Saved offline action: $actionType');
   }
 
   List<Map<String, dynamic>> getOfflineActions() {
@@ -40,17 +42,13 @@ class OfflineService {
 
   Future<void> syncOfflineActions(String token) async {
     if (!await isOnline()) {
-      print('❌ No internet connection, cannot sync offline actions');
       return;
     }
 
     final actions = getOfflineActions();
     if (actions.isEmpty) {
-      print('✅ No offline actions to sync');
       return;
     }
-
-    print('🔄 Syncing ${actions.length} offline actions...');
 
     for (final action in actions) {
       try {
@@ -79,8 +77,6 @@ class OfflineService {
             );
             break;
         }
-
-        // Remove from offline cache after successful sync
         await _cacheManager.cacheBox.delete('offline_data_${action['id']}');
         print('✅ Synced offline action: $actionType');
       } catch (e) {
@@ -90,8 +86,6 @@ class OfflineService {
 
     print('✅ Offline sync completed');
   }
-
-  // ===== OFFLINE SCHEDULE OPERATIONS =====
 
   Future<void> addScheduleOffline(DoctorSchedule schedule) async {
     await saveOfflineAction('add_schedule', schedule.toJson());
@@ -126,7 +120,7 @@ class OfflineService {
   Future<bool> shouldShowOfflineIndicator() async {
     final isConnected = await isOnline();
     final hasOfflineActions = getOfflineActions().isNotEmpty;
-    
+
     return !isConnected && hasOfflineActions;
   }
 
@@ -135,18 +129,24 @@ class OfflineService {
   Future<void> preloadEssentialData(String token) async {
     try {
       print('🔄 Preloading essential data for offline use...');
-      
+
       // Preload user profile
       await _cachedApiService.getUserProfileWithCache(token);
-      
+
       // Preload current week schedules
       final now = DateTime.now();
       final currentWeek = _getStartOfWeek(now);
       final nextWeek = currentWeek.add(const Duration(days: 7));
-      
-      await _cachedApiService.getSchedulesWithCache(token, _formatDate(currentWeek));
-      await _cachedApiService.getSchedulesWithCache(token, _formatDate(nextWeek));
-      
+
+      await _cachedApiService.getSchedulesWithCache(
+        token,
+        _formatDate(currentWeek),
+      );
+      await _cachedApiService.getSchedulesWithCache(
+        token,
+        _formatDate(nextWeek),
+      );
+
       print('✅ Essential data preloaded');
     } catch (e) {
       print('❌ Error preloading essential data: $e');
@@ -166,13 +166,15 @@ class OfflineService {
   Map<String, dynamic> getOfflineStatistics() {
     final actions = getOfflineActions();
     final stats = _cacheManager.getCacheStatistics();
-    
+
     return {
       'offline_actions_count': actions.length,
       'cache_statistics': stats,
       'last_sync': {
         'doctor_schedules': _cacheManager.getLastSync('doctor_schedules'),
-        'patient_appointments': _cacheManager.getLastSync('patient_appointments'),
+        'patient_appointments': _cacheManager.getLastSync(
+          'patient_appointments',
+        ),
         'pharmacy_data': _cacheManager.getLastSync('pharmacy_data'),
         'user_profile': _cacheManager.getLastSync('user_profile'),
       },
@@ -184,11 +186,11 @@ class OfflineService {
   Future<void> cleanupExpiredCache() async {
     try {
       print('🧹 Cleaning up expired cache...');
-      
+
       // This will be handled by the cache manager's expiry logic
       // Just trigger a cleanup check
       await _cacheManager.preloadCache();
-      
+
       print('✅ Cache cleanup completed');
     } catch (e) {
       print('❌ Error during cache cleanup: $e');

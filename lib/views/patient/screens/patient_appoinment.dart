@@ -4,6 +4,7 @@ import 'package:caresync/controller/patient/book_appoinment_cubit.dart';
 import 'package:caresync/controller/patient/book_appoinment_state.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/book_appoinment.dart';
 import 'package:caresync/models/get_doctors.dart';
 import 'package:flutter/material.dart';
@@ -52,11 +53,7 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<GetDoctorsCubit, GetDoctorsState>(
       listener: (context, state) {
-        if (state.status == GetDoctorsStatus.error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text("server error")));
-        }
+        ToastHelper.showError(state.errorMessage ?? '');
         if (state.status == GetDoctorsStatus.success) {
           final newDoctors = state.doctors ?? [];
           final isSame =
@@ -317,7 +314,6 @@ class _AppointmentBookingScreenState extends State<AppointmentBookingScreen> {
             context,
           ).showSnackBar(const SnackBar(content: Text("Appointment Booked")));
         } else if (state.status == AppointmentStatus.error) {
-          print(state.message);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message ?? "An error occurred")),
           );

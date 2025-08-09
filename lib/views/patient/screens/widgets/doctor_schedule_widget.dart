@@ -5,7 +5,6 @@ import 'package:caresync/core/service/doctor_service.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 
-
 class DoctorScheduleWidget extends StatefulWidget {
   final GetDoctorModel doctor;
   final Function(Map<String, dynamic>) onSlotSelect;
@@ -50,10 +49,6 @@ class _DoctorScheduleWidgetState extends State<DoctorScheduleWidget> {
       final startDate = _formatDate(_currentWeekStart);
       final endDate = _formatDate(
         _currentWeekStart.add(const Duration(days: 6)),
-      );
-
-      print(
-        'Loading schedule for doctor ${widget.doctor.id} from $startDate to $endDate',
       );
 
       final slots = await _doctorService.getDoctorSchedule(

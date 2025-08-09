@@ -3,6 +3,7 @@ import 'package:caresync/controller/patient/book_appoinment_cubit.dart';
 import 'package:caresync/controller/patient/patient_cubit.dart';
 import 'package:caresync/controller/pharmacist/get_pharmacy_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/service/doctor_service.dart';
 import 'package:caresync/core/service/patient_service.dart';
 import 'package:caresync/core/service/pharmacist_service.dart';
@@ -78,16 +79,19 @@ class _PatientMainScreenState extends State<PatientMainScreen> {
             });
             _pageController.jumpToPage(index);
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.local_pharmacy),
-              label: "Pharmcy",
+              label: S.of(context).pharmacy,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),
-              label: "appointment",
+              label: S.of(context).appointments,
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: S.of(context).profile,
+            ),
           ],
         ),
       ),

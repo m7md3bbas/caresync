@@ -131,14 +131,19 @@ class DoctorAppointmentsPage extends StatelessWidget {
                                     'confirmed',
                                     doctorNotes: 'Confirmed by doctor',
                                   );
+
+                              ToastHelper.showSuccess(
+                                S.of(context).appointmentConfirmed,
+                              );
+
+                              // Wait 1 minute before refreshing
+                              await Future.delayed(const Duration(minutes: 1));
+
                               if (token != null) {
                                 await context
                                     .read<DoctorCubit>()
                                     .getDoctorAppointments(token);
                               }
-                              ToastHelper.showSuccess(
-                                S.of(context).appointmentConfirmed,
-                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(
@@ -160,14 +165,17 @@ class DoctorAppointmentsPage extends StatelessWidget {
                                     'cancelled',
                                     doctorNotes: 'Cancelled by doctor',
                                   );
+
+                              ToastHelper.showError(
+                                S.of(context).appointmentCancelled,
+                              );
+                              await Future.delayed(const Duration(minutes: 1));
+
                               if (token != null) {
                                 await context
                                     .read<DoctorCubit>()
                                     .getDoctorAppointments(token);
                               }
-                              ToastHelper.showError(
-                                S.of(context).appointmentCancelled,
-                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
@@ -195,9 +203,7 @@ class DoctorAppointmentsPage extends StatelessWidget {
   Widget _statusChip(String status) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
       child: Text(status.toUpperCase()),
     );
   }

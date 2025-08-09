@@ -3,6 +3,7 @@ import 'package:caresync/controller/doctor/doctor_schedule_state.dart';
 import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/doctor_schedule_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,8 +41,6 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
     selectedScheduleType = (existing?.isRecurring ?? false)
         ? 'Recurring Schedule'
         : 'Weekly Schedule';
-
-    // Use the current week start from the main page if available
     if (widget.currentWeekStart != null && existing == null) {
       weekStarting =
           DateTime.tryParse(widget.currentWeekStart!) ?? DateTime.now();
@@ -63,7 +62,7 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
             'Saturday',
             'Sunday',
           ][existing.dayOfWeek]
-        : 'Monday'; // Set default to Monday instead of null
+        : 'Monday';
 
     isWorkingDay = existing?.isWorkingDay ?? true;
 
@@ -88,9 +87,7 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
           minute: int.parse(parts[1]),
         );
       }
-    } catch (e) {
-      print('Error parsing time: $timeStr');
-    }
+    } catch (e) {}
     return const TimeOfDay(hour: 9, minute: 0);
   }
 
@@ -114,44 +111,34 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
   Widget build(BuildContext context) {
     return BlocListener<DoctorScheduleCubit, DoctorScheduleState>(
       listener: (context, state) {
-                 if (state.status == DoctorScheduleStatus.addSuccess) {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-               content: Text(S.of(context).scheduleAddedSuccessfully),
-               backgroundColor: Colors.green,
-             ),
-           );
+        if (state.status == DoctorScheduleStatus.addSuccess) {
+          ToastHelper.showSuccess(S.of(context).scheduleAddedSuccessfully);
           Navigator.pop(context);
         }
-                 if (state.status == DoctorScheduleStatus.updateSuccess) {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-               content: Text(S.of(context).scheduleUpdatedSuccessfully),
-               backgroundColor: Colors.green,
-             ),
-           );
+        if (state.status == DoctorScheduleStatus.updateSuccess) {
+          ToastHelper.showSuccess(S.of(context).scheduleUpdatedSuccessfully);
           Navigator.pop(context);
         }
         if (state.status == DoctorScheduleStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'An error occurred'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(state.errorMessage ?? "An error occurred");
         }
       },
       child: AlertDialog(
-                 title: Text(widget.schedule != null ? S.of(context).editSchedule : S.of(context).addSchedule),
+        title: Text(
+          widget.schedule != null
+              ? S.of(context).editSchedule
+              : S.of(context).addSchedule,
+        ),
         content: SingleChildScrollView(
           child: Column(
+            spacing: 12,
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 children: [
-                                     ChoiceChip(
-                     label: Text(S.of(context).weeklySchedule),
-                     selected: selectedScheduleType == 'Weekly Schedule',
+                  ChoiceChip(
+                    label: Text(S.of(context).weeklySchedule),
+                    selected: selectedScheduleType == 'Weekly Schedule',
                     onSelected: (_) {
                       setState(() {
                         selectedScheduleType = 'Weekly Schedule';
@@ -159,9 +146,9 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     },
                   ),
                   const SizedBox(width: 8),
-                                     ChoiceChip(
-                     label: Text(S.of(context).recurringSchedule),
-                     selected: selectedScheduleType == 'Recurring Schedule',
+                  ChoiceChip(
+                    label: Text(S.of(context).recurringSchedule),
+                    selected: selectedScheduleType == 'Recurring Schedule',
                     onSelected: (_) {
                       setState(() {
                         selectedScheduleType = 'Recurring Schedule';
@@ -170,19 +157,18 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
               if (selectedScheduleType == 'Weekly Schedule')
-                                 TextFormField(
-                   readOnly: true,
-                   decoration: InputDecoration(labelText: S.of(context).weekStarting),
+                TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).weekStarting,
+                  ),
                   controller: weekStartController,
                   onTap: () async {
                     try {
                       final now = DateTime.now();
                       final initialDate =
                           DateTime.tryParse(weekStartController.text) ?? now;
-
-                      // Ensure initialDate is not before today
                       final safeInitialDate = initialDate.isBefore(now)
                           ? now
                           : initialDate;
@@ -204,27 +190,43 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                       }
                     } catch (e) {
                       print('Date picker error: $e');
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error selecting date: $e')),
-                      );
+                      ToastHelper.showError(e.toString());
                     }
                   },
                 ),
-                             DropdownButtonFormField<String>(
-                 decoration: InputDecoration(labelText: S.of(context).dayOfWeek),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(labelText: S.of(context).dayOfWeek),
                 value: selectedDay,
-                                 items: [
-                   DropdownMenuItem(value: 'Monday', child: Text(S.of(context).monday)),
-                   DropdownMenuItem(value: 'Tuesday', child: Text(S.of(context).tuesday)),
-                   DropdownMenuItem(
-                     value: 'Wednesday',
-                     child: Text(S.of(context).wednesday),
-                   ),
-                   DropdownMenuItem(value: 'Thursday', child: Text(S.of(context).thursday)),
-                   DropdownMenuItem(value: 'Friday', child: Text(S.of(context).friday)),
-                   DropdownMenuItem(value: 'Saturday', child: Text(S.of(context).saturday)),
-                   DropdownMenuItem(value: 'Sunday', child: Text(S.of(context).sunday)),
-                 ],
+                items: [
+                  DropdownMenuItem(
+                    value: 'Monday',
+                    child: Text(S.of(context).monday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Tuesday',
+                    child: Text(S.of(context).tuesday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Wednesday',
+                    child: Text(S.of(context).wednesday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Thursday',
+                    child: Text(S.of(context).thursday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Friday',
+                    child: Text(S.of(context).friday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Saturday',
+                    child: Text(S.of(context).saturday),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Sunday',
+                    child: Text(S.of(context).sunday),
+                  ),
+                ],
                 onChanged: (value) {
                   setState(() {
                     selectedDay = value;
@@ -239,11 +241,11 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     isWorkingDay = val;
                   });
                 },
-                                 title: Text(S.of(context).isWorkingDay),
+                title: Text(S.of(context).isWorkingDay),
               ),
               if (isWorkingDay) ...[
-                                 ListTile(
-                   title: Text(S.of(context).startTime),
+                ListTile(
+                  title: Text(S.of(context).startTime),
                   subtitle: Text(startTime.format(context)),
                   onTap: () async {
                     TimeOfDay? picked = await showTimePicker(
@@ -257,8 +259,8 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     }
                   },
                 ),
-                                 ListTile(
-                   title: Text(S.of(context).endTime),
+                ListTile(
+                  title: Text(S.of(context).endTime),
                   subtitle: Text(endTime.format(context)),
                   onTap: () async {
                     TimeOfDay? picked = await showTimePicker(
@@ -272,55 +274,53 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                     }
                   },
                 ),
-                                 TextFormField(
-                   controller: durationController,
-                   keyboardType: TextInputType.number,
-                   decoration: InputDecoration(
-                     labelText: S.of(context).appointmentDuration,
-                   ),
-                 ),
+                TextFormField(
+                  controller: durationController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).appointmentDuration,
+                  ),
+                ),
               ],
             ],
           ),
         ),
         actions: [
-                     TextButton(
-             onPressed: () => Navigator.pop(context),
-             child: Text(S.of(context).cancel),
-           ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).cancel),
+          ),
           ElevatedButton(
             onPressed: () async {
               // Validate inputs
-                             if (selectedDay == null) {
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(
-                     content: Text(S.of(context).pleaseSelectDay),
-                   ),
-                 );
-                 return;
-               }
+              if (selectedDay == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(S.of(context).pleaseSelectDay)),
+                );
+                return;
+              }
 
               if (isWorkingDay) {
-                                 if (startTime.hour > endTime.hour ||
-                     (startTime.hour == endTime.hour &&
-                         startTime.minute >= endTime.minute)) {
-                   ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(
-                       content: Text(S.of(context).endTimeMustBeAfterStartTime),
-                     ),
-                   );
-                   return;
-                 }
+                if (startTime.hour > endTime.hour ||
+                    (startTime.hour == endTime.hour &&
+                        startTime.minute >= endTime.minute)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).endTimeMustBeAfterStartTime),
+                    ),
+                  );
+                  return;
+                }
 
-                                 final duration = int.tryParse(durationController.text);
-                 if (duration == null || duration <= 0) {
-                   ScaffoldMessenger.of(context).showSnackBar(
-                     SnackBar(
-                       content: Text(S.of(context).pleaseEnterValidDuration),
-                     ),
-                   );
-                   return;
-                 }
+                final duration = int.tryParse(durationController.text);
+                if (duration == null || duration <= 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(S.of(context).pleaseEnterValidDuration),
+                    ),
+                  );
+                  return;
+                }
               }
 
               final cubit = context.read<DoctorScheduleCubit>();
@@ -386,7 +386,7 @@ class _AddEditScheduleDialogState extends State<AddEditScheduleDialog> {
                 );
               }
             },
-                           child: Text(S.of(context).save),
+            child: Text(S.of(context).save),
           ),
         ],
       ),

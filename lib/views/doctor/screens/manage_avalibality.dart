@@ -3,6 +3,7 @@ import 'package:caresync/controller/doctor/doctor_schedule_state.dart';
 import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
 import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/views/doctor/screens/AddEditScheduleDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,8 +87,6 @@ class _DoctorScheduleManagementPageState
                     final startOfWeek = getStartOfWeek(now);
                     final initialDate =
                         DateTime.tryParse(dateController.text) ?? startOfWeek;
-
-                    // Ensure initialDate is not before today
                     final safeInitialDate = initialDate.isBefore(now)
                         ? now
                         : initialDate;
@@ -116,9 +115,7 @@ class _DoctorScheduleManagementPageState
                       );
                     }
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error selecting date: $e')),
-                    );
+                    ToastHelper.showError(e.toString());
                   }
                 },
               ),
@@ -141,43 +138,12 @@ class _DoctorScheduleManagementPageState
 
                     final schedules = state.schedules ?? [];
 
-                    // Debug: Print schedules for debugging
-                    print('=== DEBUG INFO ===');
-                    print('Total schedules: ${schedules.length}');
-                    print('Selected week: $selectedWeek');
-                    print('Selected week type: ${selectedWeek.runtimeType}');
-
-                    schedules.forEach((schedule) {
-                      print(
-                        'Schedule: ${schedule.weekStartDate} (${schedule.weekStartDate.runtimeType}) - ${schedule.dayName} - ${schedule.isWorkingDay}',
-                      );
-                    });
-
                     final filteredSchedules = schedules.where((schedule) {
                       final matchesWeek =
                           schedule.weekStartDate == selectedWeek;
                       final isRecurring = schedule.isRecurring;
-                      print(
-                        'Filtering: ${schedule.dayName} - weekStart="${schedule.weekStartDate}" (${schedule.weekStartDate.runtimeType}) - selectedWeek="$selectedWeek" (${selectedWeek.runtimeType}) - matches=$matchesWeek - recurring=$isRecurring',
-                      );
-
-                      // Additional debugging for week comparison
-                      if (!matchesWeek && !isRecurring) {
-                        print(
-                          '  ❌ Schedule NOT matching week: ${schedule.weekStartDate} != $selectedWeek',
-                        );
-                      } else {
-                        print(
-                          '  ✅ Schedule matching: ${schedule.weekStartDate} == $selectedWeek OR recurring=$isRecurring',
-                        );
-                      }
-
                       return matchesWeek || isRecurring;
                     }).toList();
-
-                    print('Filtered schedules: ${filteredSchedules.length}');
-                    print('=== END DEBUG ===');
-
                     if (filteredSchedules.isEmpty) {
                       return Center(
                         child: Column(

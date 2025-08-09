@@ -44,8 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "apiCacheBox": MessageLookupByLibrary.simpleMessage("صندوق تخزين API"),
     "appName": MessageLookupByLibrary.simpleMessage("كير سينك"),
+    "appoinment": MessageLookupByLibrary.simpleMessage("موعد"),
     "appointmentCancelled": MessageLookupByLibrary.simpleMessage(
-      "تم إلغاء الموعد بنجاح!",
+      "تم الغاء الموعد بنجاح!",
     ),
     "appointmentConfirmed": MessageLookupByLibrary.simpleMessage(
       "تم تأكيد الموعد بنجاح!",
@@ -218,6 +219,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تسجيل الصيدلي",
     ),
     "pharmacist_profile": MessageLookupByLibrary.simpleMessage("ملف الصيدلي"),
+    "pharmacy": MessageLookupByLibrary.simpleMessage("صيدلية"),
     "pharmacyAddress": MessageLookupByLibrary.simpleMessage("عنوان الصيدلية"),
     "pharmacyName": MessageLookupByLibrary.simpleMessage("اسم الصيدلية"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
@@ -258,7 +260,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "recurring": MessageLookupByLibrary.simpleMessage("متكرر"),
-    "recurringSchedule": MessageLookupByLibrary.simpleMessage("جدول متكرر"),
+    "recurringSchedule": MessageLookupByLibrary.simpleMessage("متكرر"),
     "registerNow": MessageLookupByLibrary.simpleMessage("سجل الآن"),
     "reject": MessageLookupByLibrary.simpleMessage("رفض"),
     "resetPassword": MessageLookupByLibrary.simpleMessage(
@@ -321,7 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "week": MessageLookupByLibrary.simpleMessage("الأسبوع"),
     "weekStarting": MessageLookupByLibrary.simpleMessage("بداية الأسبوع"),
     "weekly": MessageLookupByLibrary.simpleMessage("أسبوعي"),
-    "weeklySchedule": MessageLookupByLibrary.simpleMessage("جدول أسبوعي"),
+    "weeklySchedule": MessageLookupByLibrary.simpleMessage(" أسبوعي"),
     "working": MessageLookupByLibrary.simpleMessage("العمل"),
     "yes": MessageLookupByLibrary.simpleMessage("نعم"),
   };
