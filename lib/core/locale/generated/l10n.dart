@@ -1148,6 +1148,256 @@ class S {
       args: [],
     );
   }
+
+  /// `Total`
+  String get total {
+    return Intl.message('Total', name: 'total', desc: '', args: []);
+  }
+
+  /// `Pending`
+  String get pending {
+    return Intl.message('Pending', name: 'pending', desc: '', args: []);
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message('Completed', name: 'completed', desc: '', args: []);
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message('Today', name: 'today', desc: '', args: []);
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
+  }
+
+  /// `Reject`
+  String get reject {
+    return Intl.message('Reject', name: 'reject', desc: '', args: []);
+  }
+
+  /// `No appointments found.`
+  String get noAppointmentsFound {
+    return Intl.message(
+      'No appointments found.',
+      name: 'noAppointmentsFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message('Date', name: 'date', desc: '', args: []);
+  }
+
+  /// `Time`
+  String get time {
+    return Intl.message('Time', name: 'time', desc: '', args: []);
+  }
+
+  /// `Appointments`
+  String get appointments {
+    return Intl.message(
+      'Appointments',
+      name: 'appointments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prescription added successfully`
+  String get prescriptionAddedSuccessfully {
+    return Intl.message(
+      'Prescription added successfully',
+      name: 'prescriptionAddedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Prescription`
+  String get addPrescription {
+    return Intl.message(
+      'Add Prescription',
+      name: 'addPrescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Patient ID`
+  String get enterPatientID {
+    return Intl.message(
+      'Enter Patient ID',
+      name: 'enterPatientID',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Medicine Name`
+  String get enterMedicineName {
+    return Intl.message(
+      'Enter Medicine Name',
+      name: 'enterMedicineName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Dosage`
+  String get enterDosage {
+    return Intl.message(
+      'Enter Dosage',
+      name: 'enterDosage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Instructions`
+  String get enterInstructions {
+    return Intl.message(
+      'Enter Instructions',
+      name: 'enterInstructions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Prescribed Medicines`
+  String get getPrescribedMedicines {
+    return Intl.message(
+      'Get Prescribed Medicines',
+      name: 'getPrescribedMedicines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Patient Details`
+  String get patientDetails {
+    return Intl.message(
+      'Patient Details',
+      name: 'patientDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No patient details available`
+  String get noPatientDetailsAvailable {
+    return Intl.message(
+      'No patient details available',
+      name: 'noPatientDetailsAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Diabetes`
+  String get diabetes {
+    return Intl.message('Diabetes', name: 'diabetes', desc: '', args: []);
+  }
+
+  /// `Heart Disease`
+  String get heartDisease {
+    return Intl.message(
+      'Heart Disease',
+      name: 'heartDisease',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prescription Medicines`
+  String get prescriptionMedicines {
+    return Intl.message(
+      'Prescription Medicines',
+      name: 'prescriptionMedicines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No prescribed medicines found for this patient`
+  String get noPrescribedMedicinesFound {
+    return Intl.message(
+      'No prescribed medicines found for this patient',
+      name: 'noPrescribedMedicinesFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Patient Details`
+  String get getPatientDetails {
+    return Intl.message(
+      'Get Patient Details',
+      name: 'getPatientDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Doctor Profile`
+  String get doctorProfile {
+    return Intl.message(
+      'Doctor Profile',
+      name: 'doctorProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message('Profile', name: 'profile', desc: '', args: []);
+  }
+
+  /// `Schedule`
+  String get schedule {
+    return Intl.message('Schedule', name: 'schedule', desc: '', args: []);
+  }
+
+  /// `Patients`
+  String get patients {
+    return Intl.message('Patients', name: 'patients', desc: '', args: []);
+  }
+
+  /// `Prescription`
+  String get prescription {
+    return Intl.message(
+      'Prescription',
+      name: 'prescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment confirmed successfully!`
+  String get appointmentConfirmed {
+    return Intl.message(
+      'Appointment confirmed successfully!',
+      name: 'appointmentConfirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Appointment cancelled successfully!`
+  String get appointmentCancelled {
+    return Intl.message(
+      'Appointment cancelled successfully!',
+      name: 'appointmentCancelled',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

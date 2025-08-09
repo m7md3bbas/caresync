@@ -1,3 +1,4 @@
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/patient/patient_cubit.dart';
 import 'package:caresync/controller/patient/patient_state.dart';
@@ -40,7 +41,7 @@ class _PatientDetailsState extends State<PatientDetails> {
         final patient = state.getPatientModel;
 
         return Scaffold(
-          appBar: AppBar(title: Text("Get patient details"), centerTitle: true),
+          appBar: AppBar(title: Text(S.of(context).getPatientDetails), centerTitle: true),
           body: Form(
             autovalidateMode: autoValidate,
             key: _globalKey,
@@ -59,7 +60,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                           textEditingController: _controller,
                           isObsecure: false,
                           textInputType: TextInputType.number,
-                          labelText: "National ID",
+                          labelText: S.of(context).enterPatientID
                         ),
                         const SizedBox(height: 16),
                         CutomElvatedButton(
@@ -84,7 +85,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                               }
                             }
                           },
-                          text: 'Get Prescribed Medicines',
+                          text: S.of(context).getPrescribedMedicines,
                         ),
                       ],
                     ),
@@ -95,7 +96,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                           child: Column(
                             children: [
                               const SizedBox(height: 30),
-                              CustomHeadline(text: "Patient Details"),
+                              CustomHeadline(text: S.of(context).patientDetails),
                               const SizedBox(height: 10),
                               if (state.status == PatientStatus.loading)
                                 const Center(child: CircularProgressIndicator())
@@ -104,7 +105,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                   elevation: 3,
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
-                                    child: Text("No patient details available"),
+                                    child: Text(S.of(context).noPatientDetailsAvailable),
                                   ),
                                 )
                               else
@@ -116,32 +117,32 @@ class _PatientDetailsState extends State<PatientDetails> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text("Full Name: ${patient.fullName}"),
-                                        Text("Email: ${patient.email}"),
-                                        Text("Phone: ${patient.phoneNumber}"),
-                                        Text("Address: ${patient.address}"),
+                                        Text("${S.of(context).fullName}: ${patient.fullName}"),
+                                        Text("${S.of(context).email}: ${patient.email}"),
+                                        Text("${S.of(context).phoneNumber}: ${patient.phoneNumber}"),
+                                        Text("${S.of(context).address}: ${patient.address}"),
                                         Text(
-                                          "National ID: ${patient.nationalId}",
+                                          "${S.of(context).nationalID}: ${patient.nationalId}",
                                         ),
-                                        Text("Birthday: ${patient.birthday}"),
+                                        Text("${S.of(context).birthday}: ${patient.birthday}"),
                                         Text(
-                                          "Diabetes: ${patient.diabetes ? "Yes" : "No"}",
-                                        ),
-                                        Text(
-                                          "Heart Disease: ${patient.heartDisease ? "Yes" : "No"}",
+                                          "${S.of(context).diabetes}: ${patient.diabetes ? S.of(context).yes : S.of(context).no}",
                                         ),
                                         Text(
-                                          "Allergies: ${patient.allergies.join(", ")}",
+                                          "${S.of(context).heartDisease}: ${patient.heartDisease ? S.of(context).yes : S.of(context).no}",
                                         ),
                                         Text(
-                                          "Other Diseases: ${patient.otherDiseases}",
+                                          "${S.of(context).allergies}: ${patient.allergies.join(", ")}",
+                                        ),
+                                        Text(
+                                          "${S.of(context).otherDiseases}: ${patient.otherDiseases}",
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               const SizedBox(height: 30),
-                              CustomHeadline(text: "Prescription Medicines"),
+                              CustomHeadline(text: S.of(context).prescriptionMedicines),
                               const SizedBox(height: 10),
                               if (patient == null ||
                                   patient.prescriptions.isEmpty)
@@ -150,7 +151,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Text(
-                                      "No prescribed medicines found for this patient",
+                                      S.of(context).noPrescribedMedicinesFound,
                                     ),
                                   ),
                                 )
@@ -169,7 +170,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                                       child: ListTile(
                                         title: Text(pres.medicineName),
                                         subtitle: Text(
-                                          "${pres.dosage} | ${pres.instructions}\nDoctor: ${pres.doctor}",
+                                          "${pres.dosage} | ${pres.instructions}\n${S.of(context).doctor}: ${pres.doctor}",
                                         ),
                                         trailing: Text(pres.createdAt),
                                       ),

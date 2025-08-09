@@ -2,6 +2,7 @@ import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_schedule_cubit.dart';
 import 'package:caresync/controller/patient/patient_cubit.dart';
 import 'package:caresync/controller/profile/profile_cubit.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/service/doctor_schedule_service.dart';
 import 'package:caresync/core/service/doctor_service.dart';
 import 'package:caresync/core/service/patient_service.dart';
@@ -83,26 +84,26 @@ class _MainDoctorScreenState extends State<MainDoctorScreen> {
             });
             _pageController.jumpToPage(index);
           },
-          items: const [
+          items:  [
             BottomNavigationBarItem(
               icon: Icon(Icons.people_outline),
-              label: "Patients",
+              label: S.of(context).patients,
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.prescription),
-              label: "Prescription",
+              label: S.of(context).prescription,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_outlined),
-              label: "Appointments",
+              label: S.of(context).appointments,
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.calendarCheck),
-              label: "Schedule",
+              label: S.of(context).schedule,
             ),
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.user),
-              label: "Profile",
+              label: S.of(context).profile,
             ),
           ],
         ),

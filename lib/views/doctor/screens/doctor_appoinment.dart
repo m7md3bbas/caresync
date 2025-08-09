@@ -1,5 +1,9 @@
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
+import 'package:caresync/core/locale/generated/l10n.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/models/appoinment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,90 +13,71 @@ class DoctorAppointmentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final token = SharedPrefHelper.getString(SharedPrefKeys.token);
+
     return BlocConsumer<DoctorCubit, DoctorState>(
       listener: (context, state) {
         if (state.state == DoctorStatus.error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message!)));
+          ToastHelper.showError(state.message!);
+        } else if (state.state == DoctorStatus.sent) {
+          ToastHelper.showSuccess("appointment Updated Successfully");
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(centerTitle: true, title: const Text("Appointments")),
-          body: Column(
-            children: [
-              const SizedBox(height: 20),
+        return RefreshIndicator(
+          onRefresh: () async {
+            if (token != null) {
+              await context.read<DoctorCubit>().getDoctorAppointments(token);
+            }
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(S.of(context).appointments),
+            ),
+            body: Column(
+              children: [
+                const SizedBox(height: 20),
 
-              if (state.state == DoctorStatus.success &&
-                  state.appointments != null)
-                _buildStatusSummary(state.appointments!)
-              else
-                const SizedBox(),
+                // عرض الإحصائيات
+                if (state.state == DoctorStatus.success &&
+                    state.appointments != null)
+                  StatusSummary(appointments: state.appointments!)
+                else
+                  const SizedBox(),
 
-              const SizedBox(height: 20),
-              state.state == DoctorStatus.loading
-                  ? CircularProgressIndicator()
-                  : state.state == DoctorStatus.success &&
-                        state.appointments != null
-                  ? Expanded(child: _buildAppointmentList(state.appointments!))
-                  : Expanded(
-                      child: Center(child: const Text("No appointments found")),
+                const SizedBox(height: 20),
+
+                // عرض البيانات أو اللودينج أو رسالة عدم وجود مواعيد
+                if (state.state == DoctorStatus.loading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else if (state.state == DoctorStatus.success &&
+                    state.appointments != null)
+                  Expanded(
+                    child: _buildAppointmentList(state.appointments!, context),
+                  )
+                else
+                  Expanded(
+                    child: Center(
+                      child: Text(S.of(context).noAppointmentsFound),
                     ),
-            ],
+                  ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  Widget _buildStatusSummary(List<Appointment> appointments) {
-    final total = appointments.length;
-    final pending = appointments.where((e) => e.status == "pending").length;
-    final completed = appointments.where((e) => e.status == "completed").length;
-    final today = appointments
-        .where((e) => e.date == DateTime.now().toString().split(" ")[0])
-        .length;
+  Widget _buildAppointmentList(
+    List<Appointment> appointments,
+    BuildContext context,
+  ) {
+    final token = SharedPrefHelper.getString(SharedPrefKeys.token);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          children: [
-            _statusCard(total.toString(), "Total"),
-            const SizedBox(height: 20),
-            _statusCard(pending.toString(), "Pending"),
-          ],
-        ),
-        Column(
-          children: [
-            _statusCard(completed.toString(), "Completed"),
-            const SizedBox(height: 20),
-            _statusCard(today.toString(), "Today"),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _statusCard(String count, String label) {
-    return Card(
-      child: Container(
-        width: 120,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          children: [
-            Text(count, style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAppointmentList(List<Appointment> appointments) {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       itemCount: appointments.length,
@@ -113,48 +98,84 @@ class DoctorAppointmentsPage extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                _row(Icons.person, "Patient: ${appt.patientName}"),
-                _row(Icons.calendar_today, "Date: ${appt.date}"),
-                _row(Icons.access_time, "Time: ${appt.time}"),
+                _row(
+                  Icons.person,
+                  "${S.of(context).patient}: ${appt.patientName}",
+                ),
+                _row(
+                  Icons.calendar_today,
+                  "${S.of(context).date}: ${appt.date}",
+                ),
+                _row(Icons.access_time, "${S.of(context).time}: ${appt.time}"),
                 _row(
                   Icons.local_hospital,
-                  "Specialization: ${appt.specialization}",
+                  "${S.of(context).specialization}: ${appt.specialization}",
                 ),
                 const SizedBox(height: 10),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.amber.shade100,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(appt.status.toUpperCase()),
-                    ),
+                    _statusChip(appt.status),
                     const SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Confirm logic here
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+
+                    if (appt.status == "pending")
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              await context
+                                  .read<DoctorCubit>()
+                                  .appointmentStatusUpdate(
+                                    appt.id,
+                                    'confirmed',
+                                    doctorNotes: 'Confirmed by doctor',
+                                  );
+                              if (token != null) {
+                                await context
+                                    .read<DoctorCubit>()
+                                    .getDoctorAppointments(token);
+                              }
+                              ToastHelper.showSuccess(
+                                S.of(context).appointmentConfirmed,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                16,
+                                117,
+                                19,
+                              ),
+                            ),
+                            child: Text(S.of(context).confirm),
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await context
+                                  .read<DoctorCubit>()
+                                  .appointmentStatusUpdate(
+                                    appt.id,
+                                    'cancelled',
+                                    doctorNotes: 'Cancelled by doctor',
+                                  );
+                              if (token != null) {
+                                await context
+                                    .read<DoctorCubit>()
+                                    .getDoctorAppointments(token);
+                              }
+                              ToastHelper.showError(
+                                S.of(context).appointmentCancelled,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                            ),
+                            child: Text(S.of(context).reject),
+                          ),
+                        ],
                       ),
-                      child: const Text("Confirm"),
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Reject logic here
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      child: const Text("Reject"),
-                    ),
                   ],
                 ),
               ],
@@ -168,6 +189,74 @@ class DoctorAppointmentsPage extends StatelessWidget {
   Widget _row(IconData icon, String text) {
     return Row(
       children: [Icon(icon, size: 16), const SizedBox(width: 6), Text(text)],
+    );
+  }
+
+  Widget _statusChip(String status) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(status.toUpperCase()),
+    );
+  }
+}
+
+class StatusSummary extends StatelessWidget {
+  final List<Appointment> appointments;
+  const StatusSummary({super.key, required this.appointments});
+
+  @override
+  Widget build(BuildContext context) {
+    final total = appointments.length;
+    final pending = appointments.where((e) => e.status == "pending").length;
+    final completed = appointments.where((e) => e.status == "completed").length;
+
+    final todayDate = DateTime.now();
+    final today = appointments.where((e) {
+      final apptDate = DateTime.tryParse(e.date);
+      return apptDate != null &&
+          apptDate.year == todayDate.year &&
+          apptDate.month == todayDate.month &&
+          apptDate.day == todayDate.day;
+    }).length;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          children: [
+            _statusCard(total.toString(), S.of(context).total),
+            const SizedBox(height: 20),
+            _statusCard(pending.toString(), S.of(context).pending),
+          ],
+        ),
+        Column(
+          children: [
+            _statusCard(completed.toString(), S.of(context).completed),
+            const SizedBox(height: 20),
+            _statusCard(today.toString(), S.of(context).today),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _statusCard(String count, String label) {
+    return Card(
+      child: Container(
+        width: 120,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          children: [
+            Text(count, style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
     );
   }
 }

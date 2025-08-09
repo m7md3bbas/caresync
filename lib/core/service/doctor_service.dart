@@ -1,8 +1,11 @@
 import 'package:caresync/core/service/api_service.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_helper.dart';
+import 'package:caresync/core/shared_prefs/shared_pref_keys.dart';
 import 'package:caresync/models/appoinment_model.dart';
 import 'package:caresync/models/get_doctors.dart';
 import 'package:caresync/models/prescription_model.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DoctorService {
   final Dio _dio = ApiClient.dio;
@@ -57,6 +60,57 @@ class DoctorService {
       throw Exception("server error");
     }
   }
+
+ 
+
+Future<void> updateAppointmentStatus(int id, String status, {String doctorNotes = ''}) async {
+  try {
+    final token = await SharedPrefHelper.getString(SharedPrefKeys.token);
+
+    if (token == null) {
+      throw Exception('User token not found');
+    }
+
+    print('Updating appointment $id to status: $status');
+
+    // Prepare request data
+    final Map<String, dynamic> requestData = {
+      'status': status,
+    };
+    if (doctorNotes.isNotEmpty) {
+      requestData['doctor_notes'] = doctorNotes;
+    }
+
+    // Create Dio instance
+    
+
+    final response = await _dio.patch(
+      'appointments/appointments/$id/',
+      data: requestData,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    print('Update response: ${response.data}');
+
+    // You can call your method to refresh appointments here
+    // await fetchAppointments();
+    
+  } catch (err) {
+    if (err is DioException) {
+      print('Update error: ${err.response?.data}');
+      throw Exception('Failed to update status: ${err.response?.data['detail'] ?? err.message}');
+    } else {
+      print('Update error: $err');
+      throw Exception('Failed to update status: $err');
+    }
+  }
+}
 
   Future<List<Map<String, dynamic>>> getDoctorSchedule(
     int doctorId,

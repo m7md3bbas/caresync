@@ -29,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم إرسال طلبك. سيتم إبلاغك على بريدك عند القبول.",
     ),
     "actions": MessageLookupByLibrary.simpleMessage("الإجراءات"),
+    "addPrescription": MessageLookupByLibrary.simpleMessage("إضافة وصفة"),
     "addSchedule": MessageLookupByLibrary.simpleMessage("إضافة جدول"),
     "addScheduleForThisWeek": MessageLookupByLibrary.simpleMessage(
       "إضافة جدول لهذا الأسبوع",
@@ -43,9 +44,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "apiCacheBox": MessageLookupByLibrary.simpleMessage("صندوق تخزين API"),
     "appName": MessageLookupByLibrary.simpleMessage("كير سينك"),
+    "appointmentCancelled": MessageLookupByLibrary.simpleMessage(
+      "تم إلغاء الموعد بنجاح!",
+    ),
+    "appointmentConfirmed": MessageLookupByLibrary.simpleMessage(
+      "تم تأكيد الموعد بنجاح!",
+    ),
     "appointmentDuration": MessageLookupByLibrary.simpleMessage(
       "مدة الموعد (دقائق)",
     ),
+    "appointments": MessageLookupByLibrary.simpleMessage("مواعيد"),
     "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
     "birthday": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "cacheBox": MessageLookupByLibrary.simpleMessage("صندوق التخزين المؤقت"),
@@ -65,11 +73,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "clinic": MessageLookupByLibrary.simpleMessage("العيادة"),
     "close": MessageLookupByLibrary.simpleMessage("إغلاق"),
+    "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
+    "confirm": MessageLookupByLibrary.simpleMessage("تأكيد"),
     "createAccount": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
+    "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
     "day": MessageLookupByLibrary.simpleMessage("اليوم"),
     "dayOfWeek": MessageLookupByLibrary.simpleMessage("يوم الأسبوع"),
     "dayOff": MessageLookupByLibrary.simpleMessage("يوم إجازة"),
+    "diabetes": MessageLookupByLibrary.simpleMessage("مرض السكري"),
     "doctor": MessageLookupByLibrary.simpleMessage("طبيب"),
+    "doctorProfile": MessageLookupByLibrary.simpleMessage("ملف الطبيب"),
     "doctorRegisterTitle": MessageLookupByLibrary.simpleMessage("تسجيل الطبيب"),
     "duration": MessageLookupByLibrary.simpleMessage("المدة"),
     "edit": MessageLookupByLibrary.simpleMessage("تعديل"),
@@ -81,6 +94,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "يجب أن يكون وقت النهاية بعد وقت البداية",
     ),
     "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
+    "enterDosage": MessageLookupByLibrary.simpleMessage("أدخل الجرعة"),
+    "enterInstructions": MessageLookupByLibrary.simpleMessage("أدخل التعليمات"),
+    "enterMedicineName": MessageLookupByLibrary.simpleMessage(
+      "أدخل اسم الدواء",
+    ),
+    "enterPatientID": MessageLookupByLibrary.simpleMessage(
+      "أدخل رقم تعريف المريض",
+    ),
     "female": MessageLookupByLibrary.simpleMessage("انثى"),
     "fieldIsRequired": MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب"),
     "forgetPasswordquestion": MessageLookupByLibrary.simpleMessage(
@@ -89,7 +110,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "friday": MessageLookupByLibrary.simpleMessage("الجمعة"),
     "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "full_name": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
+    "getPatientDetails": MessageLookupByLibrary.simpleMessage(
+      "الحصول على تفاصيل المريض",
+    ),
+    "getPrescribedMedicines": MessageLookupByLibrary.simpleMessage(
+      "الحصول على الأدوية الموصوفة",
+    ),
     "getStarted": MessageLookupByLibrary.simpleMessage("ابدأ الآن"),
+    "heartDisease": MessageLookupByLibrary.simpleMessage("أمراض القلب"),
     "hospital": MessageLookupByLibrary.simpleMessage("المستشفى"),
     "hours": MessageLookupByLibrary.simpleMessage("الساعات"),
     "iHaveDiabetes": MessageLookupByLibrary.simpleMessage(
@@ -126,8 +154,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "next": MessageLookupByLibrary.simpleMessage("التالي"),
     "no": MessageLookupByLibrary.simpleMessage("لا"),
+    "noAppointmentsFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على مواعيد.",
+    ),
     "noInternetConnection": MessageLookupByLibrary.simpleMessage(
       "لا يوجد اتصال بالإنترنت",
+    ),
+    "noPatientDetailsAvailable": MessageLookupByLibrary.simpleMessage(
+      "لا توجد تفاصيل متاحة للمريض",
+    ),
+    "noPrescribedMedicinesFound": MessageLookupByLibrary.simpleMessage(
+      "لم يتم العثور على أدوية موصوفة لهذا المريض",
     ),
     "noSchedulesFound": MessageLookupByLibrary.simpleMessage(
       "لم يتم العثور على جداول لهذا الأسبوع.",
@@ -170,9 +207,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
     ),
     "patient": MessageLookupByLibrary.simpleMessage("مريض"),
+    "patientDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المريض"),
     "patientRegisterTitle": MessageLookupByLibrary.simpleMessage(
       "تسجيل المريض",
     ),
+    "patients": MessageLookupByLibrary.simpleMessage("المرضى"),
+    "pending": MessageLookupByLibrary.simpleMessage("قيد الانتظار"),
     "pharmacist": MessageLookupByLibrary.simpleMessage("صيدلي"),
     "pharmacistRegisterTitle": MessageLookupByLibrary.simpleMessage(
       "تسجيل الصيدلي",
@@ -209,9 +249,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "preregisterTitlePharmacist": MessageLookupByLibrary.simpleMessage(
       "عرض وإدارة الوصفات الطبية والبيانات الصحية.",
     ),
+    "prescription": MessageLookupByLibrary.simpleMessage("الوصفة"),
+    "prescriptionAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تمت إضافة الوصفة بنجاح",
+    ),
+    "prescriptionMedicines": MessageLookupByLibrary.simpleMessage(
+      "الأدوية الموصوفة",
+    ),
+    "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "recurring": MessageLookupByLibrary.simpleMessage("متكرر"),
     "recurringSchedule": MessageLookupByLibrary.simpleMessage("جدول متكرر"),
     "registerNow": MessageLookupByLibrary.simpleMessage("سجل الآن"),
+    "reject": MessageLookupByLibrary.simpleMessage("رفض"),
     "resetPassword": MessageLookupByLibrary.simpleMessage(
       "إعادة تعيين كلمة المرور",
     ),
@@ -223,6 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "saturday": MessageLookupByLibrary.simpleMessage("السبت"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "schedule": MessageLookupByLibrary.simpleMessage("الجدول"),
     "scheduleAddedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم إضافة الجدول بنجاح!",
     ),
@@ -247,9 +297,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "sunday": MessageLookupByLibrary.simpleMessage("الأحد"),
     "sync": MessageLookupByLibrary.simpleMessage("مزامنة"),
     "thursday": MessageLookupByLibrary.simpleMessage("الخميس"),
+    "time": MessageLookupByLibrary.simpleMessage("الوقت"),
     "titleForgetPassword": MessageLookupByLibrary.simpleMessage(
       "نسيت كلمة المرور",
     ),
+    "today": MessageLookupByLibrary.simpleMessage("اليوم"),
+    "total": MessageLookupByLibrary.simpleMessage("الإجمالي"),
     "tuesday": MessageLookupByLibrary.simpleMessage("الثلاثاء"),
     "uploadBackIdImage": MessageLookupByLibrary.simpleMessage(
       "تحميل صورة البطاقة (الظهر)",

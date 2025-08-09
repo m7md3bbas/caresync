@@ -14,6 +14,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/locale/generated/l10n.dart';
+
 class DoctorInformation extends StatefulWidget {
   const DoctorInformation({super.key});
 
@@ -78,7 +80,7 @@ class _DoctorInformationState extends State<DoctorInformation> {
                 },
               ),
             ],
-            title: Text("Doctor Profile"),
+            title: Text(S.of(context).doctorProfile),
             leading: PopupMenuButton(
               itemBuilder: (context) => [
                 PopupMenuItem(

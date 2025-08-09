@@ -8,7 +8,7 @@ class DoctorCubit extends Cubit<DoctorState> {
   DoctorCubit(this.doctorService)
     : super(DoctorState(state: DoctorStatus.initial));
 
-  void getDoctorAppointments(String token) async {
+  Future<void> getDoctorAppointments(String token) async {
     emit(state.copyWith(state: DoctorStatus.loading));
     try {
       final data = await doctorService.getDoctorAppointments(token);
@@ -17,6 +17,17 @@ class DoctorCubit extends Cubit<DoctorState> {
       emit(state.copyWith(state: DoctorStatus.error, message: e.toString()));
     }
   }
+
+  Future<void> appointmentStatusUpdate(int id, String status, {String doctorNotes = ''}) async {
+    emit(state.copyWith(state: DoctorStatus.loading));
+    try {
+      await doctorService.updateAppointmentStatus(id, status, doctorNotes: doctorNotes);
+      emit(state.copyWith(state: DoctorStatus.success));
+    } catch (e) {
+      emit(state.copyWith(state: DoctorStatus.error, message: e.toString()));
+    }
+  }
+
 
   void addPerscription(
     String patientID,

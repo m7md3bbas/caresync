@@ -1,6 +1,8 @@
+import 'package:caresync/core/locale/generated/l10n.dart';
 import 'package:caresync/core/validation/auth_validation.dart';
 import 'package:caresync/controller/doctor/doctor_cubit.dart';
 import 'package:caresync/controller/doctor/doctor_state.dart';
+import 'package:caresync/core/widget/custom_toast.dart';
 import 'package:caresync/views/auth/widgets/custom_text_form_field.dart';
 import 'package:caresync/views/doctor/widgets/cutom_elvated_button.dart';
 import 'package:flutter/material.dart';
@@ -30,18 +32,14 @@ class _AddPrescriptionState extends State<AddPrescription> {
     return BlocConsumer<DoctorCubit, DoctorState>(
       listener: (context, state) {
         if (state.state == DoctorStatus.sent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Prescription added successfully")),
-          );
+          ToastHelper.showSuccess(S.of(context).prescriptionAddedSuccessfully);
         } else if (state.state == DoctorStatus.error) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message!)));
+          ToastHelper.showError(state.message!);
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(title: Text("Add Prescription"), centerTitle: true),
+          appBar: AppBar(title: Text(S.of(context).addPrescription), centerTitle: true),
           body: state.state == DoctorStatus.loading
               ? Center(child: const CircularProgressIndicator())
               : ListView(
@@ -59,17 +57,17 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                   context,
                                 ),
                             textEditingController: _patientIDController,
-                            labelText: "Enter Patient ID",
+                            labelText: S.of(context).enterPatientID,
                             isObsecure: false,
                             textInputType: TextInputType.text,
                           ),
                           const SizedBox(height: 16),
                           CutsomTextFormFiled(
                             validator: (value) => value == null
-                                ? 'Medicine Name is required'
+                                ? S.of(context).fieldIsRequired
                                 : null,
                             textEditingController: _medicineNameController,
-                            labelText: "Enter Medicine Name",
+                            labelText: S.of(context).enterMedicineName,
                             isObsecure: false,
                             textInputType: TextInputType.text,
                           ),
@@ -78,19 +76,19 @@ class _AddPrescriptionState extends State<AddPrescription> {
                             validator: (value) =>
                                 AuthValidation.validateName(context, value),
                             textEditingController: _dosageController,
-                            labelText: "Enter Dosage",
+                            labelText: S.of(context).enterDosage,
                             isObsecure: false,
                             textInputType: TextInputType.text,
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
                             validator: (value) => value == null
-                                ? 'Instruction is required'
+                                ? S.of(context).fieldIsRequired
                                 : null,
                             controller: _instructionController,
-                            decoration: const InputDecoration(
-                              labelText: "Enter Instructions",
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: S.of(context).enterInstructions,
+                              border: const OutlineInputBorder(),
                             ),
                             maxLines: 5,
                           ),
@@ -121,7 +119,7 @@ class _AddPrescriptionState extends State<AddPrescription> {
                                 });
                               }
                             },
-                            text: "Add Prescription",
+                            text: S.of(context).addPrescription,
                           ),
                         ],
                       ),
