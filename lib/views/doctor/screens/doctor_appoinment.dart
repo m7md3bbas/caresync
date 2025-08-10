@@ -21,6 +21,7 @@ class DoctorAppointmentsPage extends StatelessWidget {
           ToastHelper.showError(state.message!);
         } else if (state.state == DoctorStatus.sent) {
           ToastHelper.showSuccess("appointment Updated Successfully");
+          context.read<DoctorCubit>().getDoctorAppointments(token!);
         }
       },
       builder: (context, state) {
@@ -76,8 +77,6 @@ class DoctorAppointmentsPage extends StatelessWidget {
     List<Appointment> appointments,
     BuildContext context,
   ) {
-    final token = SharedPrefHelper.getString(SharedPrefKeys.token);
-
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       itemCount: appointments.length,
@@ -132,18 +131,9 @@ class DoctorAppointmentsPage extends StatelessWidget {
                                     doctorNotes: 'Confirmed by doctor',
                                   );
 
-                              ToastHelper.showSuccess(
-                                S.of(context).appointmentConfirmed,
-                              );
+                              ToastHelper.showSuccess("confirmed");
 
-                              // Wait 1 minute before refreshing
                               await Future.delayed(const Duration(minutes: 1));
-
-                              if (token != null) {
-                                await context
-                                    .read<DoctorCubit>()
-                                    .getDoctorAppointments(token);
-                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(
@@ -166,16 +156,8 @@ class DoctorAppointmentsPage extends StatelessWidget {
                                     doctorNotes: 'Cancelled by doctor',
                                   );
 
-                              ToastHelper.showError(
-                                S.of(context).appointmentCancelled,
-                              );
+                              ToastHelper.showError("cancelled");
                               await Future.delayed(const Duration(minutes: 1));
-
-                              if (token != null) {
-                                await context
-                                    .read<DoctorCubit>()
-                                    .getDoctorAppointments(token);
-                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,

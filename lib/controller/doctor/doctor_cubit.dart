@@ -18,16 +18,23 @@ class DoctorCubit extends Cubit<DoctorState> {
     }
   }
 
-  Future<void> appointmentStatusUpdate(int id, String status, {String doctorNotes = ''}) async {
+  Future<void> appointmentStatusUpdate(
+    int id,
+    String status, {
+    String doctorNotes = '',
+  }) async {
     emit(state.copyWith(state: DoctorStatus.loading));
     try {
-      await doctorService.updateAppointmentStatus(id, status, doctorNotes: doctorNotes);
-      emit(state.copyWith(state: DoctorStatus.success));
+      await doctorService.updateAppointmentStatus(
+        id,
+        status,
+        doctorNotes: doctorNotes,
+      );
+      emit(state.copyWith(state: DoctorStatus.sent));
     } catch (e) {
       emit(state.copyWith(state: DoctorStatus.error, message: e.toString()));
     }
   }
-
 
   void addPerscription(
     String patientID,
